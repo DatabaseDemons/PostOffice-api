@@ -2,6 +2,7 @@
 const http = require("http");
 const User = require("./controller");
 const { getReqData } = require ("./utils");
+const { poolPromise } = require("./db");
 
 const PORT = process.env.PORT || 5000;
 
@@ -14,7 +15,6 @@ const server = http.createServer(async (req, res) => {
         // send the data
         res.end(JSON.stringify("Hello World"));
     }
-
 
     // /api/users : GET
     else if (req.url === "/api/users" && req.method === "GET")
