@@ -6,8 +6,18 @@ const { getReqData } = require ("./utils");
 const PORT = process.env.PORT || 5000;
 
 const server = http.createServer(async (req, res) => {
+
+    if (req.url === "/" && req.method === "GET")
+    {
+        // set the status code, and content-type
+        res.writeHead(200, { "Content-Type": "application/json" });
+        // send the data
+        res.end(JSON.stringify("Hello World"));
+    }
+
+
     // /api/users : GET
-    if (req.url === "/api/users" && req.method === "GET")
+    else if (req.url === "/api/users" && req.method === "GET")
     {
         // get the users
         const users = await new User().getUsers();
