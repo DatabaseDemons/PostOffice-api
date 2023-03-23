@@ -14,17 +14,37 @@ deleteUser(id)
 
 */
 const data = require("./data");
+// User -> for USER_LOGIN, EMPLOYEE, CUSTOMER tables
+const { User } = require('./model');
 
-
-class Controller {
+//TODO: add Customer and Employee methods to UserController
+class UserController {
     // getting all users
     async getUsers() {
+        // call the getAllUsers method of the User model
+        const users = await User.getAllUsers();
         // return all users
-        return new Promise((resolve, _) => resolve(data));
+        return users;
+
+        // (DEPRECATED)
+        // return new Promise((resolve, _) => resolve(data));
     }
 
+    //FIXME (get a single user_login by email)
     // getting a single user by id
     async getUser(id) {
+        // get the user
+        let user = data.find((user) => user.id === parseInt(id));
+
+        if (user) {
+            // return the user
+            return user;
+        } else {
+            // throw an error
+            throw new Error(`user with id ${id} not found`);
+        }
+
+        /* (DEPRECATED)
         return new Promise((resolve, reject) => {
             // get the user
             let user = data.find((user) => user.id === parseInt(id));
@@ -36,7 +56,11 @@ class Controller {
                 reject(`user with id ${id} not found `);
             }
         });
+        */
+
     }
+
+//FIXME: remove promise constructor
 
     // creating a user
     async createUser(user) {
@@ -82,4 +106,11 @@ class Controller {
         });
     }
 }
-module.exports = Controller;
+
+//TODO: add Shipment controller
+// add any other type of controllers
+
+
+
+//TODO: update to add all other controllers
+module.exports = UserController;

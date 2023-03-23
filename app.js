@@ -1,13 +1,13 @@
 //app.js
 const http = require("http");
-const User = require("./controller");
+const UserController = require("./controller");
 const { getReqData } = require ("./utils");
-const { poolPromise } = require("./db");
 
 const PORT = process.env.PORT || 5000;
 
 const server = http.createServer(async (req, res) => {
 
+    //Testing home to return hello world
     if (req.url === "/" && req.method === "GET")
     {
         // set the status code, and content-type
@@ -20,7 +20,7 @@ const server = http.createServer(async (req, res) => {
     else if (req.url === "/api/users" && req.method === "GET")
     {
         // get the users
-        const users = await new User().getUsers();
+        const users = await new UserController().getUsers();
         // set the status code, and content-type
         res.writeHead(200, { "Content-Type": "application/json" });
         // send the data
@@ -33,7 +33,7 @@ const server = http.createServer(async (req, res) => {
             // get id from url
             const id = req.url.split("/")[3];
             // get user
-            const user = await new User().getUser(id);
+            const user = await new UserController().getUser(id);
             // set success status code and content-type
             res.writeHead(200, { "Content-Type": "application/json" });
             // send the data
@@ -46,13 +46,15 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
+
+
     // /api/users/:id : DELETE
     else if (req.url.match(/\/api\/users\/([0-9]+)/) && req.method === "DELETE") {
         try {
             // get the id from url
             const id = req.url.split("/")[3];
             // delete user
-            let message = await new User().deleteUser(id);
+            let message = await new UserController().deleteUser(id);
             // set the status code and content-type
             res.writeHead(200, { "Content-Type": "application/json" });
             // send the message
@@ -71,7 +73,7 @@ const server = http.createServer(async (req, res) => {
             // get the id from the url
             const id = req.url.split("/")[3];
             // update user
-            let updated_user = await new User().updateUser(id);
+            let updated_user = await new UserController().updateUser(id);
             // set the status code and content-type
             res.writeHead(200, { "Content-Type": "application/json" });
             // send the message
@@ -89,7 +91,7 @@ const server = http.createServer(async (req, res) => {
         // get the data sent along
         let user_data = await getReqData(req);
         // create the user
-        let user = await new User().createUser(JSON.parse(user_data));
+        let user = await new UserController().createUser(JSON.parse(user_data));
         // set the status code and content-type
         res.writeHead(200, { "Content-Type": "application/json" });
         //send the user

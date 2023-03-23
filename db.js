@@ -1,6 +1,6 @@
 // File to retrieve data from database
 const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
+require('dotenv').config();
 const mssql = require('mssql');
 
 // Testing
@@ -30,6 +30,6 @@ client.connect(err => {
 });
 
 module.exports = {
-    mssql,
-    client
+  mssql,
+  client,
 };

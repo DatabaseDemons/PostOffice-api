@@ -1,5 +1,6 @@
 //data.js
-// Temporary data
+// FIXME - REMOVE BEFORE PROD
+// Temporary data 
 const users = [
     {
         id: 1,
