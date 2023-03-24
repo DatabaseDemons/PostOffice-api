@@ -2,37 +2,46 @@
 
 
 // TODO view/routes needed:
-/*
-post a shipment (when a shipment is created by employee,
+/* 
+
+===GET routes/views===
+[route]get all user logins.
+[route]get all branches.
+[route]get all customers (employee).
+[route]get all employees (admin).
+[route]get all po boxes.
+[route]get all tracks.
+[route]get all shipments.
+[route]get shipment by tracking id.
+[view]get all po boxes by customer email.
+[view]get all po boxes by branch.
+[view]get shipment by creation date (tracks -> shipment).
+[view]get all shipments by customer email (first tracking table to get all 
+                            tracking ids associated with that email. )
+    - (get all shipments by employee email can be combo'd here).
+[view]get employees by branch address (admin).
+
+===POST routes/views===
+[route]post a user login
+[route]post a customer
+[route]post a employee
+[route]post a shipment (when a shipment is created by employee,
                  it attaches the employee email, customer email,
                  tracking status (hardcode this), creation date,
-                 num packages, region (hardcore this), shipment status,
+                 num packages, region (hardcode this), shipment status,
                  current location -> branch,
                 )
-    - when 10 shipments are in store and the 11th is made -> trigger (store is full)
+    - when 10 shipments are in store and the 11th is made -> trigger (store is full).
+NOTE -> PO boxes are initially hardcode (ex: branch A has 10 po boxes that are all unowned).
+NOTE -> branches are hardcoded and the system will not control that.
 
-post a customer
-
-post a employee
-
-get all tracks
-
-get shipment by creation date (tracks -> shipment)
-
-get all shipments by customer email (first tracking table to get all 
-                            tracking ids associated with that email. )
-    - (get all shipments by employee email can be combo'd here)
-
-
-update shipment status (current location) -> trigger to send email
-update shipment location
-
-get all po boxes by customer email (returns branch address, number, and email)
-
-get all customers info (employee view)
-get all employees info (admin view)
-get employees by branch address (admin view)
-
+===UPDATE/PUT/PATCH routes===
+NOTE-> (no deletions will be made, we will mark it as deleted within the table)
+[route]update shipment status (current location) -> trigger to send email.
+[route]update shipment location.
+[route]update po box customer email when bought.
+[route]delete employee
+[route]delete shipment
 
 */
 
