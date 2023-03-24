@@ -2,7 +2,7 @@
 
 // TODO wrap routes to be protected for role based authentication
 // TODO view/routes needed:
-/* 
+/*
 
 ===GET routes/views===
 [route]get all user logins.
@@ -11,12 +11,10 @@
 [route]get all employees (admin).
 [route]get all po boxes.
 [route]get all tracks.
-[route]get all shipments.
-[route]get shipment by tracking id.
 [view]get all po boxes by customer email.
 [view]get all po boxes by branch.
 [view]get shipment by creation date (tracks -> shipment).
-[view]get all shipments by customer email (first tracking table to get all 
+[view]get all shipments by customer email (first tracking table to get all
                             tracking ids associated with that email. )
     - (get all shipments by employee email can be combo'd here).
 [view]get employees by branch address (admin).
@@ -129,7 +127,7 @@ const server = http.createServer(async (req, res) => {
     //         // send error
     //         res.end(JSON.stringify({message: error}));
     //     }
-    // } 
+    // }
     // /admin : GET
     // else if (path === '/admin' && req.method === 'GET') {
     //     try {
