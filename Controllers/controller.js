@@ -1,4 +1,7 @@
 //controller.js
+
+//TODO/FIXME: Each controller class will have its own JS file
+
 // Logic behind functionalities
 /*
 this manages the actual functionality and 
@@ -15,7 +18,7 @@ deleteUser(email)
 */
 const data = require("./data");
 // User -> for USER_LOGIN, EMPLOYEE, CUSTOMER tables
-const { User } = require('./model');
+const { User } = require('../Models/model');
 
 //TODO: add Customer and Employee methods to UserController
 class UserController {

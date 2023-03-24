@@ -1,5 +1,7 @@
 //model.js
 
+//TODO/FIXME: each model will have its own js file.
+
 // Handles data logic
 // Interacts with database
 

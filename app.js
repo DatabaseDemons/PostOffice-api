@@ -45,16 +45,16 @@ NOTE-> (no deletions will be made, we will mark it as deleted within the table)
 
 */
 
-
 const http = require("http");
-const UserController = require("./controller");
+//FIXME: read from each Models and Controllers index.js for importing
+const UserController = require("./Controllers/controller");
 const { getReqData } = require ("./utils");
 
 const PORT = process.env.PORT || 5000;
 
 const server = http.createServer(async (req, res) => {
 
-    //Testing home to return hello world
+    //Testing home to return 'Hello World'
     if (req.url === "/" && req.method === "GET")
     {
         // set the status code, and content-type
@@ -102,7 +102,7 @@ const server = http.createServer(async (req, res) => {
     }
 
 
-
+//FIXME
     // /api/users/:id : DELETE
     else if (req.url.match(/\/api\/users\/([0-9]+)/) && req.method === "DELETE") {
         try {
@@ -122,6 +122,7 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
+//FIXME
     // /api/users/:id : UPDATE
     else if (req.url.match(/\/api\/users\/([0-9]+)/) && req.method === "PATCH") {
         try {
@@ -141,6 +142,7 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
+//FIXME
     // /api/users/ : POST
     else if (req.url === "/api/users" && req.method === "POST") {
         // get the data sent along
