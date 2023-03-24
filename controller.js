@@ -7,10 +7,10 @@ It is made up of the Controller class,
 which will have the following major HTTP methods:
 
 getUsers()
-getUser(id)
+getUser(email)
 createUser(user)
-updateUser(id)
-deleteUser(id)
+updateUser(email)
+deleteUser(email)
 
 */
 const data = require("./data");
@@ -32,16 +32,18 @@ class UserController {
 
     //FIXME (get a single user_login by email)
     // getting a single user by id
-    async getUser(id) {
+    async getUser(email) {
+
         // get the user
-        let user = data.find((user) => user.id === parseInt(id));
+        //let user = data.find((user) => user.id === parseInt(id)); //replace 'id' with 'email'
+        let user = await User.getUser(email);
 
         if (user) {
             // return the user
             return user;
         } else {
             // throw an error
-            throw new Error(`user with id ${id} not found`);
+            throw new Error(`user with email: ${email} not found`);
         }
 
         /* (DEPRECATED)

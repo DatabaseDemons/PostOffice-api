@@ -16,6 +16,20 @@ class User {
             throw new Error('Failed to retrieve user logins.');
         }
     }
+    //Method to get user by email
+    static async getUser(email) {
+        try {
+            const result = await client.query(`Select * 
+                                            FROM dev_db.postoffice.USER_LOGIN ul
+                                            WHERE ul.username = '${email}'`);
+            return result.recordset;
+        } catch(err) {
+            console.log(err);
+            throw new Error('Failed to retrieve user logins.');
+        }
+    }
+
+
     //Method to get all customer data in db
     static async getAllCustomers() {
         try {

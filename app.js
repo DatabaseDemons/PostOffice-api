@@ -19,21 +19,29 @@ const server = http.createServer(async (req, res) => {
     // /api/users : GET
     else if (req.url === "/api/users" && req.method === "GET")
     {
-        // get the users
-        const users = await new UserController().getUsers();
-        // set the status code, and content-type
-        res.writeHead(200, { "Content-Type": "application/json" });
-        // send the data
-        res.end(JSON.stringify(users));
-    }
-
-    // /api/users/:id : GET
-    else if (req.url.match(/\/api\/users\/([0-9]+)/) && req.method === "GET") {
         try {
-            // get id from url
-            const id = req.url.split("/")[3];
+            // get the users
+            const users = await new UserController().getUsers();
+            // set the status code, and content-type
+            res.writeHead(200, { "Content-Type": "application/json" });
+            // send the data
+            res.end(JSON.stringify(users));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(404, {"Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({message: error}));
+        }
+    }
+    
+    // /api/users/:email : GET
+    else if (req.url.match(/\/api\/users\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && req.method === "GET") {
+        try {
+
+            // get email from url
+            const email = req.url.split("/")[3];
             // get user
-            const user = await new UserController().getUser(id);
+            const user = await new UserController().getUser(email);
             // set success status code and content-type
             res.writeHead(200, { "Content-Type": "application/json" });
             // send the data
