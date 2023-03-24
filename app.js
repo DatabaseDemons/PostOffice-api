@@ -1,6 +1,6 @@
 //app.js
 
-
+// TODO wrap routes to be protected for role based authentication
 // TODO view/routes needed:
 /* 
 
@@ -22,6 +22,7 @@
 [view]get employees by branch address (admin).
 
 ===POST routes/views===
+[route]post login request -> responds with a token
 [route]post a user login
 [route]post a customer
 [route]post a employee
@@ -46,16 +47,22 @@ NOTE-> (no deletions will be made, we will mark it as deleted within the table)
 */
 
 const http = require("http");
-//FIXME: read from each Models and Controllers index.js for importing
+const url = require('url');
+//FIXME: read from Controllers index.js for importing
 const UserController = require("./Controllers/controller");
-const { getReqData } = require ("./utils");
+const { getReqData } = require("./utils");
+const { authenticateUser } = require("./auth");
 
 const PORT = process.env.PORT || 5000;
 
 const server = http.createServer(async (req, res) => {
+    const reqUrl = url.parse(req.url, true);
+    const path = reqUrl.path;
+    const method = req.method;
+    console.log(`Route hit: ${path}`);
 
     //Testing home to return 'Hello World'
-    if (req.url === "/" && req.method === "GET")
+    if (path === "/" && method === "GET")
     {
         // set the status code, and content-type
         res.writeHead(200, { "Content-Type": "application/json" });
@@ -64,7 +71,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     // /api/users : GET
-    else if (req.url === "/api/users" && req.method === "GET")
+    else if (path === "/api/users" && method === "GET")
     {
         try {
             // get the users
@@ -80,13 +87,69 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify({message: error}));
         }
     }
+//FIXME
+    // /api/login : POST
+    // else if (path === "/api/login" && method === "POST") {
+    //     try {
+    //         let data = await getReqData(req);
+    //         const { email, password } = JSON.parse(data);
+    //         // console.log(email);
+    //         // console.log(password);
+
+    //         // authenticate user
+    //         let userType = await new UserController().loginUser(email, password);
+
+    //         // generate JWT token
+    //         const token = jwt.sign({ email, userType }, process.env.ACCESS_TOKEN_SECRET);
+
+    //         // set success status code and content-type
+    //         res.writeHead(200, { "Content-Type": "application/json" });
+    //         // send the data
+    //         res.end(JSON.stringify({ token }));
+    //     } catch (error) {
+    //         // set error status code and content-type
+    //         res.writeHead(401, {"Content-Type": "application/json" });
+    //         // send error
+    //         res.end(JSON.stringify({ message: error.message }));
+    //     }
+    // }
+
+//FIXME
+    // /login : POST
+    // else if (path === '/api/login' && req.method === 'POST') {
+    //     try {
+    //         const data = await getReqData(req);
+    //         const { email, password } = JSON.parse(data);
+    //         const result = await new UserController.loginUser(email, password);
+    //         res.setHeader('Content-Type', 'application/json');
+    //         res.end(JSON.stringify(result));
+    //     } catch (error) {
+    //         // set error status code and content-type
+    //         res.writeHead(401, {"Content-Type": "application/json" });
+    //         // send error
+    //         res.end(JSON.stringify({message: error}));
+    //     }
+    // } 
+    // /admin : GET
+    // else if (path === '/admin' && req.method === 'GET') {
+    //     try {
+    //         authenticateAdmin(req, res, () => {
+    //             adminOnlyRoute(req, res);
+    //         });
+    //     } catch (error) {
+    //         // set error status code and content-type
+    //         res.writeHead(500, {"Content-Type": "application/json" });
+    //         // send error
+    //         res.end(JSON.stringify({message: error}));
+    //     }
+    // }
 
     // /api/users/:email : GET
-    else if (req.url.match(/\/api\/users\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && req.method === "GET") {
+    else if (path.match(/\/api\/users\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
         try {
 
             // get email from url
-            const email = req.url.split("/")[3];
+            const email = path.split("/")[3];
             // get user
             const user = await new UserController().getUser(email);
             // set success status code and content-type
@@ -104,10 +167,10 @@ const server = http.createServer(async (req, res) => {
 
 //FIXME
     // /api/users/:id : DELETE
-    else if (req.url.match(/\/api\/users\/([0-9]+)/) && req.method === "DELETE") {
+    else if (path.match(/\/api\/users\/([0-9]+)/) && method === "DELETE") {
         try {
             // get the id from url
-            const id = req.url.split("/")[3];
+            const id = path.split("/")[3];
             // delete user
             let message = await new UserController().deleteUser(id);
             // set the status code and content-type
@@ -124,10 +187,10 @@ const server = http.createServer(async (req, res) => {
 
 //FIXME
     // /api/users/:id : UPDATE
-    else if (req.url.match(/\/api\/users\/([0-9]+)/) && req.method === "PATCH") {
+    else if (path.match(/\/api\/users\/([0-9]+)/) && method === "PATCH") {
         try {
             // get the id from the url
-            const id = req.url.split("/")[3];
+            const id = path.split("/")[3];
             // update user
             let updated_user = await new UserController().updateUser(id);
             // set the status code and content-type
@@ -144,7 +207,7 @@ const server = http.createServer(async (req, res) => {
 
 //FIXME
     // /api/users/ : POST
-    else if (req.url === "/api/users" && req.method === "POST") {
+    else if (path === "/api/users" && method === "POST") {
         // get the data sent along
         let user_data = await getReqData(req);
         // create the user

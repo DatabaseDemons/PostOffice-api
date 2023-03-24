@@ -3,6 +3,7 @@
 Controls a standard Web API use case. 
 It includes the getReqData() function, 
 which retrieves data from the client on the server.
+(Handles POST request data from client).
 */
 function getReqData(req) {
     return new Promise((resolve, reject) => {
