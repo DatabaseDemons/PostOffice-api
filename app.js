@@ -1,4 +1,42 @@
 //app.js
+
+
+// TODO view/routes needed:
+/*
+post a shipment (when a shipment is created by employee,
+                 it attaches the employee email, customer email,
+                 tracking status (hardcode this), creation date,
+                 num packages, region (hardcore this), shipment status,
+                 current location -> branch,
+                )
+    - when 10 shipments are in store and the 11th is made -> trigger (store is full)
+
+post a customer
+
+post a employee
+
+get all tracks
+
+get shipment by creation date (tracks -> shipment)
+
+get all shipments by customer email (first tracking table to get all 
+                            tracking ids associated with that email. )
+    - (get all shipments by employee email can be combo'd here)
+
+
+update shipment status (current location) -> trigger to send email
+update shipment location
+
+get all po boxes by customer email (returns branch address, number, and email)
+
+get all customers info (employee view)
+get all employees info (admin view)
+get employees by branch address (admin view)
+
+
+*/
+
+
 const http = require("http");
 const UserController = require("./controller");
 const { getReqData } = require ("./utils");
@@ -33,7 +71,7 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify({message: error}));
         }
     }
-    
+
     // /api/users/:email : GET
     else if (req.url.match(/\/api\/users\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && req.method === "GET") {
         try {
