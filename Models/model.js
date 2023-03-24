@@ -23,7 +23,7 @@ class User {
     static async getUser(email) {
         try {
             const result = await client.query(`Select *
-                                            FROM dev_db.postoffice.USER_LOGIN ul
+                                            FROM dev_db.postoffice.USER_LOGIN AS ul
                                             WHERE ul.username = '${email}';`);
             return result.recordset;
         } catch(err) {
