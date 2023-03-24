@@ -4,9 +4,9 @@
 
 // Logic behind functionalities
 /*
-this manages the actual functionality and 
-the logic behind each route used in this application. 
-It is made up of the Controller class, 
+this manages the actual functionality and
+the logic behind each route used in this application.
+It is made up of the Controller class,
 which will have the following major HTTP methods:
 
 getUsers()
@@ -18,7 +18,7 @@ deleteUser(email)
 */
 const data = require("./data");
 // User -> for USER_LOGIN, EMPLOYEE, CUSTOMER tables
-const { User } = require('../Models/model');
+const { User, Shipment } = require('../Models/model');
 const jwt = require('jsonwebtoken');
 
 //TODO: add Customer and Employee methods to UserController
@@ -33,25 +33,25 @@ class UserController {
         // return new Promise((resolve, _) => resolve(data));
     }
 
-//fixme 
+//fixme
     // login the user and return a jwt
     // async loginUser(email, password) {
     //     console.log(email);
     //     //this is always return 1 user at the first index
-    //     const recordset = await User.getUser(email); 
-    //     const user = recordset[0]; 
-        
-        
+    //     const recordset = await User.getUser(email);
+    //     const user = recordset[0];
+
+
     //     if (user) {
     //       // Verify the password
     //         if (user.password !== password) {
     //             throw new Error('Invalid password.');
     //         }
-                
+
     //         const token = jwt.sign({ email, type: user.type }, process.env.ACCESS_TOKEN_SECRET);
     //         return { token, userType: user.type };
-          
-    //     } 
+
+    //     }
     //     else {
     //       throw new Error(`User with email ${email} not found.`);
     //     }
@@ -92,7 +92,7 @@ class UserController {
 //FIXME logic to actually do this in our db
     // creating a user
     async createUser(user) {
-        
+
         let newuser = await User.createUser(user);
         return newuser;
 
@@ -141,10 +141,23 @@ class UserController {
     }
 }
 
-//TODO: add Shipment controller
-// add any other type of controllers
+//Shipment controller
+class ShipmentController {
+    async getAllShipments() {
+        return await Shipment.getAllShipments();
+    }
+    async getShipmentByID(id) {
+        return await Shipment.getShipmentByID(id);
+    }
+}
+
+
+
+//TODO: add any other type of controllers
 
 
 
 //TODO: update to add all other controllers
-module.exports = UserController;
+module.exports = {
+    UserController, ShipmentController,
+};
