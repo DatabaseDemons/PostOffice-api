@@ -46,8 +46,8 @@ NOTE-> (no deletions will be made, we will mark it as deleted within the table)
 
 const http = require("http");
 const url = require('url');
-//FIXME: read from Controllers index.js for importing
-const { UserController, ShipmentController } = require("./Controllers/controller");
+
+const { UserController, ShipmentController } = require("./Controllers/index");
 const { getReqData } = require("./utils");
 const { authenticateUser } = require("./auth");
 
