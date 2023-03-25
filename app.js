@@ -2,7 +2,7 @@
 
 // TODO wrap routes to be protected for role based authentication
 // TODO view/routes needed:
-/* 
+/*
 
 ===GET routes/views===
 [route]get all user logins.
@@ -11,12 +11,10 @@
 [route]get all employees (admin).
 [route]get all po boxes.
 [route]get all tracks.
-[route]get all shipments.
-[route]get shipment by tracking id.
 [view]get all po boxes by customer email.
 [view]get all po boxes by branch.
 [view]get shipment by creation date (tracks -> shipment).
-[view]get all shipments by customer email (first tracking table to get all 
+[view]get all shipments by customer email (first tracking table to get all
                             tracking ids associated with that email. )
     - (get all shipments by employee email can be combo'd here).
 [view]get employees by branch address (admin).
@@ -49,7 +47,7 @@ NOTE-> (no deletions will be made, we will mark it as deleted within the table)
 const http = require("http");
 const url = require('url');
 //FIXME: read from Controllers index.js for importing
-const UserController = require("./Controllers/controller");
+const { UserController, ShipmentController } = require("./Controllers/controller");
 const { getReqData } = require("./utils");
 const { authenticateUser } = require("./auth");
 
@@ -129,7 +127,7 @@ const server = http.createServer(async (req, res) => {
     //         // send error
     //         res.end(JSON.stringify({message: error}));
     //     }
-    // } 
+    // }
     // /admin : GET
     // else if (path === '/admin' && req.method === 'GET') {
     //     try {
@@ -216,6 +214,15 @@ const server = http.createServer(async (req, res) => {
         res.writeHead(200, { "Content-Type": "application/json" });
         //send the user
         res.end(JSON.stringify(user));
+    }
+
+    //Get all shipments route
+    else if (path === "/api/shipments" && method === "GET") {
+        let shipments = await new ShipmentController().getAllShipments();
+        // set the status code and content-type
+        res.writeHead(200, { "Content-Type": "application/json" });
+        //send the shipments
+        res.end(JSON.stringify(shipments));
     }
 
 
