@@ -1,6 +1,7 @@
 //app.js
 
 // TODO wrap routes to be protected for role based authentication
+// TODO wrap any path.splits in here with try catch so we don't crash on a malformed url
 // TODO view/routes needed:
 /*
 
@@ -149,8 +150,19 @@ const server = http.createServer(async (req, res) => {
         let boxes = await new POBoxController().getAllPOBoxes();
         // set the status code and content-type
         res.writeHead(200, { "Content-Type": "application/json" });
-        //send the shipments
+        //send the boxes
         res.end(JSON.stringify(boxes));
+    }
+
+    // Get all po boxes by owning branch
+    // Test with url http://localhost:5000/api/po-boxes/branch/123+Main+St
+    else if (path.match(/\/api\/po-boxes\/branch\/([A-Za-z0-9]+(\+[A-Za-z0-9]+)+)/i) && method === "GET") {
+        let branch = path.split('/')[4].replace(/\+/g, ' ');
+        let branchBoxes = await new POBoxController().getAllPOBoxesByBranch(branch);
+        // set the status code and content-type
+        res.writeHead(200, { "Content-Type": "application/json" });
+        //send the boxes
+        res.end(JSON.stringify(branchBoxes));
     }
 
 //FIXME
