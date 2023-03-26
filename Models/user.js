@@ -57,6 +57,15 @@ class User {
         } catch (err) {
             console.log(err);
             throw new Error('Failed to retrieve user logins.');
+    }
+    
+    //Method to post a user's data into the db
+    static async createUser(data) {
+        try {
+            return ':)'
+        } catch(err) {
+            console.log(err);
+            throw new Error('Failed to create new user.');
         }
     }
 }
