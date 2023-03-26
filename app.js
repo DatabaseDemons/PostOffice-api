@@ -76,10 +76,11 @@ const server = http.createServer(async (req, res) => {
             // send the data
             res.end(JSON.stringify(users));
         } catch (error) {
+            throw new Error(error);
             // set error status code and content-type
             res.writeHead(404, {"Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({message: error}));
+            res.end(JSON.stringify({message: ""+ error}));
         }
     }
 //FIXME

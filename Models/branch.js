@@ -26,4 +26,6 @@ class Branch {
     }
 }
 
-module.exports = Branch;
+module.exports = {
+    Branch,
+}

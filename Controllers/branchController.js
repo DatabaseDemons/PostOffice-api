@@ -11,4 +11,6 @@ class BranchController {
     }
 }
 
-module.exports = BranchController;
+module.exports = {
+    BranchController,
+}

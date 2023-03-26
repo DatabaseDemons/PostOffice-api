@@ -15,4 +15,6 @@ class POBoxController {
     }
 }
 
-module.exports = POBoxController;
+module.exports = {
+    POBoxController,
+}

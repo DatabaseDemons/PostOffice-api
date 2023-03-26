@@ -39,4 +39,6 @@ class POBox {
     }
 }
 
-module.exports = POBox;
+module.exports = {
+    POBox,
+}

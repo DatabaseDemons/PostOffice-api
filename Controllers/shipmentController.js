@@ -11,4 +11,6 @@ class ShipmentController {
     }
 }
 
-module.exports = ShipmentController;
+module.exports = {
+    ShipmentController,
+}
