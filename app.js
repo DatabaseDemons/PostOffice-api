@@ -5,14 +5,10 @@
 /*
 
 ===GET routes/views===
-[route]get all user logins.
-[route]get all branches.
 [route]get all customers (employee).
 [route]get all employees (admin).
-[route]get all po boxes.
 [route]get all tracks.
 [view]get all po boxes by customer email.
-[view]get all po boxes by branch.
 [view]get shipment by creation date (tracks -> shipment).
 [view]get all shipments by customer email (first tracking table to get all
                             tracking ids associated with that email. )
