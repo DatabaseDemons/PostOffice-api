@@ -1,6 +1,4 @@
-//model.js
-
-//TODO/FIXME: each model will have its own js file.
+//userModel.js
 
 // Handles data logic
 // Interacts with database
@@ -11,7 +9,7 @@ class User {
     //Method to get all user logins in db
     static async getAllUsers() {
         try {
-            const result = await client.query(`Select * FROM dev_db.postoffice.USER_LOGIN;`)
+            const result = await client.query(`Select * FROM dev_db.postoffice.USER_LOGIN;`);
             return result.recordset;
         } catch(err) {
             console.log(err);
@@ -34,7 +32,7 @@ class User {
     //Method to get all customer data in db
     static async getAllCustomers() {
         try {
-            const result = await client.query(`Select * FROM dev_db.postoffice.CUSTOMER;`)
+            const result = await client.query(`Select * FROM dev_db.postoffice.CUSTOMER;`);
             return result.recordset;
         } catch(err) {
             console.log(err);
@@ -45,13 +43,27 @@ class User {
     //Method to get all employee data in db
     static async getAllEmployees() {
         try {
-            const result = await client.query(`Select * FROM dev_db.postoffice.EMPLOYEE;`)
+            const result = await client.query(`Select * FROM dev_db.postoffice.EMPLOYEE;`);
             return result.recordset;
         } catch(err) {
             console.log(err);
             throw new Error('Failed to retrieve employees.');
         }
     }
+
+    //Method to create a user:customer in db
+    static async createUser(user) {
+        try {
+            console.log(user);
+
+
+            return ("hi");
+        } catch(err) {
+            console.log(err);
+            throw new Error('Failed to create user.');
+        }
+    }
+
 }
 
 
