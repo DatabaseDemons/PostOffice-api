@@ -43,7 +43,8 @@ NOTE-> (no deletions will be made, we will mark it as deleted within the table)
 const http = require("http");
 const url = require('url');
 
-const { UserController, ShipmentController } = require("./Controllers/index");
+const { UserController } = require("./Controllers/userController");
+const { ShipmentController } = require("./Controllers/shipmentController");
 const { getReqData } = require("./utils");
 const { authenticateUser } = require("./auth");
 

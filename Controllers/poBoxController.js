@@ -1,6 +1,6 @@
 //PO box controller
 
-const { POBox } = require('../Models/index');
+const { POBox } = require('../Models/poBox');
 
 class POBoxController {
     async getAllPOBoxes() {

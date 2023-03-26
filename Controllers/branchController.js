@@ -1,6 +1,6 @@
 //Branch controller
 
-const { Branch } = require('../Models/index');
+const { Branch } = require('../Models/branch');
 
 class BranchController {
     async getAllBranches() {

@@ -18,7 +18,7 @@ deleteUser(email)
 */
 const data = require("./data");
 // User -> for USER_LOGIN, EMPLOYEE, CUSTOMER tables
-const { User } = require('../Models/index');
+const { User } = require('../Models/user');
 const jwt = require('jsonwebtoken');
 
 //TODO: add Customer and Employee methods to UserController

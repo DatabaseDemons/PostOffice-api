@@ -6,7 +6,7 @@ class POBox {
         try {
             const result = await client.query(`Select * FROM dev_db.postoffice.PO_BOX;`);
             return result.recordset;
-        } catch(err) {
+        } catch (err) {
             console.log(err);
             throw new Error('Failed to retrieve all PO boxes.');
         }
@@ -19,7 +19,7 @@ class POBox {
                                                 FROM dev_db.postoffice.PO_BOX AS P
                                                 WHERE P.customer_email='${email}';`);
             return result.recordset;
-        } catch(err) {
+        } catch (err) {
             console.log(err);
             throw new Error('Failed to retrieve or no such PO box with owner: ' + email);
         }
@@ -27,14 +27,15 @@ class POBox {
 
     //Retrieve PO boxes by owning branch
     static async getAllPOBoxesByBranch(addr) {
-    try {
-        const result = await client.query(`SELECT B.address AS Branch_address, P.box_num AS Box_number, P.customer_email AS Owner
+        try {
+            const result = await client.query(`SELECT B.address AS Branch_address, P.box_num AS Box_number, P.customer_email AS Owner
                                             FROM dev_db.postoffice.PO_BOX AS P, dev_db.postoffice.BRANCH AS B
                                             WHERE P.branch_address='${addr}' AND B.address=P.branch_address;`);
-        return result.recordset;
-    } catch(err) {
-        console.log(err);
-        throw new Error('Failed to retrieve or no such PO box with owning branch: ' + addr);
+            return result.recordset;
+        } catch (err) {
+            console.log(err);
+            throw new Error('Failed to retrieve or no such PO box with owning branch: ' + addr);
+        }
     }
 }
 
