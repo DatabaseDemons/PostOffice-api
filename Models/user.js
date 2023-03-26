@@ -48,6 +48,17 @@ class User {
             throw new Error('Failed to retrieve employees.');
         }
     }
+
+    //Method to get all user logins in db
+    static async getAllUserLogins() {
+        try {
+            const result = await client.query(`Select * FROM dev_db.postoffice.USER_LOGIN;`)
+            return result.recordset;
+        } catch (err) {
+            console.log(err);
+            throw new Error('Failed to retrieve user logins.');
+        }
+    }
 }
 
 module.exports = User;
