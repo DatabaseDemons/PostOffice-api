@@ -18,7 +18,7 @@ deleteUser(email)
 */
 const data = require("./data");
 // User -> for USER_LOGIN, EMPLOYEE, CUSTOMER tables
-const { User, Shipment } = require('../Models/model');
+const { User } = require('../Models/index');
 const jwt = require('jsonwebtoken');
 
 //TODO: add Customer and Employee methods to UserController
@@ -32,7 +32,6 @@ class UserController {
         // (DEPRECATED)
         // return new Promise((resolve, _) => resolve(data));
     }
-
 //fixme
     // login the user and return a jwt
     // async loginUser(email, password) {
@@ -141,23 +140,4 @@ class UserController {
     }
 }
 
-//Shipment controller
-class ShipmentController {
-    async getAllShipments() {
-        return await Shipment.getAllShipments();
-    }
-    async getShipmentByID(id) {
-        return await Shipment.getShipmentByID(id);
-    }
-}
-
-
-
-//TODO: add any other type of controllers
-
-
-
-//TODO: update to add all other controllers
-module.exports = {
-    UserController, ShipmentController,
-};
+module.exports = UserController;
