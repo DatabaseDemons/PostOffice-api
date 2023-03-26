@@ -137,6 +137,15 @@ const server = http.createServer(async (req, res) => {
         res.end(JSON.stringify(shipments));
     }
 
+    // Get shipment by tracking ID route
+    else if (path.match(/\/api\/shipments\/[0-9]+/) && method === "GET") {
+        let shipment = await new ShipmentController().getShipmentByID(path.split('/')[3]);
+        // set the status code and content-type
+        res.writeHead(200, { "Content-Type": "application/json" });
+        //send the shipments
+        res.end(JSON.stringify(shipment));
+    }
+
 //FIXME
     // /api/users/ : POST
     else if (path === "/api/register-customer" && method === "POST") {
