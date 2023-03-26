@@ -26,4 +26,6 @@ class Shipment {
     }
 }
 
-module.exports = Shipment;
+module.exports = {
+    Shipment,
+}
