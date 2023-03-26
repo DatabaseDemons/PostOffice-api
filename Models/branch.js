@@ -13,7 +13,7 @@ class Branch {
     }
 
     //Retrieve branch by address
-    static async getBranchByID(address) {
+    static async getBranchByAddress(address) {
         try {
             const result = await client.query(`Select *
                                                 FROM dev_db.postoffice.BRANCH AS B
