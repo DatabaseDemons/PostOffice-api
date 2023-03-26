@@ -88,11 +88,11 @@ const server = http.createServer(async (req, res) => {
 
 
     // /api/users/:email : GET
-    else if (path.match(/\/api\/users\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
+    else if (path.match(/\/api\/users\/email\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
         try {
 
             // get email from url
-            const email = path.split("/")[3];
+            const email = path.split("/")[4];
             // get user
             const user = await new UserController().getUser(email);
             // set success status code and content-type
@@ -137,8 +137,8 @@ const server = http.createServer(async (req, res) => {
     }
 
     // Get shipment by tracking ID route
-    else if (path.match(/\/api\/shipments\/[0-9]+/) && method === "GET") {
-        let shipment = await new ShipmentController().getShipmentByID(path.split('/')[3]);
+    else if (path.match(/\/api\/shipments\/id\/[0-9]+/) && method === "GET") {
+        let shipment = await new ShipmentController().getShipmentByID(path.split('/')[4]);
         // set the status code and content-type
         res.writeHead(200, { "Content-Type": "application/json" });
         //send the shipments
@@ -163,6 +163,15 @@ const server = http.createServer(async (req, res) => {
         res.writeHead(200, { "Content-Type": "application/json" });
         //send the boxes
         res.end(JSON.stringify(branchBoxes));
+    }
+
+    // Get po box by owner's email
+    else if (path.match(/\/api\/po-boxes\/email\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
+        let boxes = await new POBoxController().getPOBoxByEmail(path.split("/")[4]);
+        // set the status code and content-type
+        res.writeHead(200, { "Content-Type": "application/json" });
+        //send the boxes
+        res.end(JSON.stringify(boxes));
     }
 
 //FIXME
