@@ -1,6 +1,8 @@
 //Shipment controller
 
+
 const { Shipment } = require('../Models/shipment');
+
 
 class ShipmentController {
     async getAllShipments() {
@@ -10,6 +12,7 @@ class ShipmentController {
         return await Shipment.getShipmentByID(id);
     }
 }
+
 
 module.exports = {
     ShipmentController,
