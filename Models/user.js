@@ -48,6 +48,16 @@ class User {
             throw new Error('Failed to retrieve employees.');
         }
     }
+
+    //Method to post a user's data into the db
+    static async createUser(data) {
+        try {
+            return ':)'
+        } catch(err) {
+            console.log(err);
+            throw new Error('Failed to create new user.');
+        }
+    }
 }
 
 module.exports = User;

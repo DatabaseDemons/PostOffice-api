@@ -95,18 +95,6 @@ class UserController {
         let newuser = await User.createUser(user);
         return newuser;
 
-        //(DEPRECATED)
-        // return new Promise((resolve, _) => {
-        //     // create a user, with random id and data sent
-        //     let newuser = {
-        //         id: Math.floor(4 + Math.random() * 10),
-        //         ...user,
-        //     };
-
-        //     // return the new created user
-        //     resolve(newuser);
-        // });
-
     }
 //FIXME: remove promise constructor
     // updating a user
