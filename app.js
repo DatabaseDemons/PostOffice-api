@@ -128,6 +128,15 @@ const server = http.createServer(async (req, res) => {
     //     }
     // }
 
+    //Get all shipments route
+    else if (path === "/api/shipments" && method === "GET") {
+        let shipments = await new ShipmentController().getAllShipments();
+        // set the status code and content-type
+        res.writeHead(200, { "Content-Type": "application/json" });
+        //send the shipments
+        res.end(JSON.stringify(shipments));
+    }
+
 //FIXME
     // /api/users/ : POST
     else if (path === "/api/register-customer" && method === "POST") {
