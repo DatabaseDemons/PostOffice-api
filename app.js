@@ -8,8 +8,6 @@
 [route]get all customers (employee).
 [route]get all employees (admin).
 [route]get all tracks.
-[route]get all shipments.
-[route]get shipment by tracking id.
 [view]get all po boxes by customer email.
 [view]get shipment by creation date (tracks -> shipment).
 [view]get all shipments by customer email (first tracking table to get all
@@ -47,7 +45,7 @@ const url = require('url');
 
 const { UserController } = require("./Controllers/userController");
 const { ShipmentController } = require("./Controllers/shipmentController");
-
+const { POBoxController } = require("./Controllers/poBoxController");
 
 const { getReqData } = require("./utils");
 
@@ -144,6 +142,15 @@ const server = http.createServer(async (req, res) => {
         res.writeHead(200, { "Content-Type": "application/json" });
         //send the shipments
         res.end(JSON.stringify(shipment));
+    }
+
+    // Get all po boxes route
+    else if (path === "/api/po-boxes" && method === "GET") {
+        let boxes = await new POBoxController().getAllPOBoxes();
+        // set the status code and content-type
+        res.writeHead(200, { "Content-Type": "application/json" });
+        //send the shipments
+        res.end(JSON.stringify(boxes));
     }
 
 //FIXME
