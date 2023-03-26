@@ -16,7 +16,7 @@ class User {
     }
 
     //Method to get user by email
-    static async getUser(email) {
+    static async getUserByEmail(email) {
         try {
             const result = await client.query(`Select *
                                             FROM dev_db.postoffice.USER_LOGIN AS ul

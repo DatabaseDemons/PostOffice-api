@@ -72,7 +72,7 @@ const server = http.createServer(async (req, res) => {
     {
         try {
             // get the users
-            const users = await new UserController().getUsers();
+            const users = await new UserController().getAllUsers();
             // set the status code, and content-type
             res.writeHead(200, { "Content-Type": "application/json" });
             // send the data
@@ -87,14 +87,15 @@ const server = http.createServer(async (req, res) => {
     }
 
 
-    // /api/users/:email : GET
+    // /api/users/email : GET
+    // Test with url http://localhost:5000/api/users/email/iamthestand@gmail.com
     else if (path.match(/\/api\/users\/email\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
         try {
 
             // get email from url
             const email = path.split("/")[4];
             // get user
-            const user = await new UserController().getUser(email);
+            const user = await new UserController().getUserByEmail(email);
             // set success status code and content-type
             res.writeHead(200, { "Content-Type": "application/json" });
             // send the data
