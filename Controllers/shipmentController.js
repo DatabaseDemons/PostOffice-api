@@ -1,6 +1,8 @@
 //Shipment controller
 
-const { Shipment } = require('../Models/index')
+
+const { Shipment } = require('../Models/shipment');
+
 
 class ShipmentController {
     async getAllShipments() {
@@ -11,4 +13,7 @@ class ShipmentController {
     }
 }
 
-module.exports = ShipmentController;
+
+module.exports = {
+    ShipmentController,
+}

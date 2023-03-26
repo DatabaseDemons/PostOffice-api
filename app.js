@@ -2,21 +2,17 @@
 
 // TODO wrap routes to be protected for role based authentication
 // TODO view/routes needed:
-/* 
+/*
 
 ===GET routes/views===
-[route]get all user logins.
-[route]get all branches.
 [route]get all customers (employee).
 [route]get all employees (admin).
-[route]get all po boxes.
 [route]get all tracks.
 [route]get all shipments.
 [route]get shipment by tracking id.
 [view]get all po boxes by customer email.
-[view]get all po boxes by branch.
 [view]get shipment by creation date (tracks -> shipment).
-[view]get all shipments by customer email (first tracking table to get all 
+[view]get all shipments by customer email (first tracking table to get all
                             tracking ids associated with that email. )
     - (get all shipments by employee email can be combo'd here).
 [view]get employees by branch address (admin).
@@ -43,13 +39,16 @@ NOTE-> (no deletions will be made, we will mark it as deleted within the table)
 [route]update po box customer email when bought.
 [route]delete employee
 [route]delete shipment
-
 */
 
 const http = require("http");
 const url = require('url');
-//FIXME: read from Controllers index.js for importing
-const UserController = require("./Controllers/userController");
+
+
+const { UserController } = require("./Controllers/userController");
+const { ShipmentController } = require("./Controllers/shipmentController");
+
+
 const { getReqData } = require("./utils");
 
 const PORT = process.env.PORT || 5000;
@@ -80,12 +79,14 @@ const server = http.createServer(async (req, res) => {
             // send the data
             res.end(JSON.stringify(users));
         } catch (error) {
+            throw new Error(error);
             // set error status code and content-type
             res.writeHead(404, {"Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({message: error}));
+            res.end(JSON.stringify({message: ""+ error}));
         }
     }
+
 
     // /api/users/:email : GET
     else if (path.match(/\/api\/users\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
