@@ -56,8 +56,7 @@ const server = http.createServer(async (req, res) => {
     console.log(`Route hit: ${path}`);
 
     //Testing home to return 'Hello World'
-    if (path === "/" && method === "GET")
-    {
+    if (path === "/" && method === "GET") {
         // set the status code, and content-type
         res.writeHead(200, { "Content-Type": "application/json" });
         // send the data
@@ -65,13 +64,11 @@ const server = http.createServer(async (req, res) => {
     }
 
     // /api/users : GET
-    else if (path === "/api/users" && method === "GET")
-    {
+    else if (path === "/api/users" && method === "GET") {
         //this is protecting the route
         authenticate(req, res, 'admin');
         console.log(res.statusCode);
-        if (res.statusCode > 400)
-        {
+        if (res.statusCode > 400) {
             res.end("FORBIDDEN")
             return;
         }
@@ -85,9 +82,9 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(users));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, {"Content-Type": "application/json" });
+            res.writeHead(404, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({message: "" + error}));
+            res.end(JSON.stringify({ message: "" + error }));
         }
     }
 
@@ -107,9 +104,9 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(user));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, {"Content-Type": "application/json" });
+            res.writeHead(404, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({message: "" + error}));
+            res.end(JSON.stringify({ message: "" + error }));
         }
     }
 
@@ -123,9 +120,9 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(shipments));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, {"Content-Type": "application/json" });
+            res.writeHead(404, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({message: "" + error}));
+            res.end(JSON.stringify({ message: "" + error }));
         }
     }
 
@@ -140,9 +137,9 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(shipment));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, {"Content-Type": "application/json" });
+            res.writeHead(404, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({message: "" + error}));
+            res.end(JSON.stringify({ message: "" + error }));
         }
     }
 
@@ -157,9 +154,9 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(boxes));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, {"Content-Type": "application/json" });
+            res.writeHead(404, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({message: "" + error}));
+            res.end(JSON.stringify({ message: "" + error }));
         }
     }
 
@@ -176,9 +173,9 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(branchBoxes));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, {"Content-Type": "application/json" });
+            res.writeHead(404, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({message: "" + error}));
+            res.end(JSON.stringify({ message: "" + error }));
         }
     }
 
@@ -194,9 +191,9 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(boxes));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, {"Content-Type": "application/json" });
+            res.writeHead(404, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({message: "" + error}));
+            res.end(JSON.stringify({ message: "" + error }));
         }
     }
 
@@ -210,9 +207,9 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(tracks));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, {"Content-Type": "application/json" });
+            res.writeHead(404, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({message: "" + error}));
+            res.end(JSON.stringify({ message: "" + error }));
         }
     }
 
@@ -233,11 +230,11 @@ const server = http.createServer(async (req, res) => {
 
             res.end(init_jwt(temp_user));
 
-        } catch(error) {
+        } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, {"Content-Type": "application/json" });
+            res.writeHead(404, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({message: error}));
+            res.end(JSON.stringify({ message: error }));
         }
 
 
@@ -253,9 +250,9 @@ const server = http.createServer(async (req, res) => {
 
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, {"Content-Type": "application/json" });
+            res.writeHead(404, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({message: error}));
+            res.end(JSON.stringify({ message: error }));
         }
 
     }
