@@ -52,6 +52,8 @@ const { POBoxController } = require("./Controllers/poBoxController");
 const { authenticate, init_jwt } = require("./jwt");
 
 const { getReqData } = require("./utils");
+//USAGE: read JSON to parse ex:
+//  const data = await getReqData(req);
 
 const PORT = process.env.PORT || 5000;
 
@@ -83,15 +85,13 @@ const server = http.createServer(async (req, res) => {
         }
 
         try {
-
             // get the users
             const users = await new UserController().getAllUsers();
-            // set the status code, and content-type
+            // set the status code and content-type
             res.writeHead(200, { "Content-Type": "application/json" });
             // send the data
             res.end(JSON.stringify(users));
         } catch (error) {
-            throw new Error(error);
             // set error status code and content-type
             res.writeHead(404, {"Content-Type": "application/json" });
             // send error
@@ -120,29 +120,6 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify({message: error}));
         }
     }
-    
-    else if (path === "/api/login" && method === "POST") {
-
-
-//FIXME
-    // /api/users/:id : UPDATE
-    // else if (path.match(/\/api\/users\/([0-9]+)/) && method === "PATCH") {
-    //     try {
-    //         // get the id from the url
-    //         const id = path.split("/")[3];
-    //         // update user
-    //         let updated_user = await new UserController().updateUser(id);
-    //         // set the status code and content-type
-    //         res.writeHead(200, { "Content-Type": "application/json" });
-    //         // send the message
-    //         res.end(JSON.stringify(updated_user));
-    //     } catch (error) {
-    //         // set the status code and content type
-    //         res.writeHead(404, { "Content-Type": "application/json" });
-    //         // send the error
-    //         res.end(JSON.stringify({ message: error }));
-    //     }
-    // }
 
     //Get all shipments route
     else if (path === "/api/shipments" && method === "GET") {
@@ -153,6 +130,7 @@ const server = http.createServer(async (req, res) => {
         res.end(JSON.stringify(shipments));
     }
 
+    // api/shipments/id/ '' : GET 
     // Get shipment by tracking ID route
     else if (path.match(/\/api\/shipments\/id\/[0-9]+/) && method === "GET") {
         let shipment = await new ShipmentController().getShipmentByID(path.split('/')[4]);
@@ -162,6 +140,7 @@ const server = http.createServer(async (req, res) => {
         res.end(JSON.stringify(shipment));
     }
 
+    // api/po-boxes : GET
     // Get all po boxes route
     else if (path === "/api/po-boxes" && method === "GET") {
         let boxes = await new POBoxController().getAllPOBoxes();
@@ -171,6 +150,7 @@ const server = http.createServer(async (req, res) => {
         res.end(JSON.stringify(boxes));
     }
 
+    // /api/po-boxes/branch/ '' : GET
     // Get all po boxes by owning branch
     // Test with url http://localhost:5000/api/po-boxes/branch/123+Main+St
     else if (path.match(/\/api\/po-boxes\/branch\/([A-Za-z0-9]+(\+[A-Za-z0-9]+)+)/i) && method === "GET") {
@@ -182,6 +162,7 @@ const server = http.createServer(async (req, res) => {
         res.end(JSON.stringify(branchBoxes));
     }
 
+    // api/pox-boxes/email/ '' : GET
     // Get po box by owner's email
     else if (path.match(/\/api\/po-boxes\/email\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
         let boxes = await new POBoxController().getPOBoxByEmail(path.split("/")[4]);
@@ -191,10 +172,13 @@ const server = http.createServer(async (req, res) => {
         res.end(JSON.stringify(boxes));
     }
 
-//FIXME
+
     // /api/users/ : POST
     else if (path === "/api/register-customer" && method === "POST") {
         try {
+
+            const data = await getReqData(req);
+            console.log(data);
 
             //todo check the database with the user info
             const temp_user = 
@@ -214,27 +198,23 @@ const server = http.createServer(async (req, res) => {
 
 
     }
+    else if (path === "/api/login" && method === "POST") {
+        
+        try {
+            //todo
+            //receive email/password and check in db
+            //
+            
 
 
-//FIXME
-    // /api/users/ : POST
-    // else if (path === "/api/register-customer" && method === "POST") {
-    //     try {
-    //         // get the data sent along
-    //         let user_data = await getReqData(req);
-    //         // create the user
-    //         let user = await new UserController().createUser(JSON.parse(user_data));
-    //         // set the status code and content-type
-    //         res.writeHead(200, { "Content-Type": "application/json" });
-    //         //send the user
-    //         res.end(JSON.stringify(user));
-    //     } catch (error) {
-    //         // set error status code and content-type
-    //         res.writeHead(404, {"Content-Type": "application/json" });
-    //         // send error
-    //         res.end(JSON.stringify({message: error}));
-    //     }
-    // }
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(404, {"Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({message: error}));
+        }
+
+    }
 
 
     // No route present

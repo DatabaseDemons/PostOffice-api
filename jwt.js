@@ -21,7 +21,6 @@ const init_jwt = (user) => {
     //     console.log(error)
     // }
         
-    
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {});
 }
 
