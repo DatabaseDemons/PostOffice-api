@@ -61,9 +61,36 @@ class User {
     }
 
     //Method to post a user's data into the db
-    static async createUser(data) {
+    static async createCustomer(data) {
         try {
-            return ':)'
+            const user = JSON.parse(data);
+            console.log(user);
+            
+            //create user login for customer
+            const username = user.email;
+            const pw = user.password;
+            const type = 'customer';
+            let result = await client.query(`
+                INSERT INTO dev_db.postoffice.USER_LOGIN (username, password, type)
+                VALUES ('${username}', '${pw}', '${type}');
+            `)
+            console.log(`User Login created for ${username}.`);
+
+            //add rest of data to customer table
+            const fname = user.first_name;
+            const lname = user.last_name;
+            const addr = user.home_address;
+            result = await client.query(`
+                INSERT INTO dev_db.postoffice.CUSTOMER (email, home_address, first_name, last_name)
+                VALUES ('${username}', '${addr}', '${fname}', '${lname}');
+            `)
+            console.log(`Customer ${fname} ${lname} created.`)
+
+            //return post data
+            return data;
+            
+            
+
         } catch(err) {
             console.log(err);
             throw new Error('Failed to create new user.');

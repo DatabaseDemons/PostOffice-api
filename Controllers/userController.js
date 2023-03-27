@@ -53,12 +53,19 @@ class UserController {
 
 //FIXME logic to actually do this in our db
     // creating a user
-    async createUser(user) {
-
-        let newuser = await User.createUser(user);
-        return newuser;
+    async createCustomer(user) {
+        try{
+            let newuser = await User.createCustomer(user);
+            return newuser;
+        } catch (error) {
+            // throw an error
+            throw new Error(`User: ${user} already created.`);
+        }
+        
 
     }
+
+
 //FIXME: remove promise constructor
     // updating a user
 

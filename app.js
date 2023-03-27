@@ -52,6 +52,7 @@ const { POBoxController } = require("./Controllers/poBoxController");
 const { authenticate, init_jwt } = require("./jwt");
 
 const { getReqData } = require("./utils");
+const { User } = require("./Models/user");
 //USAGE: read JSON to parse ex:
 //  const data = await getReqData(req);
 
@@ -178,19 +179,11 @@ const server = http.createServer(async (req, res) => {
         try {
 
             const data = await getReqData(req);
-            console.log(data);
-            //create the user first
-            //create the customer next
-            
-
-            //todo check the database with the user info
-            const temp_user = 
-            {
-                type: "admin"
-            }
-            console.log(init_jwt(temp_user));
-
-            res.end(init_jwt(temp_user));
+            //create the user first: call function in usercontroller, pass data into it
+            const user = await new UserController().createCustomer(data);
+                        
+            res.writeHead(201, {"Content-Type": "application/json" });
+            res.end(user);
 
         } catch(error) {
             // set error status code and content-type
@@ -208,6 +201,15 @@ const server = http.createServer(async (req, res) => {
             //receive email/password and check in db
             //create JWT and return it to the frontend
             // (then every protected route uses the JWT for its role)
+
+            //todo check the database with the user info
+            const temp_user = 
+            {
+                type: "admin"
+            }
+            console.log(init_jwt(temp_user));
+
+            res.end(init_jwt(temp_user));
 
         } catch (error) {
             // set error status code and content-type
