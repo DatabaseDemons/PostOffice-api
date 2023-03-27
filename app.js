@@ -9,9 +9,6 @@
 [route]get all customers (employee).
 [route]get all employees (admin).
 [view]get all po boxes by customer email.
-[view]get all shipments by customer email (first tracking table to get all
-                            tracking ids associated with that email. )
-    - (get all shipments by employee email can be combo'd here).
 [view]get employees by branch address (admin).
 
 ===POST routes/views===
