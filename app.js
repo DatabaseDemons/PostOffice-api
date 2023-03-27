@@ -48,7 +48,7 @@ const url = require('url');
 const { UserController } = require("./Controllers/userController");
 const { ShipmentController } = require("./Controllers/shipmentController");
 
-
+const { authenticate, init_jwt } = require("./jwt");
 const { getReqData } = require("./utils");
 
 const PORT = process.env.PORT || 5000;
@@ -71,7 +71,17 @@ const server = http.createServer(async (req, res) => {
     // /api/users : GET
     else if (path === "/api/users" && method === "GET")
     {
+        //this is protecting the route
+        authenticate(req, res, 'admin');
+        console.log(res.statusCode);
+        if (res.statusCode > 400)
+        {
+            res.end("FORBIDDEN")
+            return;
+        }
+
         try {
+
             // get the users
             const users = await new UserController().getUsers();
             // set the status code, and content-type
@@ -107,46 +117,50 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify({message: error}));
         }
     }
+    
+    else if (path === "/api/login" && method === "POST") {
 
-//FIXME
-    // /api/users/:id : UPDATE
-    // else if (path.match(/\/api\/users\/([0-9]+)/) && method === "PATCH") {
-    //     try {
-    //         // get the id from the url
-    //         const id = path.split("/")[3];
-    //         // update user
-    //         let updated_user = await new UserController().updateUser(id);
-    //         // set the status code and content-type
-    //         res.writeHead(200, { "Content-Type": "application/json" });
-    //         // send the message
-    //         res.end(JSON.stringify(updated_user));
-    //     } catch (error) {
-    //         // set the status code and content type
-    //         res.writeHead(404, { "Content-Type": "application/json" });
-    //         // send the error
-    //         res.end(JSON.stringify({ message: error }));
-    //     }
-    // }
-
-//FIXME
-    // /api/users/ : POST
-    else if (path === "/api/register-customer" && method === "POST") {
         try {
-            // get the data sent along
-            let user_data = await getReqData(req);
-            // create the user
-            let user = await new UserController().createUser(JSON.parse(user_data));
-            // set the status code and content-type
-            res.writeHead(200, { "Content-Type": "application/json" });
-            //send the user
-            res.end(JSON.stringify(user));
-        } catch (error) {
+
+            //todo check the database with the user info
+            const temp_user = 
+            {
+                type: "admin"
+            }
+            console.log(init_jwt(temp_user));
+
+            res.end(init_jwt(temp_user));
+
+        } catch(error) {
             // set error status code and content-type
             res.writeHead(404, {"Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({message: error}));
         }
+
+
     }
+
+
+//FIXME
+    // /api/users/ : POST
+    // else if (path === "/api/register-customer" && method === "POST") {
+    //     try {
+    //         // get the data sent along
+    //         let user_data = await getReqData(req);
+    //         // create the user
+    //         let user = await new UserController().createUser(JSON.parse(user_data));
+    //         // set the status code and content-type
+    //         res.writeHead(200, { "Content-Type": "application/json" });
+    //         //send the user
+    //         res.end(JSON.stringify(user));
+    //     } catch (error) {
+    //         // set error status code and content-type
+    //         res.writeHead(404, {"Content-Type": "application/json" });
+    //         // send error
+    //         res.end(JSON.stringify({message: error}));
+    //     }
+    // }
 
 
     // No route present
