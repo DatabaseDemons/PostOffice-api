@@ -220,6 +220,9 @@ const server = http.createServer(async (req, res) => {
 
             const data = await getReqData(req);
             console.log(data);
+            //create the user first
+            //create the customer next
+            
 
             //todo check the database with the user info
             const temp_user =
@@ -244,9 +247,8 @@ const server = http.createServer(async (req, res) => {
         try {
             //todo
             //receive email/password and check in db
-            //
-
-
+            //create JWT and return it to the frontend
+            // (then every protected route uses the JWT for its role)
 
         } catch (error) {
             // set error status code and content-type
