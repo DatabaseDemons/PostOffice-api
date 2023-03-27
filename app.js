@@ -184,6 +184,7 @@ const server = http.createServer(async (req, res) => {
 
     // api/pox-boxes/email/ '' : GET
     // Get po box by owner's email
+    // Test with url http://localhost:5000/api/po-boxes/email/iamthestand@gmail.com
     else if (path.match(/\/api\/po-boxes\/email\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
         try {
             let boxes = await new POBoxController().getPOBoxByEmail(path.split("/")[4]);
@@ -191,6 +192,22 @@ const server = http.createServer(async (req, res) => {
             res.writeHead(200, { "Content-Type": "application/json" });
             //send the boxes
             res.end(JSON.stringify(boxes));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(404, {"Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({message: "" + error}));
+        }
+    }
+
+    // Get all tracks
+    else if (path === "/api/tracks" && method === "GET") {
+        try {
+            let tracks = await new TracksController.getAllTracks();
+            // set the status code and content-type
+            res.writeHead(200, { "Content-Type": "application/json" });
+            //send the tracks
+            res.end(JSON.stringify(tracks));
         } catch (error) {
             // set error status code and content-type
             res.writeHead(404, {"Content-Type": "application/json" });
