@@ -6,8 +6,8 @@ class BranchController {
     async getAllBranches() {
         return await Branch.getAllBranches();
     }
-    async getBranchByID(address) {
-        return await Branch.getBranchByID(address);
+    async getBranchByAddress(address) {
+        return await Branch.getBranchByAddress(address);
     }
 }
 

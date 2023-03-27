@@ -13,7 +13,7 @@ class POBox {
     }
 
     //Retrieve PO box by customer email
-    static async getPOBoxByID(email) {
+    static async getPOBoxByEmail(email) {
         try {
             const result = await client.query(`Select *
                                                 FROM dev_db.postoffice.PO_BOX AS P

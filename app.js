@@ -1,6 +1,7 @@
 //app.js
 
 // TODO wrap routes to be protected for role based authentication
+// TODO wrap any path.splits in here with try catch so we don't crash on a malformed url
 // TODO view/routes needed:
 /*
 
@@ -8,8 +9,6 @@
 [route]get all customers (employee).
 [route]get all employees (admin).
 [route]get all tracks.
-[route]get all shipments.
-[route]get shipment by tracking id.
 [view]get all po boxes by customer email.
 [view]get shipment by creation date (tracks -> shipment).
 [view]get all shipments by customer email (first tracking table to get all
@@ -47,8 +46,11 @@ const url = require('url');
 
 const { UserController } = require("./Controllers/userController");
 const { ShipmentController } = require("./Controllers/shipmentController");
+const { POBoxController } = require("./Controllers/poBoxController");
+
 
 const { authenticate, init_jwt } = require("./jwt");
+
 const { getReqData } = require("./utils");
 
 const PORT = process.env.PORT || 5000;
@@ -83,7 +85,7 @@ const server = http.createServer(async (req, res) => {
         try {
 
             // get the users
-            const users = await new UserController().getUsers();
+            const users = await new UserController().getAllUsers();
             // set the status code, and content-type
             res.writeHead(200, { "Content-Type": "application/json" });
             // send the data
@@ -98,14 +100,15 @@ const server = http.createServer(async (req, res) => {
     }
 
 
-    // /api/users/:email : GET
-    else if (path.match(/\/api\/users\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
+    // /api/users/email : GET
+    // Test with url http://localhost:5000/api/users/email/iamthestand@gmail.com
+    else if (path.match(/\/api\/users\/email\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
         try {
 
             // get email from url
-            const email = path.split("/")[3];
+            const email = path.split("/")[4];
             // get user
-            const user = await new UserController().getUser(email);
+            const user = await new UserController().getUserByEmail(email);
             // set success status code and content-type
             res.writeHead(200, { "Content-Type": "application/json" });
             // send the data
@@ -120,6 +123,77 @@ const server = http.createServer(async (req, res) => {
     
     else if (path === "/api/login" && method === "POST") {
 
+
+//FIXME
+    // /api/users/:id : UPDATE
+    // else if (path.match(/\/api\/users\/([0-9]+)/) && method === "PATCH") {
+    //     try {
+    //         // get the id from the url
+    //         const id = path.split("/")[3];
+    //         // update user
+    //         let updated_user = await new UserController().updateUser(id);
+    //         // set the status code and content-type
+    //         res.writeHead(200, { "Content-Type": "application/json" });
+    //         // send the message
+    //         res.end(JSON.stringify(updated_user));
+    //     } catch (error) {
+    //         // set the status code and content type
+    //         res.writeHead(404, { "Content-Type": "application/json" });
+    //         // send the error
+    //         res.end(JSON.stringify({ message: error }));
+    //     }
+    // }
+
+    //Get all shipments route
+    else if (path === "/api/shipments" && method === "GET") {
+        let shipments = await new ShipmentController().getAllShipments();
+        // set the status code and content-type
+        res.writeHead(200, { "Content-Type": "application/json" });
+        //send the shipments
+        res.end(JSON.stringify(shipments));
+    }
+
+    // Get shipment by tracking ID route
+    else if (path.match(/\/api\/shipments\/id\/[0-9]+/) && method === "GET") {
+        let shipment = await new ShipmentController().getShipmentByID(path.split('/')[4]);
+        // set the status code and content-type
+        res.writeHead(200, { "Content-Type": "application/json" });
+        //send the shipments
+        res.end(JSON.stringify(shipment));
+    }
+
+    // Get all po boxes route
+    else if (path === "/api/po-boxes" && method === "GET") {
+        let boxes = await new POBoxController().getAllPOBoxes();
+        // set the status code and content-type
+        res.writeHead(200, { "Content-Type": "application/json" });
+        //send the boxes
+        res.end(JSON.stringify(boxes));
+    }
+
+    // Get all po boxes by owning branch
+    // Test with url http://localhost:5000/api/po-boxes/branch/123+Main+St
+    else if (path.match(/\/api\/po-boxes\/branch\/([A-Za-z0-9]+(\+[A-Za-z0-9]+)+)/i) && method === "GET") {
+        let branch = path.split('/')[4].replace(/\+/g, ' ');
+        let branchBoxes = await new POBoxController().getAllPOBoxesByBranch(branch);
+        // set the status code and content-type
+        res.writeHead(200, { "Content-Type": "application/json" });
+        //send the boxes
+        res.end(JSON.stringify(branchBoxes));
+    }
+
+    // Get po box by owner's email
+    else if (path.match(/\/api\/po-boxes\/email\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
+        let boxes = await new POBoxController().getPOBoxByEmail(path.split("/")[4]);
+        // set the status code and content-type
+        res.writeHead(200, { "Content-Type": "application/json" });
+        //send the boxes
+        res.end(JSON.stringify(boxes));
+    }
+
+//FIXME
+    // /api/users/ : POST
+    else if (path === "/api/register-customer" && method === "POST") {
         try {
 
             //todo check the database with the user info

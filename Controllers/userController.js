@@ -10,8 +10,8 @@ the logic behind each route used in this application.
 It is made up of the Controller class,
 which will have the following major HTTP methods:
 
-getUsers()
-getUser(email)
+getAllUsers()
+getUserByEmail(email)
 createUser(user)
 updateUser(email)
 deleteUser(email)
@@ -25,7 +25,7 @@ const { User } = require('../Models/user');
 //TODO: add Customer and Employee methods to UserController
 class UserController {
     // getting all users
-    async getUsers() {
+    async getAllUsers() {
         // call the getAllUsers method of the User model
         const users = await User.getAllUsers();
         return users;
@@ -35,10 +35,10 @@ class UserController {
     }
 
     // getting a single user by id
-    async getUser(email) {
+    async getUserByEmail(email) {
 
         // get the user
-        let user = await User.getUser(email);
+        let user = await User.getUserByEmail(email);
         //console.log(user);
 
         if (user) {

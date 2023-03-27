@@ -10,8 +10,8 @@ class POBoxController {
     async getAllPOBoxesByBranch(branch_addr) {
         return await POBox.getAllPOBoxesByBranch(branch_addr);
     }
-    async getPOBoxByID(id) {
-        return await POBox.getPOBoxByID(id);
+    async getPOBoxByEmail(email) {
+        return await POBox.getPOBoxByEmail(email);
     }
 }
 
