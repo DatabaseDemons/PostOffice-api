@@ -8,9 +8,7 @@
 ===GET routes/views===
 [route]get all customers (employee).
 [route]get all employees (admin).
-[route]get all tracks.
 [view]get all po boxes by customer email.
-[view]get shipment by creation date (tracks -> shipment).
 [view]get all shipments by customer email (first tracking table to get all
                             tracking ids associated with that email. )
     - (get all shipments by employee email can be combo'd here).
