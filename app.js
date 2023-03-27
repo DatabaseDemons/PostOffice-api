@@ -95,7 +95,7 @@ const server = http.createServer(async (req, res) => {
             // set error status code and content-type
             res.writeHead(404, {"Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({message: ""+ error}));
+            res.end(JSON.stringify({message: "" + error}));
         }
     }
 
@@ -117,59 +117,94 @@ const server = http.createServer(async (req, res) => {
             // set error status code and content-type
             res.writeHead(404, {"Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({message: error}));
+            res.end(JSON.stringify({message: "" + error}));
         }
     }
 
     //Get all shipments route
     else if (path === "/api/shipments" && method === "GET") {
-        let shipments = await new ShipmentController().getAllShipments();
-        // set the status code and content-type
-        res.writeHead(200, { "Content-Type": "application/json" });
-        //send the shipments
-        res.end(JSON.stringify(shipments));
+        try {
+            let shipments = await new ShipmentController().getAllShipments();
+            // set the status code and content-type
+            res.writeHead(200, { "Content-Type": "application/json" });
+            //send the shipments
+            res.end(JSON.stringify(shipments));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(404, {"Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({message: "" + error}));
+        }
     }
 
-    // api/shipments/id/ '' : GET 
+    // api/shipments/id/ '' : GET
     // Get shipment by tracking ID route
     else if (path.match(/\/api\/shipments\/id\/[0-9]+/) && method === "GET") {
-        let shipment = await new ShipmentController().getShipmentByID(path.split('/')[4]);
-        // set the status code and content-type
-        res.writeHead(200, { "Content-Type": "application/json" });
-        //send the shipments
-        res.end(JSON.stringify(shipment));
+        try {
+            let shipment = await new ShipmentController().getShipmentByID(path.split('/')[4]);
+            // set the status code and content-type
+            res.writeHead(200, { "Content-Type": "application/json" });
+            //send the shipments
+            res.end(JSON.stringify(shipment));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(404, {"Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({message: "" + error}));
+        }
     }
 
     // api/po-boxes : GET
     // Get all po boxes route
     else if (path === "/api/po-boxes" && method === "GET") {
-        let boxes = await new POBoxController().getAllPOBoxes();
-        // set the status code and content-type
-        res.writeHead(200, { "Content-Type": "application/json" });
-        //send the boxes
-        res.end(JSON.stringify(boxes));
+        try {
+            let boxes = await new POBoxController().getAllPOBoxes();
+            // set the status code and content-type
+            res.writeHead(200, { "Content-Type": "application/json" });
+            //send the boxes
+            res.end(JSON.stringify(boxes));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(404, {"Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({message: "" + error}));
+        }
     }
 
     // /api/po-boxes/branch/ '' : GET
     // Get all po boxes by owning branch
     // Test with url http://localhost:5000/api/po-boxes/branch/123+Main+St
     else if (path.match(/\/api\/po-boxes\/branch\/([A-Za-z0-9]+(\+[A-Za-z0-9]+)+)/i) && method === "GET") {
-        let branch = path.split('/')[4].replace(/\+/g, ' ');
-        let branchBoxes = await new POBoxController().getAllPOBoxesByBranch(branch);
-        // set the status code and content-type
-        res.writeHead(200, { "Content-Type": "application/json" });
-        //send the boxes
-        res.end(JSON.stringify(branchBoxes));
+        try {
+            let branch = path.split('/')[4].replace(/\+/g, ' ');
+            let branchBoxes = await new POBoxController().getAllPOBoxesByBranch(branch);
+            // set the status code and content-type
+            res.writeHead(200, { "Content-Type": "application/json" });
+            //send the boxes
+            res.end(JSON.stringify(branchBoxes));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(404, {"Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({message: "" + error}));
+        }
     }
 
     // api/pox-boxes/email/ '' : GET
     // Get po box by owner's email
     else if (path.match(/\/api\/po-boxes\/email\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
-        let boxes = await new POBoxController().getPOBoxByEmail(path.split("/")[4]);
-        // set the status code and content-type
-        res.writeHead(200, { "Content-Type": "application/json" });
-        //send the boxes
-        res.end(JSON.stringify(boxes));
+        try {
+            let boxes = await new POBoxController().getPOBoxByEmail(path.split("/")[4]);
+            // set the status code and content-type
+            res.writeHead(200, { "Content-Type": "application/json" });
+            //send the boxes
+            res.end(JSON.stringify(boxes));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(404, {"Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({message: "" + error}));
+        }
     }
 
 
@@ -181,7 +216,7 @@ const server = http.createServer(async (req, res) => {
             console.log(data);
 
             //todo check the database with the user info
-            const temp_user = 
+            const temp_user =
             {
                 type: "admin"
             }
@@ -199,12 +234,12 @@ const server = http.createServer(async (req, res) => {
 
     }
     else if (path === "/api/login" && method === "POST") {
-        
+
         try {
             //todo
             //receive email/password and check in db
             //
-            
+
 
 
         } catch (error) {
