@@ -6,10 +6,7 @@
 /*
 
 ===GET routes/views===
-[route]get all customers (employee).
-[route]get all employees (admin).
 [view]get all po boxes by customer email.
-[view]get employees by branch address (admin).
 
 ===POST routes/views===
 [route]post login request -> responds with a token

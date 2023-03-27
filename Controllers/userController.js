@@ -39,6 +39,16 @@ class UserController {
         return await User.getEmployeesByBranch(address);
     }
 
+    // Get list of employees
+    async getAllEmployees() {
+        return await User.getAllEmployees();
+    }
+
+    // Get list of customers
+    async getAllCustomers() {
+        return await User.getAllCustomers();
+    }
+
     //FIXME logic to actually do this in our db
     // creating a user
     async createUser(user) {
