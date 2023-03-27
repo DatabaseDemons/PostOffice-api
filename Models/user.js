@@ -4,14 +4,15 @@
 const { client } = require('./db');
 
 class User {
-    //Method to get all user logins in db
+    //Method to get all users in db and their info
     static async getAllUsers() {
         try {
-            const result = await client.query(`Select * FROM dev_db.postoffice.USER_LOGIN;`);
+            const result = await client.query(`(select first_name, last_name, email from postoffice.CUSTOMER c)
+                                                union (select first_name, last_name, email from postoffice.EMPLOYEE e);`);
             return result.recordset;
         } catch (err) {
             console.log(err);
-            throw new Error('Failed to retrieve user logins.');
+            throw new Error('Failed to retrieve all users.');
         }
     }
 
