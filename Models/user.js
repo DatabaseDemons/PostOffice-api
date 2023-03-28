@@ -4,7 +4,10 @@
 const { client } = require('./db');
 
 class User {
-    //Method to get all users in db and their info
+    /**
+     * Function to get all users in db and their basic info
+     * @returns A list of all users
+     */
     static async getAllUsers() {
         try {
             const result = await client.query(`(select first_name, last_name, email from postoffice.CUSTOMER c)
@@ -16,7 +19,11 @@ class User {
         }
     }
 
-    //Method to get user by email
+    /**
+     * Function to get a user by email.
+     * @param {string} email Email of the user to search for.
+     * @returns The user found via sql query
+     */
     static async getUserByEmail(email) {
         try {
             const result = await client.query(`Select *
@@ -28,7 +35,10 @@ class User {
         }
     }
 
-    //Method to get all customer data in db
+    /**
+     * Function to get all customers in the DB.
+     * @returns A list of all customers.
+     */
     static async getAllCustomers() {
         try {
             const result = await client.query(`Select * FROM dev_db.postoffice.CUSTOMER;`);
@@ -39,7 +49,10 @@ class User {
         }
     }
 
-    //Method to get all employee data in db
+    /**
+     * Function to get all employees in the DB.
+     * @returns A list of all employees.
+     */
     static async getAllEmployees() {
         try {
             const result = await client.query(`Select * FROM dev_db.postoffice.EMPLOYEE;`);
@@ -50,7 +63,11 @@ class User {
         }
     }
 
-    //Method to get all employee data in db
+    /**
+     * Function to get all employees associated with a branch.
+     * @param {string} address Address of the branch to return employees from.
+     * @returns A list of employees on that branch.
+     */
     static async getEmployeesByBranch(address) {
         try {
             const result = await client.query(`Select * FROM dev_db.postoffice.EMPLOYEE AS E
@@ -62,7 +79,10 @@ class User {
         }
     }
 
-    //Method to get all user logins in db
+    /**
+     * Function to get all user logins present in the database.
+     * @returns A list of all user logins.
+     */
     static async getAllUserLogins() {
         try {
             const result = await client.query(`Select * FROM dev_db.postoffice.USER_LOGIN;`);
@@ -73,13 +93,17 @@ class User {
         }
     }
 
-    //Method to post a user's data into the db
+    /**
+     * Creates a new customer in the database.
+     * @param {string} data JSON string of data to create a new customer.
+     * @returns data parameter.
+     */
     static async createCustomer(data) {
         try {
 
             const user = JSON.parse(data);
             console.log(user);
-            
+
             //create user login for customer
             const username = user.email;
             const pw = user.password;
@@ -102,8 +126,8 @@ class User {
 
             //return post data
             return data;
-            
-            
+
+
 
         } catch(err) {
 
