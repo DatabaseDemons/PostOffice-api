@@ -79,7 +79,7 @@ const server = http.createServer(async (req, res) => {
 
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, {"Content-Type": "application/json" });
+            res.writeHead(500, {"Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({message: ""+ error}));
         }
@@ -106,7 +106,7 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(users));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: "" + error }));
         }
@@ -128,7 +128,7 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(user));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: "" + error }));
         }
@@ -144,7 +144,7 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(shipments));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: "" + error }));
         }
@@ -161,7 +161,7 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(shipment));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: "" + error }));
         }
@@ -178,7 +178,7 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(boxes));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: "" + error }));
         }
@@ -197,7 +197,7 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(branchBoxes));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: "" + error }));
         }
@@ -215,7 +215,7 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(boxes));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: "" + error }));
         }
@@ -224,14 +224,14 @@ const server = http.createServer(async (req, res) => {
     // Get all tracks
     else if (path === "/api/tracks" && method === "GET") {
         try {
-            let tracks = await new TracksController.getAllTracks();
+            let tracks = await new TracksController().getAllTracks();
             // set the status code and content-type
             res.writeHead(200, { "Content-Type": "application/json" });
             //send the tracks
             res.end(JSON.stringify(tracks));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: "" + error }));
         }
@@ -261,9 +261,9 @@ const server = http.createServer(async (req, res) => {
 
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({ message: error }));
+            res.end(JSON.stringify({ message: "" + error }));
         }
 
 
@@ -290,7 +290,7 @@ const server = http.createServer(async (req, res) => {
 
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: error }));
         }
@@ -303,16 +303,16 @@ const server = http.createServer(async (req, res) => {
     else if (path === "/api/register-shipment" && method === "POST") {
         try {
             const data = await getReqData(req);
-            const result = await ShipmentController.createShipment(data);
+            const result = await new ShipmentController().createShipment(data);
 
             // set the status code and content-type
             res.writeHead(201, { "Content-Type": "application/json" });
             res.end(JSON.stringify(result));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({ message: error }));
+            res.end(JSON.stringify({ message: "" + error }));
         }
 
     }
