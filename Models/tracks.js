@@ -1,7 +1,10 @@
 const { client } = require('./db');
 
 class Tracks {
-    //Retrieve all tracks
+    /**
+     * Function to retrieve all tracks in the DB.
+     * @returns A list of all tracks in the DB.
+     */
     static async getAllTracks() {
         try {
             const result = await client.query(`Select * FROM dev_db.postoffice.TRACKS;`)
@@ -13,6 +16,12 @@ class Tracks {
     }
 
     //Create a new tracks in the database
+    /**
+     * Creates a new tracks tuple in the database. Ensure customer_email, employee_email,
+     * shipment_tracking_id, curr_date, and tracking_status are present among the keys.
+     * @param {string} data JSON string with data needed to create a new tracks tuple.
+     * @returns data parameter.
+     */
     static async createTracks(data) {
         try {
             const newTracks = JSON.parse(data);
