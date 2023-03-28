@@ -72,19 +72,34 @@ const server = http.createServer(async (req, res) => {
         // send the data
         res.end(JSON.stringify("Hello World"));
     }
+    // /admin : GET profile page for admins
+    else if (path === "/admin" && method === "GET")
+    {
+        try {
+            //this is protecting the route (must have a JWT to access this and admin role)
+            authenticate(req, res, 'admin');
+            console.log(res.statusCode);
+            if (res.statusCode > 400)
+            {
+                res.end("FORBIDDEN")
+                return;
+            }
+            res.writeHead(200, { "Content-Type": "application/json" });
+            // send the data
+            res.end("SUCCESS");
 
+
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(404, {"Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({message: ""+ error}));
+        }
+
+    }
     // /api/users : GET
     else if (path === "/api/users" && method === "GET")
     {
-        //this is protecting the route
-        authenticate(req, res, 'admin');
-        console.log(res.statusCode);
-        if (res.statusCode > 400)
-        {
-            res.end("FORBIDDEN")
-            return;
-        }
-
         try {
             // get the users
             const users = await new UserController().getAllUsers();
@@ -194,7 +209,9 @@ const server = http.createServer(async (req, res) => {
 
 
     }
-    else if (path === "/api/login" && method === "POST") {
+    // /api/login : POST
+    //TODO post request and verify req against database
+    else if (path === "/api/login" && method === "GET") {
         
         try {
             //todo
