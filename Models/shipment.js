@@ -2,7 +2,11 @@ const { client } = require('./db');
 const { Tracks } = require('./tracks');
 
 class Shipment {
-    //Retrieve all shipments
+
+    /**
+     * Retrieve all shipments
+     * @returns A list of all shipments.
+     */
     static async getAllShipments() {
         try {
             const result = await client.query(`Select * FROM dev_db.postoffice.SHIPMENT;`);
@@ -13,7 +17,11 @@ class Shipment {
         }
     }
 
-    //Retrieve shipment by ID
+    /**
+     * Retrieve shipment by ID
+     * @param {string} id ID of the shipment to search for.
+     * @returns The results of the query searching for that ID.
+     */
     static async getShipmentByID(id) {
         try {
             const result = await client.query(`Select *
@@ -26,8 +34,11 @@ class Shipment {
         }
     }
 
-    //Retrieve shipment by creation date
-    //Remember that date is formatted as yyyy-mm-dd
+    /**
+     * Retrieve shipment by creation date
+     * @param {string} date Date to search by, formatted as yyyy-mm-dd
+     * @returns The results of the sql query.
+     */
     static async getShipmentByCreationDate(date) {
         try {
             const result = await client.query(`Select *
@@ -40,7 +51,11 @@ class Shipment {
         }
     }
 
-    //Retrieve shipments associated with an email
+    /**
+     * Retrieve shipments associated with an email
+     * @param {string} email Email to find shipments for.
+     * @returns The results of the sql query.
+     */
     static async getShipmentsByEmail(email) {
         try {
             const result = await client.query(`Select customer_email, employee_email, S.tracking_id
@@ -54,10 +69,16 @@ class Shipment {
         }
     }
 
-    //Create a new shipment in the database
-    //This also creates a tracks object using the info passed into
-    //the 'shipment' parameter, which should contain the info for the
-    //shipment as well as the info for the tracks (current date, emails, etc)
+    /**
+     * Create a new shipment in the database
+     * This also creates a tracks object using the info passed into
+     * the 'shipment' parameter, which should contain the info for the
+     * shipment as well as the info for the tracks (current date, emails, etc)
+     *
+     * @param {string} shipment String of json containing values for attributes to fill out both a new shipment
+     * and a new tracks tuple.
+     * @returns shipment parameter.
+     */
     static async createShipment(shipment) {
         try {
             const newShip = JSON.parse(shipment);
@@ -81,7 +102,7 @@ class Shipment {
             return shipment;
         } catch (err) {
             console.log(err);
-            throw new Error('Failed to create shipment.');
+            throw new Error('Failed to create shipment. Ensure shipment data is complete with all attributes and attributes for the tracks tuple.');
         }
     }
 }
