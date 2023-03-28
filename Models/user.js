@@ -4,14 +4,15 @@
 const { client } = require('./db');
 
 class User {
-    //Method to get all user logins in db
+    //Method to get all users in db and their info
     static async getAllUsers() {
         try {
-            const result = await client.query(`Select * FROM dev_db.postoffice.USER_LOGIN;`)
+            const result = await client.query(`(select first_name, last_name, email from postoffice.CUSTOMER c)
+                                                union (select first_name, last_name, email from postoffice.EMPLOYEE e);`);
             return result.recordset;
-        } catch(err) {
+        } catch (err) {
             console.log(err);
-            throw new Error('Failed to retrieve user logins.');
+            throw new Error('Failed to retrieve all users.');
         }
     }
 
@@ -22,7 +23,7 @@ class User {
                                             FROM dev_db.postoffice.USER_LOGIN AS ul
                                             WHERE ul.username = '${email}';`);
             return result.recordset;
-        } catch(err) {
+        } catch (err) {
             throw new Error('Failed to retrieve user logins, check if email is correct.');
         }
     }
@@ -30,9 +31,9 @@ class User {
     //Method to get all customer data in db
     static async getAllCustomers() {
         try {
-            const result = await client.query(`Select * FROM dev_db.postoffice.CUSTOMER;`)
+            const result = await client.query(`Select * FROM dev_db.postoffice.CUSTOMER;`);
             return result.recordset;
-        } catch(err) {
+        } catch (err) {
             console.log(err);
             throw new Error('Failed to retrieve customers.');
         }
@@ -41,9 +42,21 @@ class User {
     //Method to get all employee data in db
     static async getAllEmployees() {
         try {
-            const result = await client.query(`Select * FROM dev_db.postoffice.EMPLOYEE;`)
+            const result = await client.query(`Select * FROM dev_db.postoffice.EMPLOYEE;`);
             return result.recordset;
-        } catch(err) {
+        } catch (err) {
+            console.log(err);
+            throw new Error('Failed to retrieve employees.');
+        }
+    }
+
+    //Method to get all employee data in db
+    static async getEmployeesByBranch(address) {
+        try {
+            const result = await client.query(`Select * FROM dev_db.postoffice.EMPLOYEE AS E
+                                                WHERE E.branch_address='${address}';`);
+            return result.recordset;
+        } catch (err) {
             console.log(err);
             throw new Error('Failed to retrieve employees.');
         }
@@ -52,7 +65,7 @@ class User {
     //Method to get all user logins in db
     static async getAllUserLogins() {
         try {
-            const result = await client.query(`Select * FROM dev_db.postoffice.USER_LOGIN;`)
+            const result = await client.query(`Select * FROM dev_db.postoffice.USER_LOGIN;`);
             return result.recordset;
         } catch (err) {
             console.log(err);
@@ -63,6 +76,7 @@ class User {
     //Method to post a user's data into the db
     static async createCustomer(data) {
         try {
+
             const user = JSON.parse(data);
             console.log(user);
             
@@ -92,6 +106,7 @@ class User {
             
 
         } catch(err) {
+
             console.log(err);
             throw new Error('Failed to create new user.');
         }

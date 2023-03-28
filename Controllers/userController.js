@@ -1,7 +1,5 @@
 //controller.js
 
-//TODO/FIXME: Each controller class will have its own JS file
-
 // Logic behind functionalities
 /*
 
@@ -27,31 +25,31 @@ class UserController {
     // getting all users
     async getAllUsers() {
         // call the getAllUsers method of the User model
-        const users = await User.getAllUsers();
-        return users;
-
-        // (DEPRECATED)
-        // return new Promise((resolve, _) => resolve(data));
+        return await User.getAllUsers();
     }
 
     // getting a single user by id
     async getUserByEmail(email) {
-
         // get the user
-        let user = await User.getUserByEmail(email);
-        //console.log(user);
-
-        if (user) {
-            // return the user
-            return user;
-        } else {
-            // throw an error
-            throw new Error(`user with email: ${email} not found`);
-        }
+        return await User.getUserByEmail(email);
     }
 
+    // Get list of employees by branch address
+    async getEmployeesByBranch(address) {
+        return await User.getEmployeesByBranch(address);
+    }
 
-//FIXME logic to actually do this in our db
+    // Get list of employees
+    async getAllEmployees() {
+        return await User.getAllEmployees();
+    }
+
+    // Get list of customers
+    async getAllCustomers() {
+        return await User.getAllCustomers();
+    }
+
+    //FIXME logic to actually do this in our db
     // creating a user
     async createCustomer(user) {
         try{
@@ -65,8 +63,6 @@ class UserController {
 
     }
 
-
-//FIXME: remove promise constructor
     // updating a user
 
     // async updateUser(id) {
@@ -84,7 +80,7 @@ class UserController {
     //     });
     // }
 
-//FIXME deleting a user (put/patch/update)
+    //FIXME deleting a user (put/patch/update)
     // async deleteUser(id) {
     //     return new Promise((resolve, reject) => {
     //         // get the user
