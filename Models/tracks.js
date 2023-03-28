@@ -33,7 +33,7 @@ class Tracks {
             return data;
         } catch (err) {
             console.log(err);
-            throw new Error('Failed to create shipment, ensure ID corresponds to shipment and emails belong to users.');
+            throw new Error('Failed to create tracks, ensure ID corresponds to shipment and emails belong to users.');
         }
     }
 
