@@ -25,7 +25,7 @@ const init_jwt = (user) => {
 }
 
 
-// Middleware function to check if authenticated user is an admin
+// Middleware function to check if authenticated user is of certain role/type
 const authenticate = (req, res, role) => {
     const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.split(' ')[1];
