@@ -45,6 +45,11 @@ const { authenticate, init_jwt } = require("./jwt");
 
 const { getReqData } = require("./utils");
 
+
+//USAGE: read JSON to parse ex:
+//  const data = await getReqData(req);
+
+
 const PORT = process.env.PORT || 5000;
 
 const server = http.createServer(async (req, res) => {
@@ -88,14 +93,6 @@ const server = http.createServer(async (req, res) => {
     // /api/users : GET
 
     else if (path === "/api/users" && method === "GET") {
-        //this is protecting the route
-        authenticate(req, res, 'admin');
-        console.log(res.statusCode);
-        if (res.statusCode > 400) {
-            res.end("FORBIDDEN")
-            return;
-        }
-
 
         try {
             // get the users
@@ -241,29 +238,21 @@ const server = http.createServer(async (req, res) => {
     // /api/users/ : POST
     else if (path === "/api/register-customer" && method === "POST") {
         try {
-
             const data = await getReqData(req);
-
             console.log(data);
-            //create the user first
-            //create the customer next
 
-
-            //todo check the database with the user info
-            const temp_user =
-            {
-                type: "admin"
-            }
-            console.log(init_jwt(temp_user));
-
-            res.end(init_jwt(temp_user));
-
+            const result = await new UserController().createCustomer(data);
+            // status code 201 -> created
+            res.writeHead(201, { "Content-Type": "application/json" });
+            res.end(result);
 
         } catch (error) {
             // set error status code and content-type
             res.writeHead(500, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({ message: "" + error }));
+
+            res.end(JSON.stringify({ message: error.message }));
+
         }
 
 
@@ -271,7 +260,9 @@ const server = http.createServer(async (req, res) => {
 
     // /api/login : POST
     //TODO post request and verify req against database
-    else if (path === "/api/login" && method === "GET") {
+
+    else if (path === "/api/login" && method === "POST") {
+        
 
         try {
             //todo
@@ -279,20 +270,36 @@ const server = http.createServer(async (req, res) => {
             //create JWT and return it to the frontend
             // (then every protected route uses the JWT for its role)
 
-            //todo check the database with the user info
-            const temp_user =
-            {
-                type: "admin"
-            }
-            console.log(init_jwt(temp_user));
+            const data = await getReqData(req);
+            const user = JSON.parse(data);
+            // console.log(user);
+            //get user.type from database
+            const role = await new UserController().getUserType(user);
+            // console.log(role);
 
-            res.end(init_jwt(temp_user));
+            const verified_user = { ...user, ...role }
+            //console.log(verified_user);
+            if (!verified_user.type)
+
+            {
+                throw new Error('Wrong Email/Password Combination.');
+            }
+
+            //UNCOMMENT for debugging
+            // const temp_user = 
+            // {
+            //     type: "admin"
+            // }
+
+            console.log(init_jwt(verified_user));
+
+            res.end(init_jwt(verified_user));
 
         } catch (error) {
             // set error status code and content-type
             res.writeHead(500, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({ message: error }));
+            res.end(JSON.stringify({ message: error.message }));
         }
 
     }

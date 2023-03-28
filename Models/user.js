@@ -18,12 +18,28 @@ class User {
             throw new Error('Failed to retrieve all users.');
         }
     }
+    //Method to get user by type/role
+    static async getUserType(user) {
+        try {
+            const email = user.email;
+            const password = user.password;
 
-    /**
-     * Function to get a user by email.
-     * @param {string} email Email of the user to search for.
-     * @returns The user found via sql query
-     */
+            const result = await client.query(`
+                SELECT ul.type
+                FROM dev_db.postoffice.USER_LOGIN ul
+                WHERE ul.username = '${email}' AND ul.password = '${password}';
+            `)
+            // always returns one item so first index
+            return result.recordset[0];
+
+
+        } catch (err) {
+            console.log(err);
+            throw new Error('User does not exist.');
+        }
+    }
+    //Method to get user by email
+
     static async getUserByEmail(email) {
         try {
             const result = await client.query(`Select *
