@@ -1,4 +1,5 @@
 const { client } = require('./db');
+const { Tracks } = require('./tracks');
 
 class Shipment {
     //Retrieve all shipments
@@ -54,6 +55,9 @@ class Shipment {
     }
 
     //Create a new shipment in the database
+    //This also creates a tracks object using the info passed into
+    //the 'shipment' parameter, which should contain the info for the
+    //shipment as well as the info for the tracks (current date, emails, etc)
     static async createShipment(shipment) {
         try {
             const newShip = JSON.parse(shipment);
@@ -70,6 +74,9 @@ class Shipment {
             await client.query(`INSERT INTO dev_db.postoffice.SHIPMENT(tracking_id, creation_date, current_location, shipment_status, num_packages, region)
                                 VALUES ('${id}', '${date}', '${currLoc}', '${status}', ${num}, '${region}');`);
             console.log(`Shipment id ${id} created.`);
+
+            //create fitting tracks
+            await Tracks.createTracks(shipment);
 
             return shipment;
         } catch (err) {
