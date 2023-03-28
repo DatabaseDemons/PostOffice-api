@@ -44,9 +44,6 @@ const { TracksController } = require("./Controllers/tracksController");
 const { authenticate, init_jwt } = require("./jwt");
 
 const { getReqData } = require("./utils");
-const { User } = require("./Models/user");
-//USAGE: read JSON to parse ex:
-//  const data = await getReqData(req);
 
 const PORT = process.env.PORT || 5000;
 
@@ -250,7 +247,7 @@ const server = http.createServer(async (req, res) => {
             console.log(data);
             //create the user first
             //create the customer next
-            
+
 
             //todo check the database with the user info
             const temp_user =
@@ -275,7 +272,7 @@ const server = http.createServer(async (req, res) => {
     // /api/login : POST
     //TODO post request and verify req against database
     else if (path === "/api/login" && method === "GET") {
-        
+
         try {
             //todo
             //receive email/password and check in db
@@ -283,7 +280,7 @@ const server = http.createServer(async (req, res) => {
             // (then every protected route uses the JWT for its role)
 
             //todo check the database with the user info
-            const temp_user = 
+            const temp_user =
             {
                 type: "admin"
             }
