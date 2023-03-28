@@ -53,10 +53,18 @@ const { getReqData } = require("./utils");
 const PORT = process.env.PORT || 5000;
 
 const server = http.createServer(async (req, res) => {
+    // set CORS response headers
+    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, HEAD");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Max-Age", 600);
+
+
     const reqUrl = url.parse(req.url, true);
     const path = reqUrl.path;
     const method = req.method;
     console.log(`Route hit: ${path}`);
+    console.log(method);
 
     //Testing home to return 'Hello World'
     if (path === "/" && method === "GET") {
@@ -234,6 +242,27 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
+    // /api/shipment : POST
+    else if (path === "/api/shipment" && method === "POST") {
+        try {
+            res.setHeader("access-control-allow-origin", "*");
+            res.setHeader("access-control-request-method", "POST");
+            res.setHeader("access-control-request-headers", "content-type");
+            const data = await getReqData(req);
+            //const tracking_id = JSON.parse(data);
+            console.log(JSON.parse(data));
+
+            res.end(JSON.stringify("HELLO SHIPMENT"))
+
+        } catch(error) {
+            res.writeHead(404, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
+        }
+
+
+    }
+
 
     // /api/users/ : POST
     else if (path === "/api/register-customer" && method === "POST") {
@@ -254,18 +283,13 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify({ message: error.message }));
 
         }
-
-
     }
 
     // /api/login : POST
     //TODO post request and verify req against database
 
     else if (path === "/api/login" && method === "POST") {
-        
-
         try {
-            //todo
             //receive email/password and check in db
             //create JWT and return it to the frontend
             // (then every protected route uses the JWT for its role)
@@ -304,10 +328,10 @@ const server = http.createServer(async (req, res) => {
 
     }
 
-    // /api/register-shipment : POST
+    // /api/create-shipment : POST
     // API route for creating a shipment in the database
     // FIXME Will need employee or admin auth.
-    else if (path === "/api/register-shipment" && method === "POST") {
+    else if (path === "/api/create-shipment" && method === "POST") {
         try {
             const data = await getReqData(req);
             const result = await new ShipmentController().createShipment(data);
@@ -324,10 +348,10 @@ const server = http.createServer(async (req, res) => {
 
     }
 
-    // /api/register-tracks : POST
+    // /api/add-tracks : POST
     // API route for creating a tracks in the database
     // FIXME: Will need employee or admin auth.
-    else if (path === "/api/register-tracks" && method === "POST") {
+    else if (path === "/api/add-tracks" && method === "POST") {
         try {
             const data = await getReqData(req);
             const result = await new TracksController().createTracks(data);
