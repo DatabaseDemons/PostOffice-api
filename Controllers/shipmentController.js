@@ -17,6 +17,9 @@ class ShipmentController {
     async getShipmentsByEmail(email) {
         return await Shipment.getShipmentsByEmail(email);
     }
+    async createShipment(shipment) {
+        return await Shipment.createShipment(shipment);
+    }
 }
 
 

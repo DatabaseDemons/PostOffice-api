@@ -15,7 +15,6 @@ updateUser(email)
 deleteUser(email)
 
 */
-const data = require("./data");
 // User -> for USER_LOGIN, EMPLOYEE, CUSTOMER tables
 
 const { User } = require('../Models/user');
@@ -59,7 +58,7 @@ class UserController {
             // throw an error
             throw new Error(`User: ${user} already created.`);
         }
-        
+
 
     }
 

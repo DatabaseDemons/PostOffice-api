@@ -6,7 +6,7 @@ class Shipment {
         try {
             const result = await client.query(`Select * FROM dev_db.postoffice.SHIPMENT;`);
             return result.recordset;
-        } catch(err) {
+        } catch (err) {
             console.log(err);
             throw new Error('Failed to retrieve all shipments.');
         }
@@ -50,6 +50,31 @@ class Shipment {
         } catch (err) {
             console.log(err);
             throw new Error('Failed to retrieve or no such shipments from email: ' + email);
+        }
+    }
+
+    //Create a new shipment in the database
+    static async createShipment(shipment) {
+        try {
+            const newShip = JSON.parse(shipment);
+            console.log(newShip); // Fixme remove printout before prod
+
+            const id = newShip.tracking_id;
+            const date = newShip.creation_date;
+            const currLoc = newShip.current_location;
+            const status = newShip.shipment_status;
+            const num = newShip.num_packages;
+            const region = newShip.region;
+
+            // Create shipment in database via sql
+            await client.query(`INSERT INTO dev_db.postoffice.SHIPMENT(tracking_id, creation_date, current_location, shipment_status, num_packages, region)
+                                VALUES ('${id}', '${date}', '${currLoc}', '${status}', ${num}, '${region}');`);
+            console.log(`Shipment id ${id} created.`);
+
+            return shipment;
+        } catch (err) {
+            console.log(err);
+            throw new Error('Failed to create shipment.');
         }
     }
 }
