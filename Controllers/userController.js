@@ -28,10 +28,26 @@ class UserController {
         return await User.getAllUsers();
     }
 
+    // get user by type
+    async getUserType(user) {
+        try {
+            return await User.getUserType(user);
+
+        } catch (error) {
+            // throw an error
+            throw new Error(`User: ${user} does not exist.`);
+        }
+    }
+
     // getting a single user by id
     async getUserByEmail(email) {
         // get the user
-        return await User.getUserByEmail(email);
+        try {
+            return await User.getUserByEmail(email);
+        } catch (error) {
+            throw new Error(`Email: ${email} does not exist.`);
+        }
+        
     }
 
     // Get list of employees by branch address
