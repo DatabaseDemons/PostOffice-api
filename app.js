@@ -317,7 +317,7 @@ const server = http.createServer(async (req, res) => {
 
             console.log(init_jwt(verified_user));
 
-            res.end(init_jwt(verified_user));
+            res.end(JSON.stringify( {token : init_jwt(verified_user), role : verified_user.type } ));
 
         } catch (error) {
             // set error status code and content-type
