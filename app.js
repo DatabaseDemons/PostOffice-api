@@ -52,6 +52,7 @@ const { getReqData } = require("./utils");
 
 const PORT = process.env.PORT || 5000;
 
+//FIXME HANDLE CORS PREFLIGHT REQUEST
 const server = http.createServer(async (req, res) => {
     // set CORS response headers
     res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
