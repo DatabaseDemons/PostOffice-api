@@ -1,7 +1,11 @@
 const { client } = require('./db');
 
 class Branch {
-    //Retrieve all branches
+
+    /**
+     * Retrieve all branches
+     * @returns A list of all branches.
+     */
     static async getAllBranches() {
         try {
             const result = await client.query(`Select * FROM dev_db.postoffice.BRANCH;`)
@@ -12,7 +16,11 @@ class Branch {
         }
     }
 
-    //Retrieve branch by address
+    /**
+     * Retrieve branch by address
+     * @param {string} address Address to search for.
+     * @returns The branch associated with that address.
+     */
     static async getBranchByAddress(address) {
         try {
             const result = await client.query(`Select *

@@ -45,8 +45,10 @@ const { authenticate, init_jwt } = require("./jwt");
 
 const { getReqData } = require("./utils");
 
+
 //USAGE: read JSON to parse ex:
 //  const data = await getReqData(req);
+
 
 const PORT = process.env.PORT || 5000;
 
@@ -82,7 +84,7 @@ const server = http.createServer(async (req, res) => {
 
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, {"Content-Type": "application/json" });
+            res.writeHead(500, {"Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({message: ""+ error}));
         }
@@ -101,7 +103,7 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(users));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: "" + error }));
         }
@@ -123,7 +125,7 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(user));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: "" + error }));
         }
@@ -139,7 +141,7 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(shipments));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: "" + error }));
         }
@@ -156,7 +158,7 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(shipment));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: "" + error }));
         }
@@ -173,7 +175,7 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(boxes));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: "" + error }));
         }
@@ -192,7 +194,7 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(branchBoxes));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: "" + error }));
         }
@@ -210,7 +212,7 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify(boxes));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: "" + error }));
         }
@@ -219,14 +221,14 @@ const server = http.createServer(async (req, res) => {
     // Get all tracks
     else if (path === "/api/tracks" && method === "GET") {
         try {
-            let tracks = await new TracksController.getAllTracks();
+            let tracks = await new TracksController().getAllTracks();
             // set the status code and content-type
             res.writeHead(200, { "Content-Type": "application/json" });
             //send the tracks
             res.end(JSON.stringify(tracks));
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: "" + error }));
         }
@@ -238,15 +240,19 @@ const server = http.createServer(async (req, res) => {
         try {
             const data = await getReqData(req);
             console.log(data);
+
             const result = await new UserController().createCustomer(data);
             // status code 201 -> created
             res.writeHead(201, { "Content-Type": "application/json" });
             res.end(result);
+
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
+
             res.end(JSON.stringify({ message: error.message }));
+
         }
 
 
@@ -254,13 +260,16 @@ const server = http.createServer(async (req, res) => {
 
     // /api/login : POST
     //TODO post request and verify req against database
+
     else if (path === "/api/login" && method === "POST") {
         
+
         try {
             //todo
             //receive email/password and check in db
             //create JWT and return it to the frontend
             // (then every protected route uses the JWT for its role)
+
             const data = await getReqData(req);
             const user = JSON.parse(data);
             // console.log(user);
@@ -271,6 +280,7 @@ const server = http.createServer(async (req, res) => {
             const verified_user = { ...user, ...role }
             //console.log(verified_user);
             if (!verified_user.type)
+
             {
                 throw new Error('Wrong Email/Password Combination.');
             }
@@ -287,9 +297,49 @@ const server = http.createServer(async (req, res) => {
 
         } catch (error) {
             // set error status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
+            res.writeHead(500, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: error.message }));
+        }
+
+    }
+
+    // /api/register-shipment : POST
+    // API route for creating a shipment in the database
+    // FIXME Will need employee or admin auth.
+    else if (path === "/api/register-shipment" && method === "POST") {
+        try {
+            const data = await getReqData(req);
+            const result = await new ShipmentController().createShipment(data);
+
+            // set the status code and content-type
+            res.writeHead(201, { "Content-Type": "application/json" });
+            res.end(JSON.stringify(result));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: "" + error }));
+        }
+
+    }
+
+    // /api/register-tracks : POST
+    // API route for creating a tracks in the database
+    // FIXME: Will need employee or admin auth.
+    else if (path === "/api/register-tracks" && method === "POST") {
+        try {
+            const data = await getReqData(req);
+            const result = await new TracksController().createTracks(data);
+
+            // set the status code and content-type
+            res.writeHead(201, { "Content-Type": "application/json" });
+            res.end(JSON.stringify(result));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: "" + error }));
         }
 
     }
