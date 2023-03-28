@@ -73,7 +73,8 @@ class Shipment {
      * Create a new shipment in the database
      * This also creates a tracks object using the info passed into
      * the 'shipment' parameter, which should contain the info for the
-     * shipment as well as the info for the tracks (current date, emails, etc)
+     * shipment (tracking_id, creation_date, current_location, shipment_status,
+     * num_packages, region) as well as the info for the tracks (current date, emails, etc)
      *
      * @param {string} shipment String of json containing values for attributes to fill out both a new shipment
      * and a new tracks tuple.
