@@ -299,11 +299,31 @@ const server = http.createServer(async (req, res) => {
 
     // /api/register-shipment : POST
     // API route for creating a shipment in the database
-    // Will need employee or admin auth.
+    // FIXME Will need employee or admin auth.
     else if (path === "/api/register-shipment" && method === "POST") {
         try {
             const data = await getReqData(req);
             const result = await new ShipmentController().createShipment(data);
+
+            // set the status code and content-type
+            res.writeHead(201, { "Content-Type": "application/json" });
+            res.end(JSON.stringify(result));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: "" + error }));
+        }
+
+    }
+
+    // /api/register-tracks : POST
+    // API route for creating a tracks in the database
+    // FIXME: Will need employee or admin auth.
+    else if (path === "/api/register-tracks" && method === "POST") {
+        try {
+            const data = await getReqData(req);
+            const result = await new TracksController().createTracks(data);
 
             // set the status code and content-type
             res.writeHead(201, { "Content-Type": "application/json" });
