@@ -49,7 +49,6 @@ class UserController {
         return await User.getAllCustomers();
     }
 
-    //FIXME logic to actually do this in our db
     // creating a user
     async createCustomer(user) {
         try{

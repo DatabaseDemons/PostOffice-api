@@ -91,14 +91,6 @@ const server = http.createServer(async (req, res) => {
     // /api/users : GET
 
     else if (path === "/api/users" && method === "GET") {
-        //this is protecting the route
-        authenticate(req, res, 'admin');
-        console.log(res.statusCode);
-        if (res.statusCode > 400) {
-            res.end("FORBIDDEN")
-            return;
-        }
-
 
         try {
             // get the users
@@ -250,6 +242,7 @@ const server = http.createServer(async (req, res) => {
             console.log(data);
             //create the user first
             //create the customer next
+            let result = await new UserController().createCustomer(data);
             
 
             //todo check the database with the user info
