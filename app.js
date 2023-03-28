@@ -297,6 +297,26 @@ const server = http.createServer(async (req, res) => {
 
     }
 
+    // /api/register-shipment : POST
+    // API route for creating a shipment in the database
+    // Will need employee or admin auth.
+    else if (path === "/api/register-shipment" && method === "POST") {
+        try {
+            const data = await getReqData(req);
+            const result = await ShipmentController.createShipment(data);
+
+            // set the status code and content-type
+            res.writeHead(201, { "Content-Type": "application/json" });
+            res.end(JSON.stringify(result));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(404, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error }));
+        }
+
+    }
+
 
     // No route present
     else {
