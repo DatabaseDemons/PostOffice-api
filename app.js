@@ -256,9 +256,9 @@ const server = http.createServer(async (req, res) => {
     // /api/shipment : POST
     else if (path === "/api/shipment" && method === "POST") {
         try {
-            res.setHeader("access-control-allow-origin", "*");
-            res.setHeader("access-control-request-method", "POST");
-            res.setHeader("access-control-request-headers", "content-type");
+            res.setHeader("Access-Control-Allow-Origin", "*");
+            res.setHeader("Access-Control-Request-Method", "POST");
+            res.setHeader("Access-Control-Request-Headers", "Content-Type");
             const data = await getReqData(req);
             //const tracking_id = JSON.parse(data);
             
