@@ -51,15 +51,12 @@ const { getReqData } = require("./utils");
 
 
 const PORT = process.env.PORT || 5000;
+// const PORT = process.env.PORT || 3000;
 
 //FIXME HANDLE CORS PREFLIGHT REQUEST
 const server = http.createServer(async (req, res) => {
     // set CORS response headers
-    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, HEAD");
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Max-Age", 600);
-
+    
 
     const reqUrl = url.parse(req.url, true);
     const path = reqUrl.path;
@@ -67,15 +64,28 @@ const server = http.createServer(async (req, res) => {
     console.log(`Route hit: ${path}`);
     console.log(method);
 
+    if (method === "OPTIONS")
+    {
+        res.writeHead(204, { 
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods":"GET, POST, DELETE, PUT, PATCH",
+            "Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept",
+            "Access-Control-Max-Age": 2592000
+        });
+        
+        res.end();
+        return;
+    }
     //Testing home to return 'Hello World'
-    if (path === "/" && method === "GET") {
+    else if (path === "/" && method === "GET") {
         // set the status code, and content-type
         res.writeHead(200, { "Content-Type": "application/json" });
         // send the data
         res.end(JSON.stringify("Hello World"));
     }
-    // /admin : GET profile page for admins
-    else if (path === "/admin" && method === "GET")
+    // /admin : GET profile page for admins example -> wrap it for admin specific tasks
+    // such as get employee data.
+    else if (path === "/api/admin" && method === "GET")
     {
         try {
             //this is protecting the route (must have a JWT to access this and admin role)
@@ -251,9 +261,15 @@ const server = http.createServer(async (req, res) => {
             res.setHeader("access-control-request-headers", "content-type");
             const data = await getReqData(req);
             //const tracking_id = JSON.parse(data);
-            console.log(JSON.parse(data));
+            
+            const tracking_id = JSON.parse(data)
+            console.log(tracking_id);
+            const shipment = await new ShipmentController().getShipmentByID(tracking_id.tracking_id);
+            console.log(shipment);
 
-            res.end(JSON.stringify("HELLO SHIPMENT"))
+
+            res.writeHead(202, { "Content-Type": "application/json" });
+            res.end(JSON.stringify(tracking_id));
 
         } catch(error) {
             res.writeHead(404, { "Content-Type": "application/json" });
@@ -339,12 +355,12 @@ const server = http.createServer(async (req, res) => {
 
             // set the status code and content-type
             res.writeHead(201, { "Content-Type": "application/json" });
-            res.end(JSON.stringify(result));
+            res.end(result);
         } catch (error) {
             // set error status code and content-type
             res.writeHead(500, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({ message: "" + error }));
+            res.end(JSON.stringify({ message: error.message }));
         }
 
     }

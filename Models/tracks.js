@@ -30,13 +30,18 @@ class Tracks {
             //for the new tracks
             const custEmail = newTracks.customer_email;
             const empEmail = newTracks.employee_email;
-            const id = newTracks.shipment_tracking_id;
-            const date = newTracks.curr_date;
-            const status = newTracks.tracking_status;
+            const id = newTracks.tracking_id;
+            const status = 1; //initial status for new tracking (1-2-3-4
+
+            const curr_date = new Date().toISOString().slice(0, 10);
+            const temp = new Date();
+            temp.setDate(temp.getDate() + 5);
+            const est_delivery_date = temp.toISOString().slice(0, 10);
+
 
             // Create tracks in database via sql
-            await client.query(`INSERT INTO dev_db.postoffice.TRACKS(shipment_tracking_id, curr_date, customer_email, employee_email, tracking_status)
-                                VALUES ('${id}', '${date}', '${custEmail}', '${empEmail}', '${status}');`);
+            await client.query(`INSERT INTO dev_db.postoffice.TRACKS(shipment_tracking_id, curr_date, customer_email, employee_email, tracking_status, est_delivery_date)
+                                VALUES ('${id}', '${curr_date}', '${custEmail}', '${empEmail}', '${status}', '${est_delivery_date}');`);
             console.log(`Tracks for package id ${id} created.`);
 
             return data;

@@ -1,6 +1,7 @@
 const { client } = require('./db');
 const { Tracks } = require('./tracks');
 
+//todo update shipment date
 class Shipment {
 
     /**
@@ -27,7 +28,10 @@ class Shipment {
             const result = await client.query(`Select *
                                                 FROM dev_db.postoffice.SHIPMENT AS S
                                                 WHERE S.tracking_id='${id}';`)
-            return result.recordset;
+            
+            //FIXME HERE DUDE
+
+            return result.recordset[0]; //always returns one
         } catch (err) {
             console.log(err);
             throw new Error('Failed to retrieve or no such shipment with ID: ' + id);
