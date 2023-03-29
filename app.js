@@ -56,7 +56,12 @@ const PORT = process.env.PORT || 5000;
 //FIXME HANDLE CORS PREFLIGHT REQUEST
 const server = http.createServer(async (req, res) => {
     // set CORS response headers
-    
+    res.writeHead(204, { 
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods":"GET, POST, DELETE, PUT, PATCH",
+        "Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept, authorization",
+        "Access-Control-Max-Age": 2592000
+    });
 
     const reqUrl = url.parse(req.url, true);
     const path = reqUrl.path;
