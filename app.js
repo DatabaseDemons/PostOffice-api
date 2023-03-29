@@ -87,6 +87,11 @@ const server = http.createServer(async (req, res) => {
     else if (path === "/api/admin" && method === "GET")
     {
         try {
+            // set the status code and content-type
+            res.writeHead(200, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
             //this is protecting the route (must have a JWT to access this and admin role)
             authenticate(req, res, 'admin');
             console.log(res.statusCode);
@@ -113,13 +118,14 @@ const server = http.createServer(async (req, res) => {
     else if (path === "/api/users" && method === "GET") {
 
         try {
-            // get the users
-            const users = await new UserController().getAllUsers();
             // set the status code and content-type
             res.writeHead(200, { 
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
-         });
+            });
+            // get the users
+            const users = await new UserController().getAllUsers();
+            
             
             // send the data
             res.end(JSON.stringify(users));
@@ -136,14 +142,20 @@ const server = http.createServer(async (req, res) => {
     // Test with url http://localhost:5000/api/users/email/iamthestand@gmail.com
     else if (path.match(/\/api\/users\/email\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
         try {
+            // set the status code and content-type
+            res.writeHead(200, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            // send the data
+            
 
             // get email from url
             const email = path.split("/")[4];
             // get user
             const user = await new UserController().getUserByEmail(email);
             // set success status code and content-type
-            res.writeHead(200, { "Content-Type": "application/json" });
-            // send the data
+            
             res.end(JSON.stringify(user));
         } catch (error) {
             // set error status code and content-type
@@ -156,9 +168,13 @@ const server = http.createServer(async (req, res) => {
     //Get all shipments route
     else if (path === "/api/shipments" && method === "GET") {
         try {
-            let shipments = await new ShipmentController().getAllShipments();
             // set the status code and content-type
-            res.writeHead(200, { "Content-Type": "application/json" });
+            res.writeHead(200, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            let shipments = await new ShipmentController().getAllShipments();
+            
             //send the shipments
             res.end(JSON.stringify(shipments));
         } catch (error) {
@@ -173,9 +189,13 @@ const server = http.createServer(async (req, res) => {
     // Get shipment by tracking ID route
     else if (path.match(/\/api\/shipments\/id\/[0-9]+/) && method === "GET") {
         try {
-            let shipment = await new ShipmentController().getShipmentByID(path.split('/')[4]);
             // set the status code and content-type
-            res.writeHead(200, { "Content-Type": "application/json" });
+            res.writeHead(200, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            let shipment = await new ShipmentController().getShipmentByID(path.split('/')[4]);
+            
             //send the shipments
             res.end(JSON.stringify(shipment));
         } catch (error) {
@@ -190,9 +210,13 @@ const server = http.createServer(async (req, res) => {
     // Get all po boxes route
     else if (path === "/api/po-boxes" && method === "GET") {
         try {
-            let boxes = await new POBoxController().getAllPOBoxes();
             // set the status code and content-type
-            res.writeHead(200, { "Content-Type": "application/json" });
+            res.writeHead(200, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            let boxes = await new POBoxController().getAllPOBoxes();
+            
             //send the boxes
             res.end(JSON.stringify(boxes));
         } catch (error) {
@@ -208,10 +232,14 @@ const server = http.createServer(async (req, res) => {
     // Test with url http://localhost:5000/api/po-boxes/branch/123+Main+St
     else if (path.match(/\/api\/po-boxes\/branch\/([A-Za-z0-9]+(\+[A-Za-z0-9]+)+)/i) && method === "GET") {
         try {
+            // set the status code and content-type
+            res.writeHead(200, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
             let branch = path.split('/')[4].replace(/\+/g, ' ');
             let branchBoxes = await new POBoxController().getAllPOBoxesByBranch(branch);
-            // set the status code and content-type
-            res.writeHead(200, { "Content-Type": "application/json" });
+            
             //send the boxes
             res.end(JSON.stringify(branchBoxes));
         } catch (error) {
@@ -227,9 +255,14 @@ const server = http.createServer(async (req, res) => {
     // Test with url http://localhost:5000/api/po-boxes/email/iamthestand@gmail.com
     else if (path.match(/\/api\/po-boxes\/email\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
         try {
-            let boxes = await new POBoxController().getPOBoxByEmail(path.split("/")[4]);
             // set the status code and content-type
-            res.writeHead(200, { "Content-Type": "application/json" });
+            res.writeHead(200, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            let boxes = await new POBoxController().getPOBoxByEmail(path.split("/")[4]);
+            
+            
             //send the boxes
             res.end(JSON.stringify(boxes));
         } catch (error) {
@@ -243,9 +276,14 @@ const server = http.createServer(async (req, res) => {
     // Get all tracks
     else if (path === "/api/tracks" && method === "GET") {
         try {
-            let tracks = await new TracksController().getAllTracks();
             // set the status code and content-type
-            res.writeHead(200, { "Content-Type": "application/json" });
+            res.writeHead(200, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            let tracks = await new TracksController().getAllTracks();
+            
+            
             //send the tracks
             res.end(JSON.stringify(tracks));
         } catch (error) {
@@ -259,9 +297,14 @@ const server = http.createServer(async (req, res) => {
     // /api/shipment : POST
     else if (path === "/api/shipment" && method === "POST") {
         try {
+            // set the status code and content-type
             res.setHeader("Access-Control-Allow-Origin", "*");
             res.setHeader("Access-Control-Request-Method", "POST");
             res.setHeader("Access-Control-Request-Headers", "Content-Type");
+            res.writeHead(202, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
             const data = await getReqData(req);
             //const tracking_id = JSON.parse(data);
             
@@ -271,7 +314,7 @@ const server = http.createServer(async (req, res) => {
             console.log(shipment);
 
 
-            res.writeHead(202, { "Content-Type": "application/json" });
+            
             res.end(JSON.stringify(tracking_id));
 
         } catch(error) {
@@ -287,12 +330,16 @@ const server = http.createServer(async (req, res) => {
     // /api/users/ : POST
     else if (path === "/api/register-customer" && method === "POST") {
         try {
+            res.writeHead(201, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
             const data = await getReqData(req);
             console.log(data);
 
             const result = await new UserController().createCustomer(data);
             // status code 201 -> created
-            res.writeHead(201, { "Content-Type": "application/json" });
+            
             res.end(result);
 
         } catch (error) {
@@ -310,6 +357,10 @@ const server = http.createServer(async (req, res) => {
 
     else if (path === "/api/login" && method === "POST") {
         try {
+            res.writeHead(200, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
             //receive email/password and check in db
             //create JWT and return it to the frontend
             // (then every protected route uses the JWT for its role)
@@ -353,11 +404,14 @@ const server = http.createServer(async (req, res) => {
     // FIXME Will need employee or admin auth.
     else if (path === "/api/create-shipment" && method === "POST") {
         try {
+            // set the status code and content-type
+            res.writeHead(201, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
             const data = await getReqData(req);
             const result = await new ShipmentController().createShipment(data);
 
-            // set the status code and content-type
-            res.writeHead(201, { "Content-Type": "application/json" });
             res.end(result);
         } catch (error) {
             // set error status code and content-type
@@ -373,11 +427,14 @@ const server = http.createServer(async (req, res) => {
     // FIXME: Will need employee or admin auth.
     else if (path === "/api/add-tracks" && method === "POST") {
         try {
+            // set the status code and content-type
+            res.writeHead(201, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
             const data = await getReqData(req);
             const result = await new TracksController().createTracks(data);
 
-            // set the status code and content-type
-            res.writeHead(201, { "Content-Type": "application/json" });
             res.end(JSON.stringify(result));
         } catch (error) {
             // set error status code and content-type
