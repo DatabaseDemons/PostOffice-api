@@ -116,7 +116,11 @@ const server = http.createServer(async (req, res) => {
             // get the users
             const users = await new UserController().getAllUsers();
             // set the status code and content-type
-            res.writeHead(200, { "Content-Type": "application/json" });
+            res.writeHead(200, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+         });
+            
             // send the data
             res.end(JSON.stringify(users));
         } catch (error) {
