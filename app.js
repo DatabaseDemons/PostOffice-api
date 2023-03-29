@@ -51,22 +51,41 @@ const { getReqData } = require("./utils");
 
 
 const PORT = process.env.PORT || 5000;
+// const PORT = process.env.PORT || 3000;
 
+//FIXME HANDLE CORS PREFLIGHT REQUEST
 const server = http.createServer(async (req, res) => {
+    // set CORS response headers
+    
+
     const reqUrl = url.parse(req.url, true);
     const path = reqUrl.path;
     const method = req.method;
     console.log(`Route hit: ${path}`);
+    console.log(method);
 
+    if (method === "OPTIONS")
+    {
+        res.writeHead(204, { 
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods":"GET, POST, DELETE, PUT, PATCH",
+            "Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept",
+            "Access-Control-Max-Age": 2592000
+        });
+        
+        res.end();
+        return;
+    }
     //Testing home to return 'Hello World'
-    if (path === "/" && method === "GET") {
+    else if (path === "/" && method === "GET") {
         // set the status code, and content-type
         res.writeHead(200, { "Content-Type": "application/json" });
         // send the data
         res.end(JSON.stringify("Hello World"));
     }
-    // /admin : GET profile page for admins
-    else if (path === "/admin" && method === "GET")
+    // /admin : GET profile page for admins example -> wrap it for admin specific tasks
+    // such as get employee data.
+    else if (path === "/api/admin" && method === "GET")
     {
         try {
             //this is protecting the route (must have a JWT to access this and admin role)
@@ -234,6 +253,33 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
+    // /api/shipment : POST
+    else if (path === "/api/shipment" && method === "POST") {
+        try {
+            res.setHeader("Access-Control-Allow-Origin", "*");
+            res.setHeader("Access-Control-Request-Method", "POST");
+            res.setHeader("Access-Control-Request-Headers", "Content-Type");
+            const data = await getReqData(req);
+            //const tracking_id = JSON.parse(data);
+            
+            const tracking_id = JSON.parse(data)
+            console.log(tracking_id);
+            const shipment = await new ShipmentController().getShipmentByID(tracking_id.tracking_id);
+            console.log(shipment);
+
+
+            res.writeHead(202, { "Content-Type": "application/json" });
+            res.end(JSON.stringify(tracking_id));
+
+        } catch(error) {
+            res.writeHead(404, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
+        }
+
+
+    }
+
 
     // /api/users/ : POST
     else if (path === "/api/register-customer" && method === "POST") {
@@ -254,18 +300,13 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify({ message: error.message }));
 
         }
-
-
     }
 
     // /api/login : POST
     //TODO post request and verify req against database
 
     else if (path === "/api/login" && method === "POST") {
-        
-
         try {
-            //todo
             //receive email/password and check in db
             //create JWT and return it to the frontend
             // (then every protected route uses the JWT for its role)
@@ -293,7 +334,7 @@ const server = http.createServer(async (req, res) => {
 
             console.log(init_jwt(verified_user));
 
-            res.end(init_jwt(verified_user));
+            res.end(JSON.stringify( {token : init_jwt(verified_user), role : verified_user.type } ));
 
         } catch (error) {
             // set error status code and content-type
@@ -304,30 +345,30 @@ const server = http.createServer(async (req, res) => {
 
     }
 
-    // /api/register-shipment : POST
+    // /api/create-shipment : POST
     // API route for creating a shipment in the database
     // FIXME Will need employee or admin auth.
-    else if (path === "/api/register-shipment" && method === "POST") {
+    else if (path === "/api/create-shipment" && method === "POST") {
         try {
             const data = await getReqData(req);
             const result = await new ShipmentController().createShipment(data);
 
             // set the status code and content-type
             res.writeHead(201, { "Content-Type": "application/json" });
-            res.end(JSON.stringify(result));
+            res.end(result);
         } catch (error) {
             // set error status code and content-type
             res.writeHead(500, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({ message: "" + error }));
+            res.end(JSON.stringify({ message: error.message }));
         }
 
     }
 
-    // /api/register-tracks : POST
+    // /api/add-tracks : POST
     // API route for creating a tracks in the database
     // FIXME: Will need employee or admin auth.
-    else if (path === "/api/register-tracks" && method === "POST") {
+    else if (path === "/api/add-tracks" && method === "POST") {
         try {
             const data = await getReqData(req);
             const result = await new TracksController().createTracks(data);

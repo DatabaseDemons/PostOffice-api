@@ -71,7 +71,7 @@ class UserController {
             return newuser;
         } catch (error) {
             // throw an error
-            throw new Error(`User: ${user} already created.`);
+            throw new Error(`User already created.`);
         }
 
 
