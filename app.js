@@ -294,6 +294,7 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
+    // Returns shipment with a tracking id input
     // /api/shipment : POST
     else if (path === "/api/shipment" && method === "POST") {
         try {
@@ -301,10 +302,7 @@ const server = http.createServer(async (req, res) => {
             res.setHeader("Access-Control-Allow-Origin", "*");
             res.setHeader("Access-Control-Request-Method", "POST");
             res.setHeader("Access-Control-Request-Headers", "Content-Type");
-            res.writeHead(202, { 
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-            });
+            
             const data = await getReqData(req);
             //const tracking_id = JSON.parse(data);
             
@@ -313,9 +311,21 @@ const server = http.createServer(async (req, res) => {
             const shipment = await new ShipmentController().getShipmentByID(tracking_id.tracking_id);
             console.log(shipment);
 
-
+            if (!shipment) {
+                res.writeHead(404, { "Content-Type": "application/json" });
+                // send error
+                res.end(JSON.stringify(`No shipment found with TID: ${tracking_id.tracking_id}`));
+            }
+            else {
+                res.writeHead(202, { 
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                });
+                res.end(JSON.stringify(shipment));
+            }
             
-            res.end(JSON.stringify(tracking_id));
+            
+            
 
         } catch(error) {
             res.writeHead(404, { "Content-Type": "application/json" });
