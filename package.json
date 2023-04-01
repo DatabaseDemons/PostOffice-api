@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "postoffice Node.js API",
   "main": "app.js",
+  "proxy": "http://localhost:3000",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
