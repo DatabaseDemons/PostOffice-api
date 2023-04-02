@@ -53,16 +53,14 @@ const { getReqData } = require("./utils");
 const PORT = process.env.PORT || 5000;
 // const PORT = process.env.PORT || 3000;
 
-//FIXME HANDLE CORS PREFLIGHT REQUEST
-const server = http.createServer(async (req, res) => {
-    // set CORS response headers
 
+const server = http.createServer(async (req, res) => {
     const reqUrl = url.parse(req.url, true);
     const path = reqUrl.path;
     const method = req.method;
     console.log(`Route hit: ${path}`);
     console.log(method);
-
+    // HANDLE CORS PREFLIGHT REQUEST
     if (method === "OPTIONS")
     {
         res.writeHead(204, { 
@@ -82,6 +80,7 @@ const server = http.createServer(async (req, res) => {
         // send the data
         res.end(JSON.stringify("Hello World"));
     }
+    //DEPRECATED
     // /admin : GET profile page for admins example -> wrap it for admin specific tasks
     // such as get employee data.
     else if (path === "/api/admin" && method === "GET")
@@ -137,7 +136,7 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
-
+    //DEPRECATED
     // /api/users/email : GET
     // Test with url http://localhost:5000/api/users/email/iamthestand@gmail.com
     else if (path.match(/\/api\/users\/email\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
@@ -294,6 +293,7 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
+    // Returns shipment with a tracking id input
     // /api/shipment : POST
     else if (path === "/api/shipment" && method === "POST") {
         try {
@@ -301,10 +301,7 @@ const server = http.createServer(async (req, res) => {
             res.setHeader("Access-Control-Allow-Origin", "*");
             res.setHeader("Access-Control-Request-Method", "POST");
             res.setHeader("Access-Control-Request-Headers", "Content-Type");
-            res.writeHead(202, { 
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-            });
+            
             const data = await getReqData(req);
             //const tracking_id = JSON.parse(data);
             
@@ -313,9 +310,21 @@ const server = http.createServer(async (req, res) => {
             const shipment = await new ShipmentController().getShipmentByID(tracking_id.tracking_id);
             console.log(shipment);
 
-
+            if (!shipment) {
+                res.writeHead(404, { "Content-Type": "application/json" });
+                // send error
+                res.end(JSON.stringify(`No shipment found with TID: ${tracking_id.tracking_id}`));
+            }
+            else {
+                res.writeHead(202, { 
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                });
+                res.end(JSON.stringify(shipment));
+            }
             
-            res.end(JSON.stringify(tracking_id));
+            
+            
 
         } catch(error) {
             res.writeHead(404, { "Content-Type": "application/json" });
