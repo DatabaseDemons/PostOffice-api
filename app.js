@@ -53,16 +53,14 @@ const { getReqData } = require("./utils");
 const PORT = process.env.PORT || 5000;
 // const PORT = process.env.PORT || 3000;
 
-//FIXME HANDLE CORS PREFLIGHT REQUEST
-const server = http.createServer(async (req, res) => {
-    // set CORS response headers
 
+const server = http.createServer(async (req, res) => {
     const reqUrl = url.parse(req.url, true);
     const path = reqUrl.path;
     const method = req.method;
     console.log(`Route hit: ${path}`);
     console.log(method);
-
+    // HANDLE CORS PREFLIGHT REQUEST
     if (method === "OPTIONS")
     {
         res.writeHead(204, { 
@@ -82,6 +80,7 @@ const server = http.createServer(async (req, res) => {
         // send the data
         res.end(JSON.stringify("Hello World"));
     }
+    //DEPRECATED
     // /admin : GET profile page for admins example -> wrap it for admin specific tasks
     // such as get employee data.
     else if (path === "/api/admin" && method === "GET")
@@ -137,7 +136,7 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
-
+    //DEPRECATED
     // /api/users/email : GET
     // Test with url http://localhost:5000/api/users/email/iamthestand@gmail.com
     else if (path.match(/\/api\/users\/email\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
