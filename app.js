@@ -78,7 +78,7 @@ const server = http.createServer(async (req, res) => {
         // set the status code, and content-type
         res.writeHead(200, { "Content-Type": "application/json" });
         // send the data
-        res.end(JSON.stringify("Hello World"));
+        res.end(JSON.stringify("Hello Post Office"));
     }
     //DEPRECATED
     // /admin : GET profile page for admins example -> wrap it for admin specific tasks
@@ -384,7 +384,6 @@ const server = http.createServer(async (req, res) => {
             const verified_user = { ...user, ...role }
             //console.log(verified_user);
             if (!verified_user.type)
-
             {
                 throw new Error('Wrong Email/Password Combination.');
             }
@@ -395,9 +394,9 @@ const server = http.createServer(async (req, res) => {
             //     type: "admin"
             // }
 
-            console.log(init_jwt(verified_user));
+            //console.log(init_jwt(verified_user));
 
-            res.end(JSON.stringify( {token : init_jwt(verified_user), role : verified_user.type } ));
+            res.end(JSON.stringify( {token : init_jwt(verified_user), role : verified_user.type, email : verified_user.email } ));
 
         } catch (error) {
             // set error status code and content-type
