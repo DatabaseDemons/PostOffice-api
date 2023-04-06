@@ -78,7 +78,7 @@ const server = http.createServer(async (req, res) => {
         // set the status code, and content-type
         res.writeHead(200, { "Content-Type": "application/json" });
         // send the data
-        res.end(JSON.stringify("Hello World"));
+        res.end(JSON.stringify("Hello Post Office"));
     }
     //DEPRECATED
     // /admin : GET profile page for admins example -> wrap it for admin specific tasks
