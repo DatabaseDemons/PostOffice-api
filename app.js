@@ -409,7 +409,6 @@ const server = http.createServer(async (req, res) => {
 
     // /api/create-shipment : POST
     // API route for creating a shipment in the database
-    // FIXME Will need employee or admin auth.
     else if (path === "/api/create-shipment" && method === "POST") {
         try {
             // set the status code and content-type
@@ -430,9 +429,9 @@ const server = http.createServer(async (req, res) => {
 
     }
 
+    //DEPRECATED on single use
     // /api/add-tracks : POST
     // API route for creating a tracks in the database
-    // FIXME: Will need employee or admin auth.
     else if (path === "/api/add-tracks" && method === "POST") {
         try {
             // set the status code and content-type
@@ -451,6 +450,25 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify({ message: "" + error }));
         }
 
+    }
+    else if (path === "/api/update-status" && method === 'PUT')
+    {
+        try {
+            // set the status code and content-type
+            res.writeHead(201, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+
+            //TODO logic for modifying status here
+
+            res.end(JSON.stringify(result));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: "" + error }));
+        }
     }
 
 
