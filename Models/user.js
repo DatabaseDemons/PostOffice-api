@@ -42,10 +42,16 @@ class User {
 
     static async getUserByEmail(email) {
         try {
-            const result = await client.query(`Select *
-                                            FROM dev_db.postoffice.USER_LOGIN AS ul
-                                            WHERE ul.username = '${email}';`);
-            return result.recordset;
+            const result = await client.query(`
+                SELECT c.first_name, c.last_name, c.home_address, ul.username, ul.password, ul.type
+                FROM postoffice.CUSTOMER c 
+                INNER JOIN postoffice.USER_LOGIN ul
+                ON c.email = ul.username
+                WHERE c.email = '${email}'
+                AND ul.username ='${email}';
+            `);
+
+            return result.recordset[0];
         } catch (err) {
             throw new Error('Failed to retrieve user logins, check if email is correct.');
         }
