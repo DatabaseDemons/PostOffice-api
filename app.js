@@ -44,6 +44,7 @@ const { TracksController } = require("./Controllers/tracksController");
 const { authenticate, init_jwt } = require("./jwt");
 
 const { getReqData } = require("./utils");
+const { User } = require("./Models/user");
 
 
 //USAGE: read JSON to parse ex:
@@ -309,10 +310,9 @@ const server = http.createServer(async (req, res) => {
             const data = await getReqData(req);
             
             const user_email = JSON.parse(data)
-            console.log(user_email);
-            //TODO: get user info by passing user_email
+            //console.log(user_email);
             const user_info = await new UserController().getUserByEmail(user_email.email);
-            console.log(user_info);
+            //console.log(user_info);
 
             if (!user_info) {
                 res.writeHead(404, { "Content-Type": "application/json" });
@@ -326,16 +326,11 @@ const server = http.createServer(async (req, res) => {
                 });
                 res.end(JSON.stringify(user_info));
             }
-            
-            
-            
-
         } catch(error) {
             res.writeHead(404, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: error.message }));
         }
-
     }
 
     // Returns shipment with a tracking id input
@@ -380,7 +375,7 @@ const server = http.createServer(async (req, res) => {
 
     }
 
-
+    // creates a customer with a user login
     // /api/register-customer : POST
     else if (path === "/api/register-customer" && method === "POST") {
         try {
@@ -492,9 +487,37 @@ const server = http.createServer(async (req, res) => {
             // send error
             res.end(JSON.stringify({ message: "" + error }));
         }
-
     }
-    else if (path === "/api/update-status" && method === 'PUT')
+
+    //given user email, retrieve : {shipment_tracking_id, tracking_status, est_delivery_date} from TRACKS, 
+    // {shipment_status, num_packages} from SHIPMENT 
+    // api/user-shipments : POST
+    else if (path === "/api/user-shipments" && method === "POST") {
+        try {
+            // set the status code and content-type
+            res.writeHead(201, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            const data = await getReqData(req);
+            const user_email = JSON.parse(data);
+            //console.log(user_email);
+
+            const result = await new UserController().getUserShipmentsByEmail(user_email.email);
+
+
+            res.end(JSON.stringify(result));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: "" + error }));
+        }
+    }
+
+    //TODO
+    // api/update-status : POST
+    else if (path === "/api/update-status" && method === "PUT")
     {
         try {
             // set the status code and content-type

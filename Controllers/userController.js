@@ -73,8 +73,15 @@ class UserController {
             // throw an error
             throw new Error(`User already created.`);
         }
+    }
 
-
+    async getUserShipmentsByEmail(email) {
+        try{
+            return await User.getUserShipmentsByEmail(email);
+        } catch (error) {
+            // throw an error
+            throw new Error(`No shipments for ${email}`);
+        }
     }
 
     // updating a user
