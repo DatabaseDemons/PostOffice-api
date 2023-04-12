@@ -39,7 +39,7 @@ class User {
         }
     }
     //Method to get user by email
-
+    
     static async getUserByEmail(email) {
         try {
             const result = await client.query(`
