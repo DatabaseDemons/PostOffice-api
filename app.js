@@ -317,7 +317,7 @@ const server = http.createServer(async (req, res) => {
             if (!user_info) {
                 res.writeHead(404, { "Content-Type": "application/json" });
                 // send error
-                res.end(JSON.stringify(`No shipment found with TID: ${tracking_id.tracking_id}`));
+                res.end(JSON.stringify(`No user found: ${user_email.email}`));
             }
             else {
                 res.writeHead(202, { 
