@@ -527,7 +527,7 @@ const server = http.createServer(async (req, res) => {
             });
 
             const data = JSON.parse(await getReqData(req));
-            const result = await new ShipmentController().updateShipmentStatus(data.id, data.status);
+            const result = await new ShipmentController().updateShipmentStatus(data.tracking_id, data.status);
 
             res.end(JSON.stringify(result));
         } catch (error) {
