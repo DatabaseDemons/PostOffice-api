@@ -395,17 +395,11 @@ const server = http.createServer(async (req, res) => {
                 });
                 res.end(JSON.stringify(shipment));
             }
-
-
-
-
         } catch(error) {
             res.writeHead(404, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: error.message }));
         }
-
-
     }
 
     // creates a customer with a user login
