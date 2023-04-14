@@ -30,12 +30,14 @@ class Shipment {
     //fixme
     static async getShipmentByID(id) {
         try {
+
             const result = await client.query(`
                                                 SELECT * 
                                                 FROM postoffice.SHIPMENT s
                                                 INNER JOIN  postoffice.TRACKS t ON s.tracking_id = t.shipment_tracking_id
                                                 WHERE s.tracking_id='${id}';
-                                            `)
+                                            `);
+
             return result.recordset[0]; //always returns one
         } catch (err) {
             console.log(err);
@@ -78,6 +80,25 @@ class Shipment {
         } catch (err) {
             console.log(err);
             throw new Error('Failed to retrieve or no such shipments from email: ' + email);
+        }
+    }
+
+
+    /**
+     * Sets a shipment to deleted or undeletes a shipment.
+     * @param {string} id ID of the shipment to (un)delete.
+     * @param {*} isDeleted To delete or undelete. Provide 0 for undelete, 1 for delete.
+     * @returns Results of the sql query.
+     */
+    static async deleteShipment(id, isDeleted) {
+        try {
+            const result = await client.query(`UPDATE dev_db.postoffice.SHIPMENT
+                                                SET mark_deletion=${isDeleted}
+                                                WHERE tracking_id=${id};`);
+            return result.recordset;
+        } catch (err) {
+            console.log(err);
+            throw new Error('Failed to (un)delete or no such shipment with id: ' + id);
         }
     }
 
