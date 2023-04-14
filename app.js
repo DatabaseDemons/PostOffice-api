@@ -528,7 +528,7 @@ const server = http.createServer(async (req, res) => {
 
             const data = JSON.parse(await getReqData(req));
             const shipment_id = data.shipment_id;
-            const isDeleted = data.isDeleted;
+            const isDeleted = data.mark_deletion;
 
             const result = await new ShipmentController().deleteShipment(shipment_id, isDeleted);
 
