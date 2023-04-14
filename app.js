@@ -526,10 +526,11 @@ const server = http.createServer(async (req, res) => {
                 "Access-Control-Allow-Origin": "*",
             });
 
-            const data = await getReqData(req);
-            const shipment_id = JSON.parse(data).shipment_id;
+            const data = JSON.parse(await getReqData(req));
+            const shipment_id = data.shipment_id;
+            const isDeleted = data.isDeleted;
 
-            const result = await new ShipmentController().deleteShipment(shipment_id);
+            const result = await new ShipmentController().deleteShipment(shipment_id, isDeleted);
 
             res.end(JSON.stringify(result));
         } catch (error) {
