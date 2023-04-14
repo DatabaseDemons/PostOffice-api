@@ -44,7 +44,6 @@ const { TracksController } = require("./Controllers/tracksController");
 const { authenticate, init_jwt } = require("./jwt");
 
 const { getReqData } = require("./utils");
-const { User } = require("./Models/user");
 
 
 //USAGE: read JSON to parse ex:
@@ -515,6 +514,32 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
+    //Marks a shipment as deleted.
+    // api/delete-shipment : PUT
+    else if (path === "/api/delete-shipment" && method === "PUT")
+    {
+        try {
+            // set the status code and content-type
+            res.writeHead(200, {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+
+            const data = JSON.parse(await getReqData(req));
+            const shipment_id = data.shipment_id;
+            const isDeleted = data.mark_deletion;
+
+            const result = await new ShipmentController().deleteShipment(shipment_id, isDeleted);
+
+            res.end(JSON.stringify(result));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: "" + error }));
+        }
+    }
+
     //Updates the status of a shipment.
     // api/update-status : POST
     else if (path === "/api/update-status" && method === "PUT")
@@ -525,10 +550,8 @@ const server = http.createServer(async (req, res) => {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
             });
-
             const data = JSON.parse(await getReqData(req));
             const result = await new ShipmentController().updateShipmentStatus(data.tracking_id, data.status);
-
             res.end(JSON.stringify(result));
         } catch (error) {
             // set error status code and content-type

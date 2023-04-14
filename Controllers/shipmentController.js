@@ -23,6 +23,9 @@ class ShipmentController {
     async updateShipmentStatus(id, status) {
         return await Shipment.updateShipmentStatus(id, status);
     }
+    async deleteShipment(id, isDeleted) {
+        return await Shipment.deleteShipment(id, isDeleted);
+    }
 }
 
 

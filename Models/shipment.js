@@ -10,7 +10,11 @@ class Shipment {
      */
     static async getAllShipments() {
         try {
-            const result = await client.query(`Select * FROM dev_db.postoffice.SHIPMENT;`);
+            const result = await client.query(`
+                SELECT * 
+                FROM postoffice.SHIPMENT s
+                INNER JOIN  postoffice.TRACKS t ON s.tracking_id = t.shipment_tracking_id;
+            `);
             return result.recordset;
         } catch (err) {
             console.log(err);
@@ -23,14 +27,15 @@ class Shipment {
      * @param {string} id ID of the shipment to search for.
      * @returns The results of the query searching for that ID.
      */
+    //fixme
     static async getShipmentByID(id) {
         try {
-            const result = await client.query(`Select *
-                                                FROM dev_db.postoffice.SHIPMENT AS S
-                                                WHERE S.tracking_id='${id}';`)
-
-            //FIXME HERE DUDE
-
+            const result = await client.query(`
+                                                SELECT * 
+                                                FROM postoffice.SHIPMENT s
+                                                INNER JOIN  postoffice.TRACKS t ON s.tracking_id = t.shipment_tracking_id
+                                                WHERE s.tracking_id='${id}';
+                                            `);
             return result.recordset[0]; //always returns one
         } catch (err) {
             console.log(err);
@@ -43,11 +48,13 @@ class Shipment {
      * @param {string} date Date to search by, formatted as yyyy-mm-dd
      * @returns The results of the sql query.
      */
+    //fixme
     static async getShipmentByCreationDate(date) {
         try {
-            const result = await client.query(`Select *
-                                                    FROM dev_db.postoffice.SHIPMENT AS S
-                                                    WHERE S.creation_date='${date}';`);
+            const result = await client.query(`     SELECT * 
+                                                    FROM postoffice.SHIPMENT s
+                                                    INNER JOIN postoffice.TRACKS t ON s.tracking_id = t.shipment_tracking_id
+                                                    WHERE s.creation_date='${date}';`);
             return result.recordset;
         } catch (err) {
             console.log(err);
@@ -60,9 +67,10 @@ class Shipment {
      * @param {string} email Email to find shipments for.
      * @returns The results of the sql query.
      */
+    //fixme
     static async getShipmentsByEmail(email) {
         try {
-            const result = await client.query(`Select customer_email, employee_email, S.tracking_id
+            const result = await client.query(`     Select customer_email, employee_email, S.tracking_id
                                                     FROM dev_db.postoffice.SHIPMENT AS S, dev_db.postoffice.TRACKS AS T
                                                     WHERE (T.customer_email='${email}' OR T.employee_email='${email}')
                                                     AND T.shipment_tracking_id=S.tracking_id;`);
@@ -70,6 +78,25 @@ class Shipment {
         } catch (err) {
             console.log(err);
             throw new Error('Failed to retrieve or no such shipments from email: ' + email);
+        }
+    }
+
+
+    /**
+     * Sets a shipment to deleted or undeletes a shipment.
+     * @param {string} id ID of the shipment to (un)delete.
+     * @param {*} isDeleted To delete or undelete. Provide 0 for undelete, 1 for delete.
+     * @returns Results of the sql query.
+     */
+    static async deleteShipment(id, isDeleted) {
+        try {
+            const result = await client.query(`UPDATE dev_db.postoffice.SHIPMENT
+                                                SET mark_deletion=${isDeleted}
+                                                WHERE tracking_id=${id};`);
+            return result.recordset;
+        } catch (err) {
+            console.log(err);
+            throw new Error('Failed to (un)delete or no such shipment with id: ' + id);
         }
     }
 
