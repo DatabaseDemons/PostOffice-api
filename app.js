@@ -44,6 +44,7 @@ const { TracksController } = require("./Controllers/tracksController");
 const { authenticate, init_jwt } = require("./jwt");
 
 const { getReqData } = require("./utils");
+const { User } = require("./Models/user");
 
 
 //USAGE: read JSON to parse ex:
@@ -73,6 +74,7 @@ const server = http.createServer(async (req, res) => {
         res.end();
         return;
     }
+//GET HANDLERS
     //Testing home to return 'Hello World'
     else if (path === "/" && method === "GET") {
         // set the status code, and content-type
@@ -83,37 +85,36 @@ const server = http.createServer(async (req, res) => {
     //DEPRECATED
     // /admin : GET profile page for admins example -> wrap it for admin specific tasks
     // such as get employee data.
-    else if (path === "/api/admin" && method === "GET")
-    {
-        try {
-            // set the status code and content-type
-            res.writeHead(200, { 
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-            });
-            //this is protecting the route (must have a JWT to access this and admin role)
-            authenticate(req, res, 'admin');
-            console.log(res.statusCode);
-            if (res.statusCode > 400)
-            {
-                res.end("FORBIDDEN")
-                return;
-            }
-            res.writeHead(200, { "Content-Type": "application/json" });
-            // send the data
-            res.end("SUCCESS");
+    // else if (path === "/api/admin" && method === "GET")
+    // {
+    //     try {
+    //         // set the status code and content-type
+    //         res.writeHead(200, { 
+    //             "Content-Type": "application/json",
+    //             "Access-Control-Allow-Origin": "*",
+    //         });
+    //         //this is protecting the route (must have a JWT to access this and admin role)
+    //         authenticate(req, res, 'admin');
+    //         console.log(res.statusCode);
+    //         if (res.statusCode > 400)
+    //         {
+    //             res.end("FORBIDDEN")
+    //             return;
+    //         }
+    //         res.writeHead(200, { "Content-Type": "application/json" });
+    //         // send the data
+    //         res.end("SUCCESS");
 
 
-        } catch (error) {
-            // set error status code and content-type
-            res.writeHead(500, {"Content-Type": "application/json" });
-            // send error
-            res.end(JSON.stringify({message: ""+ error}));
-        }
-
-    }
+    //     } catch (error) {
+    //         // set error status code and content-type
+    //         res.writeHead(500, {"Content-Type": "application/json" });
+    //         // send error
+    //         res.end(JSON.stringify({message: ""+ error}));
+    //     }
+    // }
+    
     // /api/users : GET
-
     else if (path === "/api/users" && method === "GET") {
 
         try {
@@ -139,30 +140,30 @@ const server = http.createServer(async (req, res) => {
     //DEPRECATED
     // /api/users/email : GET
     // Test with url http://localhost:5000/api/users/email/iamthestand@gmail.com
-    else if (path.match(/\/api\/users\/email\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
-        try {
-            // set the status code and content-type
-            res.writeHead(200, { 
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-            });
-            // send the data
+    // else if (path.match(/\/api\/users\/email\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
+    //     try {
+    //         // set the status code and content-type
+    //         res.writeHead(200, { 
+    //             "Content-Type": "application/json",
+    //             "Access-Control-Allow-Origin": "*",
+    //         });
+    //         // send the data
             
 
-            // get email from url
-            const email = path.split("/")[4];
-            // get user
-            const user = await new UserController().getUserByEmail(email);
-            // set success status code and content-type
+    //         // get email from url
+    //         const email = path.split("/")[4];
+    //         // get user
+    //         const user = await new UserController().getUserByEmail(email);
+    //         // set success status code and content-type
             
-            res.end(JSON.stringify(user));
-        } catch (error) {
-            // set error status code and content-type
-            res.writeHead(500, { "Content-Type": "application/json" });
-            // send error
-            res.end(JSON.stringify({ message: "" + error }));
-        }
-    }
+    //         res.end(JSON.stringify(user));
+    //     } catch (error) {
+    //         // set error status code and content-type
+    //         res.writeHead(500, { "Content-Type": "application/json" });
+    //         // send error
+    //         res.end(JSON.stringify({ message: "" + error }));
+    //     }
+    // }
 
     //Get all shipments route
     else if (path === "/api/shipments" && method === "GET") {
@@ -184,26 +185,27 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
+    //DEPRECATED
     // api/shipments/id/ '' : GET
     // Get shipment by tracking ID route
-    else if (path.match(/\/api\/shipments\/id\/[0-9]+/) && method === "GET") {
-        try {
-            // set the status code and content-type
-            res.writeHead(200, { 
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-            });
-            let shipment = await new ShipmentController().getShipmentByID(path.split('/')[4]);
+    // else if (path.match(/\/api\/shipments\/id\/[0-9]+/) && method === "GET") {
+    //     try {
+    //         // set the status code and content-type
+    //         res.writeHead(200, { 
+    //             "Content-Type": "application/json",
+    //             "Access-Control-Allow-Origin": "*",
+    //         });
+    //         let shipment = await new ShipmentController().getShipmentByID(path.split('/')[4]);
             
-            //send the shipments
-            res.end(JSON.stringify(shipment));
-        } catch (error) {
-            // set error status code and content-type
-            res.writeHead(500, { "Content-Type": "application/json" });
-            // send error
-            res.end(JSON.stringify({ message: "" + error }));
-        }
-    }
+    //         //send the shipments
+    //         res.end(JSON.stringify(shipment));
+    //     } catch (error) {
+    //         // set error status code and content-type
+    //         res.writeHead(500, { "Content-Type": "application/json" });
+    //         // send error
+    //         res.end(JSON.stringify({ message: "" + error }));
+    //     }
+    // }
 
     // api/po-boxes : GET
     // Get all po boxes route
@@ -226,51 +228,53 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
+    //DEPRECATED
     // /api/po-boxes/branch/ '' : GET
     // Get all po boxes by owning branch
     // Test with url http://localhost:5000/api/po-boxes/branch/123+Main+St
-    else if (path.match(/\/api\/po-boxes\/branch\/([A-Za-z0-9]+(\+[A-Za-z0-9]+)+)/i) && method === "GET") {
-        try {
-            // set the status code and content-type
-            res.writeHead(200, { 
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-            });
-            let branch = path.split('/')[4].replace(/\+/g, ' ');
-            let branchBoxes = await new POBoxController().getAllPOBoxesByBranch(branch);
+    // else if (path.match(/\/api\/po-boxes\/branch\/([A-Za-z0-9]+(\+[A-Za-z0-9]+)+)/i) && method === "GET") {
+    //     try {
+    //         // set the status code and content-type
+    //         res.writeHead(200, { 
+    //             "Content-Type": "application/json",
+    //             "Access-Control-Allow-Origin": "*",
+    //         });
+    //         let branch = path.split('/')[4].replace(/\+/g, ' ');
+    //         let branchBoxes = await new POBoxController().getAllPOBoxesByBranch(branch);
             
-            //send the boxes
-            res.end(JSON.stringify(branchBoxes));
-        } catch (error) {
-            // set error status code and content-type
-            res.writeHead(500, { "Content-Type": "application/json" });
-            // send error
-            res.end(JSON.stringify({ message: "" + error }));
-        }
-    }
+    //         //send the boxes
+    //         res.end(JSON.stringify(branchBoxes));
+    //     } catch (error) {
+    //         // set error status code and content-type
+    //         res.writeHead(500, { "Content-Type": "application/json" });
+    //         // send error
+    //         res.end(JSON.stringify({ message: "" + error }));
+    //     }
+    // }
 
+    //DEPRECATED
     // api/pox-boxes/email/ '' : GET
     // Get po box by owner's email
     // Test with url http://localhost:5000/api/po-boxes/email/iamthestand@gmail.com
-    else if (path.match(/\/api\/po-boxes\/email\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
-        try {
-            // set the status code and content-type
-            res.writeHead(200, { 
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-            });
-            let boxes = await new POBoxController().getPOBoxByEmail(path.split("/")[4]);
+    // else if (path.match(/\/api\/po-boxes\/email\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
+    //     try {
+    //         // set the status code and content-type
+    //         res.writeHead(200, { 
+    //             "Content-Type": "application/json",
+    //             "Access-Control-Allow-Origin": "*",
+    //         });
+    //         let boxes = await new POBoxController().getPOBoxByEmail(path.split("/")[4]);
             
             
-            //send the boxes
-            res.end(JSON.stringify(boxes));
-        } catch (error) {
-            // set error status code and content-type
-            res.writeHead(500, { "Content-Type": "application/json" });
-            // send error
-            res.end(JSON.stringify({ message: "" + error }));
-        }
-    }
+    //         //send the boxes
+    //         res.end(JSON.stringify(boxes));
+    //     } catch (error) {
+    //         // set error status code and content-type
+    //         res.writeHead(500, { "Content-Type": "application/json" });
+    //         // send error
+    //         res.end(JSON.stringify({ message: "" + error }));
+    //     }
+    // }
 
     // Get all tracks
     else if (path === "/api/tracks" && method === "GET") {
@@ -290,6 +294,42 @@ const server = http.createServer(async (req, res) => {
             res.writeHead(500, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: "" + error }));
+        }
+    }
+//POST HANDLERS
+    // Returns shipment with a tracking id input
+    // /api/userinfo : POST
+    else if (path === "/api/userinfo" && method === "POST") {
+        try {
+            // set the status code and content-type
+            res.setHeader("Access-Control-Allow-Origin", "*");
+            res.setHeader("Access-Control-Request-Method", "POST");
+            res.setHeader("Access-Control-Request-Headers", "Content-Type");
+            
+            // Receiving input data
+            const data = await getReqData(req);
+            
+            const user_email = JSON.parse(data)
+            //console.log(user_email);
+            const user_info = await new UserController().getUserByEmail(user_email.email);
+            //console.log(user_info);
+
+            if (!user_info) {
+                res.writeHead(404, { "Content-Type": "application/json" });
+                // send error
+                res.end(JSON.stringify(`No user found: ${user_email.email}`));
+            }
+            else {
+                res.writeHead(202, { 
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                });
+                res.end(JSON.stringify(user_info));
+            }
+        } catch(error) {
+            res.writeHead(404, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
         }
     }
 
@@ -335,8 +375,8 @@ const server = http.createServer(async (req, res) => {
 
     }
 
-
-    // /api/users/ : POST
+    // creates a customer with a user login
+    // /api/register-customer : POST
     else if (path === "/api/register-customer" && method === "POST") {
         try {
             res.writeHead(201, { 
@@ -362,8 +402,6 @@ const server = http.createServer(async (req, res) => {
     }
 
     // /api/login : POST
-    //TODO post request and verify req against database
-
     else if (path === "/api/login" && method === "POST") {
         try {
             res.writeHead(200, { 
@@ -449,9 +487,37 @@ const server = http.createServer(async (req, res) => {
             // send error
             res.end(JSON.stringify({ message: "" + error }));
         }
-
     }
-    else if (path === "/api/update-status" && method === 'PUT')
+
+    //given user email, retrieve : {shipment_tracking_id, tracking_status, est_delivery_date} from TRACKS, 
+    // {shipment_status, num_packages} from SHIPMENT 
+    // api/user-shipments : POST
+    else if (path === "/api/user-shipments" && method === "POST") {
+        try {
+            // set the status code and content-type
+            res.writeHead(201, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            const data = await getReqData(req);
+            const user_email = JSON.parse(data);
+            //console.log(user_email);
+
+            const result = await new UserController().getUserShipmentsByEmail(user_email.email);
+
+
+            res.end(JSON.stringify(result));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: "" + error }));
+        }
+    }
+
+    //TODO
+    // api/update-status : POST
+    else if (path === "/api/update-status" && method === "PUT")
     {
         try {
             // set the status code and content-type
@@ -461,6 +527,8 @@ const server = http.createServer(async (req, res) => {
             });
 
             //TODO logic for modifying status here
+            //receive '1' , '2' , '3', '4' to determine tracking status 
+            // and update based on tracking_id
 
             res.end(JSON.stringify(result));
         } catch (error) {

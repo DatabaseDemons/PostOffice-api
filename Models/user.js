@@ -18,6 +18,26 @@ class User {
             throw new Error('Failed to retrieve all users.');
         }
     }
+
+    //Method to get all shipments by specific user
+    static async getUserShipmentsByEmail(email) {
+        try {
+
+            const result = await client.query(`
+                SELECT t.shipment_tracking_id, t.tracking_status, t.est_delivery_date, s.shipment_status, s.num_packages
+                FROM postoffice.TRACKS t 
+                INNER JOIN postoffice.SHIPMENT s 
+                ON t.shipment_tracking_id  = s.tracking_id 
+                WHERE t.customer_email = '${email}';
+            `);
+
+            return result.recordset;
+        } catch (err) {
+            console.log(err);
+            throw new Error(`Failed to get user shipments for ${email}.`);
+        }
+    }
+
     //Method to get user by type/role
     static async getUserType(user) {
         try {
@@ -42,10 +62,16 @@ class User {
 
     static async getUserByEmail(email) {
         try {
-            const result = await client.query(`Select *
-                                            FROM dev_db.postoffice.USER_LOGIN AS ul
-                                            WHERE ul.username = '${email}';`);
-            return result.recordset;
+            const result = await client.query(`
+                SELECT c.first_name, c.last_name, c.home_address, ul.username, ul.password, ul.type
+                FROM postoffice.CUSTOMER c 
+                INNER JOIN postoffice.USER_LOGIN ul
+                ON c.email = ul.username
+                WHERE c.email = '${email}'
+                AND ul.username ='${email}';
+            `);
+
+            return result.recordset[0];
         } catch (err) {
             throw new Error('Failed to retrieve user logins, check if email is correct.');
         }
