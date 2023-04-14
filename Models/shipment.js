@@ -8,9 +8,15 @@ class Shipment {
      * Retrieve all shipments
      * @returns A list of all shipments.
      */
+    //fixme
     static async getAllShipments() {
         try {
-            const result = await client.query(`Select * FROM dev_db.postoffice.SHIPMENT;`);
+            const result = await client.query(`
+                Select * 
+                FROM postoffice.SHIPMENT s, postoffice.TRACKS t
+                INNER JOIN s ON s.tracking_id = t.shipment_tracking_id
+                
+                `);
             return result.recordset;
         } catch (err) {
             console.log(err);
@@ -23,6 +29,7 @@ class Shipment {
      * @param {string} id ID of the shipment to search for.
      * @returns The results of the query searching for that ID.
      */
+    //fixme
     static async getShipmentByID(id) {
         try {
             const result = await client.query(`Select *
@@ -43,6 +50,7 @@ class Shipment {
      * @param {string} date Date to search by, formatted as yyyy-mm-dd
      * @returns The results of the sql query.
      */
+    //fixme
     static async getShipmentByCreationDate(date) {
         try {
             const result = await client.query(`Select *
@@ -60,9 +68,10 @@ class Shipment {
      * @param {string} email Email to find shipments for.
      * @returns The results of the sql query.
      */
+    //fixme
     static async getShipmentsByEmail(email) {
         try {
-            const result = await client.query(`Select customer_email, employee_email, S.tracking_id
+            const result = await client.query(`     Select customer_email, employee_email, S.tracking_id
                                                     FROM dev_db.postoffice.SHIPMENT AS S, dev_db.postoffice.TRACKS AS T
                                                     WHERE (T.customer_email='${email}' OR T.employee_email='${email}')
                                                     AND T.shipment_tracking_id=S.tracking_id;`);

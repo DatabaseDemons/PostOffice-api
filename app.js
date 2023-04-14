@@ -44,7 +44,6 @@ const { TracksController } = require("./Controllers/tracksController");
 const { authenticate, init_jwt } = require("./jwt");
 
 const { getReqData } = require("./utils");
-const { User } = require("./Models/user");
 
 
 //USAGE: read JSON to parse ex:
