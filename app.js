@@ -331,7 +331,41 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify({ message: error.message }));
         }
     }
+    //Given customer email, return box num and branch address
+    // /api/userinfo : POST 
+    else if (path === "/api/userinfo" && method === "POST") {
+        try {
+            // set the status code and content-type
+            res.setHeader("Access-Control-Allow-Origin", "*");
+            res.setHeader("Access-Control-Request-Method", "POST");
+            res.setHeader("Access-Control-Request-Headers", "Content-Type");
 
+            // Receiving input data
+            const data = await getReqData(req);
+
+            const user_email = JSON.parse(data);
+            //console.log(user_email);
+            const user_info = await new POBoxController().getPOBoxByEmail(user_email.email);
+            //console.log(user_info);
+
+            if (!user_info) {
+                res.writeHead(404, { "Content-Type": "application/json" });
+                // send error
+                res.end(JSON.stringify(`No user found: ${user_email.email}`));
+            }
+            else {
+                res.writeHead(202, {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                });
+                res.end(JSON.stringify(user_info));
+            }
+        } catch(error) {
+            res.writeHead(404, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
+        }
+    }
     // Returns shipment with a tracking id input
     // /api/shipment : POST
     else if (path === "/api/shipment" && method === "POST") {
@@ -361,17 +395,11 @@ const server = http.createServer(async (req, res) => {
                 });
                 res.end(JSON.stringify(shipment));
             }
-
-
-
-
         } catch(error) {
             res.writeHead(404, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: error.message }));
         }
-
-
     }
 
     // creates a customer with a user login
@@ -541,7 +569,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     //Updates the status of a shipment.
-    // api/update-status : POST
+    // api/update-status : PUT
     else if (path === "/api/update-status" && method === "PUT")
     {
         try {
