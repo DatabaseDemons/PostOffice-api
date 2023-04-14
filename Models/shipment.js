@@ -8,15 +8,13 @@ class Shipment {
      * Retrieve all shipments
      * @returns A list of all shipments.
      */
-    //fixme
     static async getAllShipments() {
         try {
             const result = await client.query(`
-                Select * 
-                FROM postoffice.SHIPMENT s, postoffice.TRACKS t
-                INNER JOIN s ON s.tracking_id = t.shipment_tracking_id
-                
-                `);
+                SELECT * 
+                FROM postoffice.SHIPMENT s
+                INNER JOIN  postoffice.TRACKS t ON s.tracking_id = t.shipment_tracking_id;
+            `);
             return result.recordset;
         } catch (err) {
             console.log(err);
@@ -32,12 +30,12 @@ class Shipment {
     //fixme
     static async getShipmentByID(id) {
         try {
-            const result = await client.query(`Select *
-                                                FROM dev_db.postoffice.SHIPMENT AS S
-                                                WHERE S.tracking_id='${id}';`)
-            
-            //FIXME HERE DUDE
-
+            const result = await client.query(`
+                                                SELECT * 
+                                                FROM postoffice.SHIPMENT s
+                                                INNER JOIN  postoffice.TRACKS t ON s.tracking_id = t.shipment_tracking_id
+                                                WHERE s.tracking_id='${id}';
+                                            `)
             return result.recordset[0]; //always returns one
         } catch (err) {
             console.log(err);
@@ -53,9 +51,10 @@ class Shipment {
     //fixme
     static async getShipmentByCreationDate(date) {
         try {
-            const result = await client.query(`Select *
-                                                    FROM dev_db.postoffice.SHIPMENT AS S
-                                                    WHERE S.creation_date='${date}';`);
+            const result = await client.query(`     SELECT * 
+                                                    FROM postoffice.SHIPMENT s
+                                                    INNER JOIN postoffice.TRACKS t ON s.tracking_id = t.shipment_tracking_id
+                                                    WHERE s.creation_date='${date}';`);
             return result.recordset;
         } catch (err) {
             console.log(err);
