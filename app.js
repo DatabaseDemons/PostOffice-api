@@ -64,13 +64,13 @@ const server = http.createServer(async (req, res) => {
     // HANDLE CORS PREFLIGHT REQUEST
     if (method === "OPTIONS")
     {
-        res.writeHead(204, { 
+        res.writeHead(204, {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods":"GET, POST, DELETE, PUT, PATCH",
             "Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept, authorization",
             "Access-Control-Max-Age": 2592000
         });
-        
+
         res.end();
         return;
     }
@@ -89,7 +89,7 @@ const server = http.createServer(async (req, res) => {
     // {
     //     try {
     //         // set the status code and content-type
-    //         res.writeHead(200, { 
+    //         res.writeHead(200, {
     //             "Content-Type": "application/json",
     //             "Access-Control-Allow-Origin": "*",
     //         });
@@ -113,20 +113,20 @@ const server = http.createServer(async (req, res) => {
     //         res.end(JSON.stringify({message: ""+ error}));
     //     }
     // }
-    
+
     // /api/users : GET
     else if (path === "/api/users" && method === "GET") {
 
         try {
             // set the status code and content-type
-            res.writeHead(200, { 
+            res.writeHead(200, {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
             });
             // get the users
             const users = await new UserController().getAllUsers();
-            
-            
+
+
             // send the data
             res.end(JSON.stringify(users));
         } catch (error) {
@@ -143,19 +143,19 @@ const server = http.createServer(async (req, res) => {
     // else if (path.match(/\/api\/users\/email\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
     //     try {
     //         // set the status code and content-type
-    //         res.writeHead(200, { 
+    //         res.writeHead(200, {
     //             "Content-Type": "application/json",
     //             "Access-Control-Allow-Origin": "*",
     //         });
     //         // send the data
-            
+
 
     //         // get email from url
     //         const email = path.split("/")[4];
     //         // get user
     //         const user = await new UserController().getUserByEmail(email);
     //         // set success status code and content-type
-            
+
     //         res.end(JSON.stringify(user));
     //     } catch (error) {
     //         // set error status code and content-type
@@ -169,12 +169,12 @@ const server = http.createServer(async (req, res) => {
     else if (path === "/api/shipments" && method === "GET") {
         try {
             // set the status code and content-type
-            res.writeHead(200, { 
+            res.writeHead(200, {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
             });
             let shipments = await new ShipmentController().getAllShipments();
-            
+
             //send the shipments
             res.end(JSON.stringify(shipments));
         } catch (error) {
@@ -191,12 +191,12 @@ const server = http.createServer(async (req, res) => {
     // else if (path.match(/\/api\/shipments\/id\/[0-9]+/) && method === "GET") {
     //     try {
     //         // set the status code and content-type
-    //         res.writeHead(200, { 
+    //         res.writeHead(200, {
     //             "Content-Type": "application/json",
     //             "Access-Control-Allow-Origin": "*",
     //         });
     //         let shipment = await new ShipmentController().getShipmentByID(path.split('/')[4]);
-            
+
     //         //send the shipments
     //         res.end(JSON.stringify(shipment));
     //     } catch (error) {
@@ -212,12 +212,12 @@ const server = http.createServer(async (req, res) => {
     else if (path === "/api/po-boxes" && method === "GET") {
         try {
             // set the status code and content-type
-            res.writeHead(200, { 
+            res.writeHead(200, {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
             });
             let boxes = await new POBoxController().getAllPOBoxes();
-            
+
             //send the boxes
             res.end(JSON.stringify(boxes));
         } catch (error) {
@@ -235,13 +235,13 @@ const server = http.createServer(async (req, res) => {
     // else if (path.match(/\/api\/po-boxes\/branch\/([A-Za-z0-9]+(\+[A-Za-z0-9]+)+)/i) && method === "GET") {
     //     try {
     //         // set the status code and content-type
-    //         res.writeHead(200, { 
+    //         res.writeHead(200, {
     //             "Content-Type": "application/json",
     //             "Access-Control-Allow-Origin": "*",
     //         });
     //         let branch = path.split('/')[4].replace(/\+/g, ' ');
     //         let branchBoxes = await new POBoxController().getAllPOBoxesByBranch(branch);
-            
+
     //         //send the boxes
     //         res.end(JSON.stringify(branchBoxes));
     //     } catch (error) {
@@ -259,13 +259,13 @@ const server = http.createServer(async (req, res) => {
     // else if (path.match(/\/api\/po-boxes\/email\/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/) && method === "GET") {
     //     try {
     //         // set the status code and content-type
-    //         res.writeHead(200, { 
+    //         res.writeHead(200, {
     //             "Content-Type": "application/json",
     //             "Access-Control-Allow-Origin": "*",
     //         });
     //         let boxes = await new POBoxController().getPOBoxByEmail(path.split("/")[4]);
-            
-            
+
+
     //         //send the boxes
     //         res.end(JSON.stringify(boxes));
     //     } catch (error) {
@@ -280,13 +280,13 @@ const server = http.createServer(async (req, res) => {
     else if (path === "/api/tracks" && method === "GET") {
         try {
             // set the status code and content-type
-            res.writeHead(200, { 
+            res.writeHead(200, {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
             });
             let tracks = await new TracksController().getAllTracks();
-            
-            
+
+
             //send the tracks
             res.end(JSON.stringify(tracks));
         } catch (error) {
@@ -305,10 +305,10 @@ const server = http.createServer(async (req, res) => {
             res.setHeader("Access-Control-Allow-Origin", "*");
             res.setHeader("Access-Control-Request-Method", "POST");
             res.setHeader("Access-Control-Request-Headers", "Content-Type");
-            
+
             // Receiving input data
             const data = await getReqData(req);
-            
+
             const user_email = JSON.parse(data)
             //console.log(user_email);
             const user_info = await new UserController().getUserByEmail(user_email.email);
@@ -320,7 +320,7 @@ const server = http.createServer(async (req, res) => {
                 res.end(JSON.stringify(`No user found: ${user_email.email}`));
             }
             else {
-                res.writeHead(202, { 
+                res.writeHead(202, {
                     "Content-Type": "application/json",
                     "Access-Control-Allow-Origin": "*",
                 });
@@ -341,10 +341,10 @@ const server = http.createServer(async (req, res) => {
             res.setHeader("Access-Control-Allow-Origin", "*");
             res.setHeader("Access-Control-Request-Method", "POST");
             res.setHeader("Access-Control-Request-Headers", "Content-Type");
-            
+
             const data = await getReqData(req);
             //const tracking_id = JSON.parse(data);
-            
+
             const tracking_id = JSON.parse(data)
             console.log(tracking_id);
             const shipment = await new ShipmentController().getShipmentByID(tracking_id.tracking_id);
@@ -356,15 +356,15 @@ const server = http.createServer(async (req, res) => {
                 res.end(JSON.stringify(`No shipment found with TID: ${tracking_id.tracking_id}`));
             }
             else {
-                res.writeHead(202, { 
+                res.writeHead(202, {
                     "Content-Type": "application/json",
                     "Access-Control-Allow-Origin": "*",
                 });
                 res.end(JSON.stringify(shipment));
             }
-            
-            
-            
+
+
+
 
         } catch(error) {
             res.writeHead(404, { "Content-Type": "application/json" });
@@ -379,7 +379,7 @@ const server = http.createServer(async (req, res) => {
     // /api/register-customer : POST
     else if (path === "/api/register-customer" && method === "POST") {
         try {
-            res.writeHead(201, { 
+            res.writeHead(201, {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
             });
@@ -388,7 +388,7 @@ const server = http.createServer(async (req, res) => {
 
             const result = await new UserController().createCustomer(data);
             // status code 201 -> created
-            
+
             res.end(result);
 
         } catch (error) {
@@ -404,7 +404,7 @@ const server = http.createServer(async (req, res) => {
     // /api/login : POST
     else if (path === "/api/login" && method === "POST") {
         try {
-            res.writeHead(200, { 
+            res.writeHead(200, {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
             });
@@ -427,7 +427,7 @@ const server = http.createServer(async (req, res) => {
             }
 
             //UNCOMMENT for debugging
-            // const temp_user = 
+            // const temp_user =
             // {
             //     type: "admin"
             // }
@@ -450,7 +450,7 @@ const server = http.createServer(async (req, res) => {
     else if (path === "/api/create-shipment" && method === "POST") {
         try {
             // set the status code and content-type
-            res.writeHead(201, { 
+            res.writeHead(201, {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
             });
@@ -473,7 +473,7 @@ const server = http.createServer(async (req, res) => {
     else if (path === "/api/add-tracks" && method === "POST") {
         try {
             // set the status code and content-type
-            res.writeHead(201, { 
+            res.writeHead(201, {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
             });
@@ -489,13 +489,13 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
-    //given user email, retrieve : {shipment_tracking_id, tracking_status, est_delivery_date} from TRACKS, 
-    // {shipment_status, num_packages} from SHIPMENT 
+    //given user email, retrieve : {shipment_tracking_id, tracking_status, est_delivery_date} from TRACKS,
+    // {shipment_status, num_packages} from SHIPMENT
     // api/user-shipments : POST
     else if (path === "/api/user-shipments" && method === "POST") {
         try {
             // set the status code and content-type
-            res.writeHead(201, { 
+            res.writeHead(201, {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
             });
@@ -515,19 +515,45 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
+    //Marks a shipment as deleted.
+    // api/delete-shipment : PUT
+    else if (path === "/api/delete-shipment" && method === "PUT")
+    {
+        try {
+            // set the status code and content-type
+            res.writeHead(200, {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+
+            const data = JSON.parse(await getReqData(req));
+            const shipment_id = data.shipment_id;
+            const isDeleted = data.mark_deletion;
+
+            const result = await new ShipmentController().deleteShipment(shipment_id, isDeleted);
+
+            res.end(JSON.stringify(result));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: "" + error }));
+        }
+    }
+
     //TODO
     // api/update-status : POST
     else if (path === "/api/update-status" && method === "PUT")
     {
         try {
             // set the status code and content-type
-            res.writeHead(201, { 
+            res.writeHead(201, {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
             });
 
             //TODO logic for modifying status here
-            //receive '1' , '2' , '3', '4' to determine tracking status 
+            //receive '1' , '2' , '3', '4' to determine tracking status
             // and update based on tracking_id
 
             res.end(JSON.stringify(result));
