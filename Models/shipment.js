@@ -28,7 +28,7 @@ class Shipment {
             const result = await client.query(`Select *
                                                 FROM dev_db.postoffice.SHIPMENT AS S
                                                 WHERE S.tracking_id='${id}';`)
-            
+
             //FIXME HERE DUDE
 
             return result.recordset[0]; //always returns one
@@ -108,6 +108,28 @@ class Shipment {
         } catch (err) {
             console.log(err);
             throw new Error('Failed to create shipment. Ensure shipment data is complete with all attributes and attributes for the tracks tuple.');
+        }
+    }
+
+    /**
+     * Updates a shipment's status.
+     * 1: Labelling
+     * 2: In transit
+     * 3: Delivered
+     * 4: Stopped
+     * @param {string} id ID of the shipment to update
+     * @param {*} status Status to update it to. Should be 1-4.
+     * @returns Result of the SQL query.
+     */
+    static async updateShipmentStatus(id, status) {
+        try {
+            const result = await client.query(`UPDATE dev_db.postoffice.SHIPMENT
+                                                SET shipment_status=${status}
+                                                WHERE tracking_id=${id};`);
+            return result.recordset;
+        } catch (err) {
+            console.log(err);
+            throw new Error('Failed to update or no such shipment with ID: ' + id);
         }
     }
 }
