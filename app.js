@@ -540,21 +540,18 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
-    //TODO
+    //Updates the status of a shipment.
     // api/update-status : POST
     else if (path === "/api/update-status" && method === "PUT")
     {
         try {
             // set the status code and content-type
-            res.writeHead(201, {
+            res.writeHead(200, {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
             });
-
-            //TODO logic for modifying status here
-            //receive '1' , '2' , '3', '4' to determine tracking status
-            // and update based on tracking_id
-
+            const data = JSON.parse(await getReqData(req));
+            const result = await new ShipmentController().updateShipmentStatus(data.tracking_id, data.status);
             res.end(JSON.stringify(result));
         } catch (error) {
             // set error status code and content-type
