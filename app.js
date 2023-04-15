@@ -40,6 +40,8 @@ const { UserController } = require("./Controllers/userController");
 const { ShipmentController } = require("./Controllers/shipmentController");
 const { POBoxController } = require("./Controllers/poBoxController");
 const { TracksController } = require("./Controllers/tracksController");
+const { JobController } = require("./Controllers/jobController");
+
 
 const { authenticate, init_jwt } = require("./jwt");
 
@@ -539,6 +541,49 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
+    // POST Job
+    else if (path === "/api/job" && method === "POST") {
+        try {
+            // set the status code and content-type
+            res.writeHead(201, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            const data = await getReqData(req);
+            const result = await new JobController().createJob(data);
+
+            res.end(result);
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
+        }
+
+    }
+
+    // GET All Jobs
+    else if (path === "/api/job" && method === "GET") {
+        try {
+            // set the status code and content-type
+            res.writeHead(200, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            let job = await new JobController().getAllJobs();
+            
+            //send the packages
+            res.end(JSON.stringify(job));
+
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
+        }
+
+    }
+    
 
     // No route present
     else {
