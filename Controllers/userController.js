@@ -46,7 +46,7 @@ class UserController {
         } catch (error) {
             throw new Error(`Email: ${email} does not exist.`);
         }
-        
+
     }
 
     // Get list of employees by branch address
@@ -64,19 +64,30 @@ class UserController {
         return await User.getAllCustomers();
     }
 
-    // creating a user
+    // creating a customer
     async createCustomer(user) {
-        try{
+        try {
             let newuser = await User.createCustomer(user);
             return newuser;
         } catch (error) {
             // throw an error
-            throw new Error(`User already created.`);
+            throw new Error(`Error creating customer, or user already created.`);
+        }
+    }
+
+    // creating an employee
+    async createEmployee(user) {
+        try {
+            let newuser = await User.createEmployee(user);
+            return newuser;
+        } catch (error) {
+            // throw an error
+            throw new Error(`Error creating employee, or user already created.`);
         }
     }
 
     async getUserShipmentsByEmail(email) {
-        try{
+        try {
             return await User.getUserShipmentsByEmail(email);
         } catch (error) {
             // throw an error

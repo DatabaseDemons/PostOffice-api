@@ -332,7 +332,7 @@ const server = http.createServer(async (req, res) => {
         }
     }
     //Given customer email, return box num and branch address
-    // /api/userinfo : POST 
+    // /api/userinfo : POST
     else if (path === "/api/userinfo" && method === "POST") {
         try {
             // set the status code and content-type
@@ -425,6 +425,27 @@ const server = http.createServer(async (req, res) => {
 
             res.end(JSON.stringify({ message: error.message }));
 
+        }
+    }
+
+    // creates an employee with a user login
+    // /api/register-employee : POST
+    else if (path === "/api/register-employee" && method === "POST") {
+        try {
+            res.writeHead(201, {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            const data = await getReqData(req);
+            console.log(data);
+
+            const result = await new UserController().createEmployee(data);
+            res.end(result);
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
         }
     }
 

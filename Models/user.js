@@ -25,9 +25,9 @@ class User {
 
             const result = await client.query(`
                 SELECT t.shipment_tracking_id, t.tracking_status, t.est_delivery_date, s.shipment_status, s.num_packages, s.mark_deletion
-                FROM postoffice.TRACKS t 
-                INNER JOIN postoffice.SHIPMENT s 
-                ON t.shipment_tracking_id  = s.tracking_id 
+                FROM postoffice.TRACKS t
+                INNER JOIN postoffice.SHIPMENT s
+                ON t.shipment_tracking_id  = s.tracking_id
                 WHERE t.customer_email = '${email}';
             `);
 
@@ -64,7 +64,7 @@ class User {
         try {
             const result = await client.query(`
                 SELECT c.first_name, c.last_name, c.home_address, ul.username, ul.password, ul.type
-                FROM postoffice.CUSTOMER c 
+                FROM postoffice.CUSTOMER c
                 INNER JOIN postoffice.USER_LOGIN ul
                 ON c.email = ul.username
                 WHERE c.email = '${email}'
@@ -168,13 +168,49 @@ class User {
 
             //return post data
             return data;
-
-
-
-        } catch(err) {
-
+        } catch (err) {
             console.log(err);
-            throw new Error('Failed to create new user.');
+            throw new Error('Failed to create new customer.');
+        }
+    }
+
+    /**
+     * Creates an employee in the database.
+     * @param {string} data JSON data of the employee's info
+     * @returns The result of the insert.
+     */
+    static async createEmployee(data) {
+        try {
+
+            const user = JSON.parse(data);
+
+            //create user login for employee
+            const username = user.email;
+            const pw = user.password;
+            const type = 'employee';
+            let result = await client.query(`
+                INSERT INTO dev_db.postoffice.USER_LOGIN (username, password, type)
+                VALUES ('${username}', '${pw}', '${type}');
+            `)
+            console.log(`User Login created for ${username}.`);
+
+            //add rest of data to customer table
+            const fname = user.first_name;
+            const lname = user.last_name;
+            const addr = user.branch_address;
+            const phone_num = user.phone_number;
+            const start_date = user.start_date;
+            result = await client.query(`
+                INSERT INTO dev_db.postoffice.EMPLOYEE (email, branch_address, first_name, last_name, start_date, phone_number)
+                VALUES ('${username}', '${addr}', '${fname}', '${lname}', '${start_date}', '${phone_num}');
+            `)
+            console.log(`Employee ${fname} ${lname} created.`)
+
+            //return post data
+            return data;
+        } catch (err) {
+            console.log(err);
+            throw new Error('Failed to create new employee.');
         }
     }
 }
