@@ -622,7 +622,7 @@ const server = http.createServer(async (req, res) => {
             });
             const data = JSON.parse(await getReqData(req));
 
-            if (data.key = 'email') {
+            if (data.key === 'email') {
                 throw new Error('Cannot update the email of an employee.');
             }
             const result = await new UserController().updateEmployee(data.email, data.key, data.new_value);

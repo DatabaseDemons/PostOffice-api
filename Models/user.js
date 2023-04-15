@@ -153,7 +153,7 @@ class User {
             let result = await client.query(`
                 INSERT INTO dev_db.postoffice.USER_LOGIN (username, password, type)
                 VALUES ('${username}', '${pw}', '${type}');
-            `)
+            `);
             console.log(`User Login created for ${username}.`);
 
             //add rest of data to customer table
@@ -163,7 +163,7 @@ class User {
             result = await client.query(`
                 INSERT INTO dev_db.postoffice.CUSTOMER (email, home_address, first_name, last_name)
                 VALUES ('${username}', '${addr}', '${fname}', '${lname}');
-            `)
+            `);
             console.log(`Customer ${fname} ${lname} created.`)
 
             //return post data
@@ -203,7 +203,7 @@ class User {
             result = await client.query(`
                 INSERT INTO dev_db.postoffice.EMPLOYEE (email, branch_address, first_name, last_name, start_date, phone_number)
                 VALUES ('${username}', '${addr}', '${fname}', '${lname}', '${start_date}', '${phone_num}');
-            `)
+            `);
             console.log(`Employee ${fname} ${lname} created.`)
 
             //return post data
@@ -223,11 +223,22 @@ class User {
      */
     static async updateEmployee(email, key, new_value) {
         try {
-            let result = await client.query(`
-                UPDATE dev_db.postoffice.EMPLOYEE
-                SET ${key}=${new_value}
-                WHERE email=${email};
-            `);
+
+            let result;
+
+            //Need to format SQL differently if new value is a string
+            if (typeof new_value === 'string') {
+                result = await client.query(`
+                    UPDATE dev_db.postoffice.EMPLOYEE
+                    SET ${key}='${new_value}'
+                    WHERE email='${email}';`);
+            } else {
+                result = await client.query(`
+                    UPDATE dev_db.postoffice.EMPLOYEE
+                    SET ${key}=${new_value}
+                    WHERE email='${email}';`);
+            }
+
             console.log(`Employee ${email} updated.`);
             return result;
         } catch (error) {
