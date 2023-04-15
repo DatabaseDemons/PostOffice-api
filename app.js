@@ -554,10 +554,10 @@ const server = http.createServer(async (req, res) => {
             });
 
             const data = JSON.parse(await getReqData(req));
-            const shipment_id = data.shipment_id;
+            const tracking_id = data.tracking_id;
             const isDeleted = data.mark_deletion;
 
-            const result = await new ShipmentController().deleteShipment(shipment_id, isDeleted);
+            const result = await new ShipmentController().deleteShipment(tracking_id, isDeleted);
 
             res.end(JSON.stringify(result));
         } catch (error) {
