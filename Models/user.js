@@ -191,7 +191,7 @@ class User {
             let result = await client.query(`
                 INSERT INTO dev_db.postoffice.USER_LOGIN (username, password, type)
                 VALUES ('${username}', '${pw}', '${type}');
-            `)
+            `);
             console.log(`User Login created for ${username}.`);
 
             //add rest of data to customer table
@@ -211,6 +211,28 @@ class User {
         } catch (err) {
             console.log(err);
             throw new Error('Failed to create new employee.');
+        }
+    }
+
+    /**
+     * Updates an attribute of a specific employee.
+     * @param {string} email Email of the employee to update
+     * @param {*} key Attribute to update
+     * @param {*} new_value Value to update it to
+     * @returns Results of the sql query
+     */
+    static async updateEmployee(email, key, new_value) {
+        try {
+            let result = await client.query(`
+                UPDATE dev_db.postoffice.EMPLOYEE
+                SET ${key}=${new_value}
+                WHERE email=${email};
+            `);
+            console.log(`Employee ${email} updated.`);
+            return result;
+        } catch (error) {
+            console.log(error);
+            throw new Error('Failed to update employee.');
         }
     }
 }

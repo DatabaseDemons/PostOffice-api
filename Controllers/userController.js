@@ -95,22 +95,14 @@ class UserController {
         }
     }
 
-    // updating a user
-
-    // async updateUser(id) {
-    //     return new Promise((resolve, reject) => {
-    //         // get the user.
-    //         let user = data.find((user) => user.id === parseInt(id));
-    //         // if no user, return an error
-    //         if (!user) {
-    //             reject(`No user with id ${id} found`);
-    //         }
-    //         //else, update it by setting completed to true
-    //         user["completed"] = true;
-    //         // return the updated user
-    //         resolve(user);
-    //     });
-    // }
+    async updateEmployee(email, key, new_value) {
+        try {
+            return await User.updateEmployee(email, key, new_value);
+        } catch (error) {
+            // throw an error
+            throw new Error(`Failed to update or no employee with email: ${email}`);
+        }
+    }
 
     //FIXME deleting a user (put/patch/update)
     // async deleteUser(id) {

@@ -610,6 +610,31 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
+    //Update an attribute of an employee.
+    // api/update-employee : PUT
+    else if (path === "/api/update-employee" && method === "PUT")
+    {
+        try {
+            // set the status code and content-type
+            res.writeHead(200, {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            const data = JSON.parse(await getReqData(req));
+
+            if (data.key = 'email') {
+                throw new Error('Cannot update the email of an employee.');
+            }
+            const result = await new UserController().updateEmployee(data.email, data.key, data.new_value);
+            res.end(JSON.stringify(result));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: "" + error }));
+        }
+    }
+
 
     // No route present
     else {
