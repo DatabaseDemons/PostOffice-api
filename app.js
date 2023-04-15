@@ -332,8 +332,8 @@ const server = http.createServer(async (req, res) => {
         }
     }
     //Given customer email, return box num and branch address
-    // /api/userbox : POST 
-    else if (path === "/api/userbox" && method === "POST") {
+    // /api/userinfo : POST 
+    else if (path === "/api/userinfo" && method === "POST") {
         try {
             // set the status code and content-type
             res.setHeader("Access-Control-Allow-Origin", "*");
