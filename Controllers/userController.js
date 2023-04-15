@@ -2,20 +2,9 @@
 
 // Logic behind functionalities
 /*
-
 this manages the actual functionality and
 the logic behind each route used in this application.
-It is made up of the Controller class,
-which will have the following major HTTP methods:
-
-getAllUsers()
-getUserByEmail(email)
-createUser(user)
-updateUser(email)
-deleteUser(email)
-
 */
-// User -> for USER_LOGIN, EMPLOYEE, CUSTOMER tables
 
 const { User } = require('../Models/user');
 
@@ -104,19 +93,14 @@ class UserController {
         }
     }
 
-    //FIXME deleting a user (put/patch/update)
-    // async deleteUser(id) {
-    //     return new Promise((resolve, reject) => {
-    //         // get the user
-    //         let user = data.find((user) => user.id === parseInt(id));
-    //         // if no user, return an error
-    //         if (!user) {
-    //             reject(`No user with id ${id} found`);
-    //         }
-    //         // else, return a success message
-    //         resolve(`user deleted successfully`);
-    //     });
-    // }
+    async updateCustomer(email, key, new_value) {
+        try {
+            return await User.updateCustomer(email, key, new_value);
+        } catch (error) {
+            // throw an error
+            throw new Error(`Failed to update or no customer with email: ${email}`);
+        }
+    }
 }
 
 

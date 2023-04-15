@@ -246,6 +246,38 @@ class User {
             throw new Error('Failed to update employee.');
         }
     }
+
+    /**
+    * Updates an attribute of a specific customer.
+    * @param {string} email Email of the customer to update
+    * @param {*} key Attribute to update
+    * @param {*} new_value Value to update it to
+    * @returns Results of the sql query
+    */
+    static async updateCustomer(email, key, new_value) {
+        try {
+
+            let result;
+
+            //Need to format SQL differently if new value is a string
+            if (typeof new_value === 'string') {
+                result = await client.query(`
+                        UPDATE dev_db.postoffice.CUSTOMER
+                        SET ${key}='${new_value}'
+                        WHERE email='${email}';`);
+            } else {
+                result = await client.query(`
+                        UPDATE dev_db.postoffice.CUSTOMER
+                        SET ${key}=${new_value}
+                        WHERE email='${email}';`);
+            }
+            console.log(`Customer ${email} updated.`);
+            return result;
+        } catch (error) {
+            console.log(error);
+            throw new Error('Failed to update customer.');
+        }
+    }
 }
 
 module.exports = {

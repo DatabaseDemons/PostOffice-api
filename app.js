@@ -635,6 +635,30 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
+    //Update an attribute of a customer
+    // api/update-customer : PUT
+    else if (path === "/api/update-customer" && method === "PUT")
+    {
+        try {
+            // set the status code and content-type
+            res.writeHead(200, {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            const data = JSON.parse(await getReqData(req));
+
+            if (data.key === 'email') {
+                throw new Error('Cannot update the email of a customer.');
+            }
+            const result = await new UserController().updateCustomer(data.email, data.key, data.new_value);
+            res.end(JSON.stringify(result));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
+        }
+    }
 
     // No route present
     else {
