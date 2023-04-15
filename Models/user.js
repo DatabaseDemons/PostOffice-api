@@ -24,7 +24,7 @@ class User {
         try {
 
             const result = await client.query(`
-                SELECT t.shipment_tracking_id, t.tracking_status, t.est_delivery_date, s.shipment_status, s.num_packages
+                SELECT t.shipment_tracking_id, t.tracking_status, t.est_delivery_date, s.shipment_status, s.num_packages, s.mark_deletion
                 FROM postoffice.TRACKS t 
                 INNER JOIN postoffice.SHIPMENT s 
                 ON t.shipment_tracking_id  = s.tracking_id 
