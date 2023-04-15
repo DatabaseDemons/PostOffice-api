@@ -132,7 +132,7 @@ const server = http.createServer(async (req, res) => {
             // set error status code and content-type
             res.writeHead(500, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({ message: "" + error }));
+            res.end(JSON.stringify({ message: error.message }));
         }
     }
 
@@ -160,7 +160,7 @@ const server = http.createServer(async (req, res) => {
     //         // set error status code and content-type
     //         res.writeHead(500, { "Content-Type": "application/json" });
     //         // send error
-    //         res.end(JSON.stringify({ message: "" + error }));
+    //         res.end(JSON.stringify({ message: error.message }));
     //     }
     // }
 
@@ -180,7 +180,7 @@ const server = http.createServer(async (req, res) => {
             // set error status code and content-type
             res.writeHead(500, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({ message: "" + error }));
+            res.end(JSON.stringify({ message: error.message }));
         }
     }
 
@@ -202,7 +202,7 @@ const server = http.createServer(async (req, res) => {
     //         // set error status code and content-type
     //         res.writeHead(500, { "Content-Type": "application/json" });
     //         // send error
-    //         res.end(JSON.stringify({ message: "" + error }));
+    //         res.end(JSON.stringify({ message: error.message }));
     //     }
     // }
 
@@ -223,7 +223,7 @@ const server = http.createServer(async (req, res) => {
             // set error status code and content-type
             res.writeHead(500, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({ message: "" + error }));
+            res.end(JSON.stringify({ message: error.message }));
         }
     }
 
@@ -247,7 +247,7 @@ const server = http.createServer(async (req, res) => {
     //         // set error status code and content-type
     //         res.writeHead(500, { "Content-Type": "application/json" });
     //         // send error
-    //         res.end(JSON.stringify({ message: "" + error }));
+    //         res.end(JSON.stringify({ message: error.message }));
     //     }
     // }
 
@@ -271,7 +271,7 @@ const server = http.createServer(async (req, res) => {
     //         // set error status code and content-type
     //         res.writeHead(500, { "Content-Type": "application/json" });
     //         // send error
-    //         res.end(JSON.stringify({ message: "" + error }));
+    //         res.end(JSON.stringify({ message: error.message }));
     //     }
     // }
 
@@ -292,7 +292,7 @@ const server = http.createServer(async (req, res) => {
             // set error status code and content-type
             res.writeHead(500, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({ message: "" + error }));
+            res.end(JSON.stringify({ message: error.message }));
         }
     }
 //POST HANDLERS
@@ -533,7 +533,7 @@ const server = http.createServer(async (req, res) => {
             // set error status code and content-type
             res.writeHead(500, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({ message: "" + error }));
+            res.end(JSON.stringify({ message: error.message }));
         }
     }
 
@@ -559,7 +559,7 @@ const server = http.createServer(async (req, res) => {
             // set error status code and content-type
             res.writeHead(500, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({ message: "" + error }));
+            res.end(JSON.stringify({ message: error.message }));
         }
     }
 
@@ -585,7 +585,7 @@ const server = http.createServer(async (req, res) => {
             // set error status code and content-type
             res.writeHead(500, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({ message: "" + error }));
+            res.end(JSON.stringify({ message: error.message }));
         }
     }
 
@@ -606,7 +606,7 @@ const server = http.createServer(async (req, res) => {
             // set error status code and content-type
             res.writeHead(500, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({ message: "" + error }));
+            res.end(JSON.stringify({ message: error.message }));
         }
     }
 
@@ -631,7 +631,7 @@ const server = http.createServer(async (req, res) => {
             // set error status code and content-type
             res.writeHead(500, { "Content-Type": "application/json" });
             // send error
-            res.end(JSON.stringify({ message: "" + error }));
+            res.end(JSON.stringify({ message: error.message }));
         }
     }
 
