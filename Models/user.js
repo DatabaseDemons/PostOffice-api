@@ -25,9 +25,9 @@ class User {
 
             const result = await client.query(`
                 SELECT t.shipment_tracking_id, t.tracking_status, t.est_delivery_date, s.shipment_status, s.num_packages, s.mark_deletion
-                FROM postoffice.TRACKS t 
-                INNER JOIN postoffice.SHIPMENT s 
-                ON t.shipment_tracking_id  = s.tracking_id 
+                FROM postoffice.TRACKS t
+                INNER JOIN postoffice.SHIPMENT s
+                ON t.shipment_tracking_id  = s.tracking_id
                 WHERE t.customer_email = '${email}';
             `);
 
@@ -64,7 +64,7 @@ class User {
         try {
             const result = await client.query(`
                 SELECT c.first_name, c.last_name, c.home_address, ul.username, ul.password, ul.type
-                FROM postoffice.CUSTOMER c 
+                FROM postoffice.CUSTOMER c
                 INNER JOIN postoffice.USER_LOGIN ul
                 ON c.email = ul.username
                 WHERE c.email = '${email}'
@@ -153,7 +153,7 @@ class User {
             let result = await client.query(`
                 INSERT INTO dev_db.postoffice.USER_LOGIN (username, password, type)
                 VALUES ('${username}', '${pw}', '${type}');
-            `)
+            `);
             console.log(`User Login created for ${username}.`);
 
             //add rest of data to customer table
@@ -163,18 +163,119 @@ class User {
             result = await client.query(`
                 INSERT INTO dev_db.postoffice.CUSTOMER (email, home_address, first_name, last_name)
                 VALUES ('${username}', '${addr}', '${fname}', '${lname}');
-            `)
+            `);
             console.log(`Customer ${fname} ${lname} created.`)
 
             //return post data
             return data;
-
-
-
-        } catch(err) {
-
+        } catch (err) {
             console.log(err);
-            throw new Error('Failed to create new user.');
+            throw new Error('Failed to create new customer.');
+        }
+    }
+
+    /**
+     * Creates an employee in the database.
+     * @param {string} data JSON data of the employee's info
+     * @returns The result of the insert.
+     */
+    static async createEmployee(data) {
+        try {
+
+            const user = JSON.parse(data);
+
+            //create user login for employee
+            const username = user.email;
+            const pw = user.password;
+            const type = 'employee';
+            let result = await client.query(`
+                INSERT INTO dev_db.postoffice.USER_LOGIN (username, password, type)
+                VALUES ('${username}', '${pw}', '${type}');
+            `);
+            console.log(`User Login created for ${username}.`);
+
+            //add rest of data to customer table
+            const fname = user.first_name;
+            const lname = user.last_name;
+            const addr = user.branch_address;
+            const phone_num = user.phone_number;
+            const start_date = user.start_date;
+            result = await client.query(`
+                INSERT INTO dev_db.postoffice.EMPLOYEE (email, branch_address, first_name, last_name, start_date, phone_number)
+                VALUES ('${username}', '${addr}', '${fname}', '${lname}', '${start_date}', '${phone_num}');
+            `);
+            console.log(`Employee ${fname} ${lname} created.`)
+
+            //return post data
+            return data;
+        } catch (err) {
+            console.log(err);
+            throw new Error('Failed to create new employee.');
+        }
+    }
+
+    /**
+     * Updates an attribute of a specific employee.
+     * @param {string} email Email of the employee to update
+     * @param {*} key Attribute to update
+     * @param {*} new_value Value to update it to
+     * @returns Results of the sql query
+     */
+    static async updateEmployee(email, key, new_value) {
+        try {
+
+            let result;
+
+            //Need to format SQL differently if new value is a string
+            if (typeof new_value === 'string') {
+                result = await client.query(`
+                    UPDATE dev_db.postoffice.EMPLOYEE
+                    SET ${key}='${new_value}'
+                    WHERE email='${email}';`);
+            } else {
+                result = await client.query(`
+                    UPDATE dev_db.postoffice.EMPLOYEE
+                    SET ${key}=${new_value}
+                    WHERE email='${email}';`);
+            }
+
+            console.log(`Employee ${email} updated.`);
+            return result;
+        } catch (error) {
+            console.log(error);
+            throw new Error('Failed to update employee.');
+        }
+    }
+
+    /**
+    * Updates an attribute of a specific customer.
+    * @param {string} email Email of the customer to update
+    * @param {*} key Attribute to update
+    * @param {*} new_value Value to update it to
+    * @returns Results of the sql query
+    */
+    static async updateCustomer(email, key, new_value) {
+        try {
+
+            let result;
+
+            //Need to format SQL differently if new value is a string
+            if (typeof new_value === 'string') {
+                result = await client.query(`
+                        UPDATE dev_db.postoffice.CUSTOMER
+                        SET ${key}='${new_value}'
+                        WHERE email='${email}';`);
+            } else {
+                result = await client.query(`
+                        UPDATE dev_db.postoffice.CUSTOMER
+                        SET ${key}=${new_value}
+                        WHERE email='${email}';`);
+            }
+            console.log(`Customer ${email} updated.`);
+            return result;
+        } catch (error) {
+            console.log(error);
+            throw new Error('Failed to update customer.');
         }
     }
 }
