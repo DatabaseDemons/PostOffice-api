@@ -605,6 +605,7 @@ const server = http.createServer(async (req, res) => {
             const result = await new ShipmentController().updateShipmentStatus(data.tracking_id, data.status, data.location);
             res.end(JSON.stringify(result));
         } catch (error) {
+            console.log(error)
             // set error status code and content-type
             res.writeHead(500, { "Content-Type": "application/json" });
             // send error
