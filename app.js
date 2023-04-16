@@ -635,6 +635,26 @@ const server = http.createServer(async (req, res) => {
     }
     
 
+    // GET Self report
+    else if (path === "/api/self-report" && method === "POST") {
+        try {
+            // set the status code and content-type
+            res.writeHead(201, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            const data = await getReqData(req);
+            const result = await new JobController().getSelfReport(data);
+
+            res.end(JSON.stringify(result));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
+        }
+    }
+
     // No route present
     else {
         res.writeHead(404, { "Content-Type": "application/json" });

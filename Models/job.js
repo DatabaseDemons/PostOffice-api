@@ -35,6 +35,30 @@ class Job {
         }
     }
     
+    static async getSelfReport(filter) {
+        try {
+            console.log(filter)
+            const newFilter = JSON.parse(filter);
+            console.log(newFilter); // Fixme remove printout before prod
+
+            const employee_email= newFilter.employee_email;
+            const start_date = newFilter.start_date;
+            const end_date = newFilter.end_date;
+
+            // Create shipment in database via sql
+            const result = await client.query(`SELECT work_name, on_date, branch_address, pay, hours_worked
+                                               FROM postoffice.JOB_HISTORY AS J, postoffice.EMPLOYEE AS E
+                                WHERE E.email='${employee_email}' AND E.email=J.employee_email 
+                                    AND on_date BETWEEN '${start_date}' AND '${end_date}';`);
+
+            return result.recordset;
+
+        } catch (err) {
+            console.log(err);
+            throw new Error('Failed to retrieve self report.');
+        }
+    }
+
     /**
      * Create a new package in the database
      *
