@@ -148,10 +148,12 @@ class Shipment {
      * @param {*} status Status to update it to.
      * @returns Result of the SQL query.
      */
-    static async updateShipmentStatus(id, status) {
+    static async updateShipmentStatus(id, status, location) {
+        console.log(location)
         try {
             const result = await client.query(`UPDATE dev_db.postoffice.SHIPMENT
-                                                SET shipment_status='${status}'
+                                                SET shipment_status='${status}',
+                                                current_location='${location}'
                                                 WHERE tracking_id=${id};`);
             return result.recordset;
         } catch (err) {

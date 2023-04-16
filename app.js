@@ -602,9 +602,10 @@ const server = http.createServer(async (req, res) => {
                 "Access-Control-Allow-Origin": "*",
             });
             const data = JSON.parse(await getReqData(req));
-            const result = await new ShipmentController().updateShipmentStatus(data.tracking_id, data.status);
+            const result = await new ShipmentController().updateShipmentStatus(data.tracking_id, data.status, data.location);
             res.end(JSON.stringify(result));
         } catch (error) {
+            console.log(error)
             // set error status code and content-type
             res.writeHead(500, { "Content-Type": "application/json" });
             // send error
