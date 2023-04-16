@@ -2,20 +2,9 @@
 
 // Logic behind functionalities
 /*
-
 this manages the actual functionality and
 the logic behind each route used in this application.
-It is made up of the Controller class,
-which will have the following major HTTP methods:
-
-getAllUsers()
-getUserByEmail(email)
-createUser(user)
-updateUser(email)
-deleteUser(email)
-
 */
-// User -> for USER_LOGIN, EMPLOYEE, CUSTOMER tables
 
 const { User } = require('../Models/user');
 
@@ -46,7 +35,7 @@ class UserController {
         } catch (error) {
             throw new Error(`Email: ${email} does not exist.`);
         }
-        
+
     }
 
     // Get list of employees by branch address
@@ -64,19 +53,30 @@ class UserController {
         return await User.getAllCustomers();
     }
 
-    // creating a user
+    // creating a customer
     async createCustomer(user) {
-        try{
+        try {
             let newuser = await User.createCustomer(user);
             return newuser;
         } catch (error) {
             // throw an error
-            throw new Error(`User already created.`);
+            throw new Error(`Error creating customer, or user already created.`);
+        }
+    }
+
+    // creating an employee
+    async createEmployee(user) {
+        try {
+            let newuser = await User.createEmployee(user);
+            return newuser;
+        } catch (error) {
+            // throw an error
+            throw new Error(`Error creating employee, or user already created.`);
         }
     }
 
     async getUserShipmentsByEmail(email) {
-        try{
+        try {
             return await User.getUserShipmentsByEmail(email);
         } catch (error) {
             // throw an error
@@ -84,36 +84,23 @@ class UserController {
         }
     }
 
-    // updating a user
+    async updateEmployee(email, key, new_value) {
+        try {
+            return await User.updateEmployee(email, key, new_value);
+        } catch (error) {
+            // throw an error
+            throw new Error(`Failed to update or no employee with email: ${email}`);
+        }
+    }
 
-    // async updateUser(id) {
-    //     return new Promise((resolve, reject) => {
-    //         // get the user.
-    //         let user = data.find((user) => user.id === parseInt(id));
-    //         // if no user, return an error
-    //         if (!user) {
-    //             reject(`No user with id ${id} found`);
-    //         }
-    //         //else, update it by setting completed to true
-    //         user["completed"] = true;
-    //         // return the updated user
-    //         resolve(user);
-    //     });
-    // }
-
-    //FIXME deleting a user (put/patch/update)
-    // async deleteUser(id) {
-    //     return new Promise((resolve, reject) => {
-    //         // get the user
-    //         let user = data.find((user) => user.id === parseInt(id));
-    //         // if no user, return an error
-    //         if (!user) {
-    //             reject(`No user with id ${id} found`);
-    //         }
-    //         // else, return a success message
-    //         resolve(`user deleted successfully`);
-    //     });
-    // }
+    async updateCustomer(email, key, new_value) {
+        try {
+            return await User.updateCustomer(email, key, new_value);
+        } catch (error) {
+            // throw an error
+            throw new Error(`Failed to update or no customer with email: ${email}`);
+        }
+    }
 }
 
 
