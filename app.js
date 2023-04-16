@@ -661,7 +661,7 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify({ message: error.message }));
         }
     }
-    
+
     // POST Job
     else if (path === "/api/job" && method === "POST") {
         try {
@@ -680,10 +680,9 @@ const server = http.createServer(async (req, res) => {
             // send error
             res.end(JSON.stringify({ message: error.message }));
         }
-
     }
 
-    // GET All Jobs
+    // GET All Jobs for all employee
     else if (path === "/api/job" && method === "GET") {
         try {
             // set the status code and content-type
@@ -702,11 +701,9 @@ const server = http.createServer(async (req, res) => {
             // send error
             res.end(JSON.stringify({ message: error.message }));
         }
-
     }
     
-
-    // GET Self report
+    // GET Employee Self report (1 employee)
     else if (path === "/api/self-report" && method === "POST") {
         try {
             // set the status code and content-type
