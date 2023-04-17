@@ -63,7 +63,7 @@ class User {
     static async getUserByEmail(email) {
         try {
             const result = await client.query(`
-                SELECT c.first_name, c.last_name, c.home_address, ul.username, ul.password, ul.type
+                SELECT c.*, ul.username, ul.password, ul.type
                 FROM postoffice.CUSTOMER c
                 INNER JOIN postoffice.USER_LOGIN ul
                 ON c.email = ul.username
