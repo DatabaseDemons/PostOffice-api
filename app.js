@@ -298,7 +298,7 @@ const server = http.createServer(async (req, res) => {
         }
     }
 //POST HANDLERS
-    // Returns shipment with a tracking id input
+    // Returns customer info with a email input
     // /api/userinfo : POST
     else if (path === "/api/userinfo" && method === "POST") {
         try {
@@ -313,6 +313,41 @@ const server = http.createServer(async (req, res) => {
             const user_email = JSON.parse(data)
             //console.log(user_email);
             const user_info = await new UserController().getUserByEmail(user_email.email);
+            //console.log(user_info);
+
+            if (!user_info) {
+                res.writeHead(404, { "Content-Type": "application/json" });
+                // send error
+                res.end(JSON.stringify(`No user found: ${user_email.email}`));
+            }
+            else {
+                res.writeHead(202, {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                });
+                res.end(JSON.stringify(user_info));
+            }
+        } catch(error) {
+            res.writeHead(404, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
+        }
+    }
+    // returns employee info
+    //api/employee-info POST (email as input)
+    else if (path === "/api/employee-info" && method === "POST") {
+        try {
+            // set the status code and content-type
+            res.setHeader("Access-Control-Allow-Origin", "*");
+            res.setHeader("Access-Control-Request-Method", "POST");
+            res.setHeader("Access-Control-Request-Headers", "Content-Type");
+
+            // Receiving input data
+            const data = await getReqData(req);
+
+            const user_email = JSON.parse(data)
+            //console.log(user_email);
+            const user_info = await new UserController().getEmployeeByEmail(user_email.email);
             //console.log(user_info);
 
             if (!user_info) {
@@ -605,7 +640,6 @@ const server = http.createServer(async (req, res) => {
             const result = await new ShipmentController().updateShipmentStatus(data.tracking_id, data.status, data.location);
             res.end(JSON.stringify(result));
         } catch (error) {
-            console.log(error)
             // set error status code and content-type
             res.writeHead(500, { "Content-Type": "application/json" });
             // send error
