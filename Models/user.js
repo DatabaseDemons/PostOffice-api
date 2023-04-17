@@ -77,6 +77,25 @@ class User {
         }
     }
 
+    //Method to get employee by email
+
+    static async getEmployeeByEmail(email) {
+        try {
+            const result = await client.query(`
+                SELECT e.*, ul.password, ul.type
+                FROM postoffice.EMPLOYEE e
+                INNER JOIN postoffice.USER_LOGIN ul
+                ON e.email = ul.username
+                WHERE e.email = '${email}'
+                AND ul.username ='${email}';
+            `);
+
+            return result.recordset[0];
+        } catch (err) {
+            throw new Error('Failed to retrieve user logins, check if email is correct.');
+        }
+    }
+
     /**
      * Function to get all customers in the DB.
      * @returns A list of all customers.

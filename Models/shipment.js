@@ -31,7 +31,7 @@ class Shipment {
     static async getShipmentByID(id) {
         try {
             const result = await client.query(`
-                                                SELECT s.*, t.customer_email, c.home_address 
+                                                SELECT s.*, t.*, c.home_address 
                                                 FROM postoffice.SHIPMENT s
                                                 INNER JOIN  postoffice.TRACKS t ON s.tracking_id = t.shipment_tracking_id
                                                 INNER JOIN postoffice.CUSTOMER c ON t.customer_email = c.email

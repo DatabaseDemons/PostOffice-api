@@ -38,6 +38,17 @@ class UserController {
 
     }
 
+    // getting a single employee by id
+    async getEmployeeByEmail(email) {
+        // get the user
+        try {
+            return await User.getEmployeeByEmail(email);
+        } catch (error) {
+            throw new Error(`Email: ${email} does not exist.`);
+        }
+
+    }
+
     // Get list of employees by branch address
     async getEmployeesByBranch(address) {
         return await User.getEmployeesByBranch(address);
