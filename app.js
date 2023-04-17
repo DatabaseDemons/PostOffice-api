@@ -41,6 +41,7 @@ const { ShipmentController } = require("./Controllers/shipmentController");
 const { POBoxController } = require("./Controllers/poBoxController");
 const { TracksController } = require("./Controllers/tracksController");
 const { JobController } = require("./Controllers/jobController");
+const { locHistController } = require("./Controllers/locHistController");
 
 
 const { authenticate, init_jwt } = require("./jwt");
@@ -722,6 +723,49 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify({ message: error.message }));
         }
     }
+
+    // GET All Location history
+    else if (path === "/api/loc-history" && method === "GET") {
+        try {
+            // set the status code and content-type
+            res.writeHead(200, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            let locHist = await new locHistController().getAllLocHist();
+            
+            //send the packages
+            res.end(JSON.stringify(locHist));
+
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
+        }
+    }
+
+    // GET Loc History by tracking ID
+    else if (path === "/api/loc-history-id" && method === "POST") {
+        try {
+            // set the status code and content-type
+            res.writeHead(201, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            const data = await getReqData(req);
+            const result = await new locHistController().getLocHistbyID(data);
+
+            res.end(JSON.stringify(result));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
+        }
+    }
+
+    
 
     // No route present
     else {
