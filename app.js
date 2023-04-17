@@ -137,6 +137,29 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify({ message: error.message }));
         }
     }
+    //get all customers
+    // /api/customers : GET
+    else if (path === "/api/customers" && method === "GET") {
+
+        try {
+            // set the status code and content-type
+            res.writeHead(200, {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            // get the users
+            const users = await new UserController().getAllCustomers();
+
+
+            // send the data
+            res.end(JSON.stringify(users));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
+        }
+    }
 
     //DEPRECATED
     // /api/users/email : GET
