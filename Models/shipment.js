@@ -161,6 +161,30 @@ class Shipment {
             throw new Error('Failed to update or no such shipment with ID: ' + id);
         }
     }
+    static async updateShipment(id, key, new_value) {
+        try {
+
+            let result;
+
+            //Need to format SQL differently if new value is a string
+            if (typeof new_value === 'string') {
+                result = await client.query(`
+                        UPDATE dev_db.postoffice.SHIPMENT
+                        SET ${key}='${new_value}'
+                        WHERE tracking_id='${id}';`);
+            } else {
+                result = await client.query(`
+                        UPDATE dev_db.postoffice.SHIPMENT
+                        SET ${key}=${new_value}
+                        WHERE tracking_id='${id}';`);
+            }
+            console.log(`Shipment ${id} updated.`);
+            return result;
+        } catch (error) {
+            console.log(error);
+            throw new Error('Failed to update or no such shipment with ID: ' + id);
+        }
+    }
 }
 
 module.exports = {
