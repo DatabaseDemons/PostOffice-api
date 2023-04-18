@@ -665,7 +665,7 @@ const server = http.createServer(async (req, res) => {
             const data = await getReqData(req);
             const result = await new JobController().createJob(data);
 
-            res.end(result);
+            res.end(JSON.stringify(result));
         } catch (error) {
             // set error status code and content-type
             res.writeHead(500, { "Content-Type": "application/json" });
@@ -683,9 +683,9 @@ const server = http.createServer(async (req, res) => {
                 "Access-Control-Allow-Origin": "*",
             });
             const data = JSON.parse(await getReqData(req));
+            //console.log(data.id);
             const result = await new JobController().getJobByID(data.id);
-
-            res.end(result);
+            res.end(JSON.stringify(result));
         } catch (error) {
             // set error status code and content-type
             res.writeHead(500, { "Content-Type": "application/json" });

@@ -26,6 +26,8 @@ class Job {
             Select *
             FROM dev_db.postoffice.JOB_HISTORY
             WHERE work_id='${id}';`);
+
+            //console.log(result.recordset[0]);
             return result.recordset[0];
         } catch (err) {
             console.log(err);
