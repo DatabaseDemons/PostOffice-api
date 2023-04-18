@@ -7,6 +7,9 @@ class JobController {
     async getAllJobs() {
         return await Job.getAllJobs();
     }
+    async getJobByID(id) {
+        return await Job.getJobByID(id);
+    }
     async getSelfReport(filter) {
         return await Job.getSelfReport(filter);
     }

@@ -630,6 +630,26 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
+    // get Job by id
+    else if (path === "/api/get-job-with-id" && method === "POST") {
+        try {
+            // set the status code and content-type
+            res.writeHead(200, {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            const data = JSON.parse(await getReqData(req));
+            const result = await new JobController().getJobByID(data.id);
+
+            res.end(result);
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
+        }
+    }
+
     // GET All Jobs for all employee
     else if (path === "/api/job" && method === "GET") {
         try {

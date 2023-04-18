@@ -17,6 +17,23 @@ class Job {
     }
 
     /**
+     * Retrieve a job entry by id
+     * @returns The job with that id
+     */
+    static async getJobByID(id) {
+        try {
+            const result = await client.query(`
+            Select *
+            FROM dev_db.postoffice.JOB_HISTORY
+            WHERE work_id='${id}';`);
+            return result.recordset[0];
+        } catch (err) {
+            console.log(err);
+            throw new Error('Failed to retrieve all jobs.');
+        }
+    }
+
+    /**
      * Gets a self report of all jobs worked by an employee
      * @param {string} filter JSON of info needed to retrieve entries for an employee
      * @returns A report of all jobs performed by an employee
@@ -80,7 +97,6 @@ class Job {
      */
     static async updateJob(id, key, new_value) {
         try {
-
             let result;
 
             //Need to format SQL differently if new value is a string
