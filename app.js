@@ -41,6 +41,8 @@ const { ShipmentController } = require("./Controllers/shipmentController");
 const { POBoxController } = require("./Controllers/poBoxController");
 const { TracksController } = require("./Controllers/tracksController");
 const { JobController } = require("./Controllers/jobController");
+const { locHistController } = require("./Controllers/locHistController");
+const { ReportController } = require("./Controllers/reportController");
 
 
 const { authenticate, init_jwt } = require("./jwt");
@@ -772,6 +774,67 @@ const server = http.createServer(async (req, res) => {
             const data = await getReqData(req);
             const result = await new JobController().getSelfReport(data);
 
+            res.end(JSON.stringify(result));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
+        }
+    }
+
+    // GET All Location history
+    else if (path === "/api/loc-history" && method === "GET") {
+        try {
+            // set the status code and content-type
+            res.writeHead(200, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            let locHist = await new locHistController().getAllLocHist();
+            
+            //send the packages
+            res.end(JSON.stringify(locHist));
+
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
+        }
+    }
+
+    // GET Loc History by tracking ID
+    else if (path === "/api/loc-history-id" && method === "POST") {
+        try {
+            // set the status code and content-type
+            res.writeHead(201, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            const data = await getReqData(req);
+            const result = await new locHistController().getLocHistbyID(data);
+
+            res.end(JSON.stringify(result));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
+        }
+    }
+
+    // GET Shipment report
+    else if (path === "/api/shipment-report" && method === "POST") {
+        try {
+            // set the status code and content-type
+            res.writeHead(201, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            const data = await getReqData(req);
+            const result = await new ReportController().getShipmentReport(data);
+            console.log("Result :"+result);
             res.end(JSON.stringify(result));
         } catch (error) {
             // set error status code and content-type

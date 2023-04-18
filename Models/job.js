@@ -15,25 +15,6 @@ class Job {
             throw new Error('Failed to retrieve all jobs.');
         }
     }
-
-    /**
-     * Retrieve package by ID
-     * @param {string} id ID of the shipment to search for.
-     * @returns The results of the query searching for that ID.
-     */
-    static async getJobByEmail(id) {
-        try {
-            const result = await client.query(`Select *
-                                                FROM dev_db.postoffice.JOB_HISTORY AS J
-                                                WHERE J.package_id='${id}';`)
-            
-            //FIXME HERE DUDE
-            return result.recordset[0]; //always returns one
-        } catch (err) {
-            console.log(err);
-            throw new Error('Failed to retrieve or no such package with ID: ' + id);
-        }
-    }
     
     static async getSelfReport(filter) {
         try {
