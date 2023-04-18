@@ -44,7 +44,6 @@ const { JobController } = require("./Controllers/jobController");
 const { locHistController } = require("./Controllers/locHistController");
 const { ReportController } = require("./Controllers/reportController");
 
-
 const { authenticate, init_jwt } = require("./jwt");
 
 const { getReqData } = require("./utils");
@@ -858,6 +857,26 @@ const server = http.createServer(async (req, res) => {
             });
             const data = await getReqData(req);
             const result = await new ReportController().getShipmentReport(data);
+            console.log("Result :"+result);
+            res.end(JSON.stringify(result));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
+        }
+    }
+
+    // GET Employee report
+    else if (path === "/api/employee-report" && method === "POST") {
+        try {
+            // set the status code and content-type
+            res.writeHead(201, { 
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            const data = await getReqData(req);
+            const result = await new ReportController().getEmployeeReport(data);
             console.log("Result :"+result);
             res.end(JSON.stringify(result));
         } catch (error) {

@@ -59,14 +59,14 @@ class Job {
             const on_date = newJob.on_date;
 
             // Create shipment in database via sql
-            await client.query(`INSERT INTO dev_db.postoffice.PACKAGE(tracking_id, weight, is_fragile, size_package, shipment_tracking_id)
+            await client.query(`INSERT INTO dev_db.postoffice.JOB_HISTORY
                                 VALUES ('${work_name}', '${employee_email}', '${pay}', ${hours_worked}, '${on_date}');`);
-            console.log(`Package id ${employee_email} created.`);
+            console.log(`Job for ${employee_email} created.`);
 
             return job;
         } catch (err) {
             console.log(err);
-            throw new Error('Failed to create package. Ensure package data is complete with all attributes and attributes for the tracks tuple.');
+            throw new Error('Failed to create job. Ensure data is complete with all attributes');
         }
     }
 }
