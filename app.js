@@ -150,6 +150,26 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
+    //Get all employees route
+    else if (path === "/api/employees" && method === "GET") {
+        try {
+            // set the status code and content-type
+            res.writeHead(200, {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            let employees = await new UserController().getAllEmployees();
+
+            //send the employees payload
+            res.end(JSON.stringify(employees));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
+        }
+    }
+
     // api/po-boxes : GET
     // Get all po boxes route
     else if (path === "/api/po-boxes" && method === "GET") {
@@ -529,6 +549,30 @@ const server = http.createServer(async (req, res) => {
             });
             const data = JSON.parse(await getReqData(req));
             const result = await new ShipmentController().updateShipmentStatus(data.tracking_id, data.status, data.location);
+            res.end(JSON.stringify(result));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
+        }
+    }
+    //Update status of a shipment
+    // api/update-shipment : PUT
+    else if (path === "/api/update-shipment" && method === "PUT")
+    {
+        try {
+            // set the status code and content-type
+            res.writeHead(200, {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            const data = JSON.parse(await getReqData(req));
+
+            if (data.key === 'tracking_id') {
+                throw new Error('Cannot update the tracking ID.');
+            }
+            const result = await new ShipmentController().updateShipment(data.tracking_id, data.key, data.new_value);
             res.end(JSON.stringify(result));
         } catch (error) {
             // set error status code and content-type

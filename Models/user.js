@@ -116,7 +116,12 @@ class User {
      */
     static async getAllEmployees() {
         try {
-            const result = await client.query(`Select * FROM dev_db.postoffice.EMPLOYEE;`);
+            const result = await client.query(`
+                SELECT e.*, ul.password, ul.type
+                FROM postoffice.EMPLOYEE e
+                INNER JOIN postoffice.USER_LOGIN ul
+                ON e.email = ul.username;
+            `);
             return result.recordset;
         } catch (err) {
             console.log(err);
