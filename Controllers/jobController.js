@@ -16,6 +16,9 @@ class JobController {
     async createJob(job) {
         return await Job.createJob(job);
     }
+    async updateJob(id, key, new_value) {
+        return await Job.updateJob(id, key, new_value);
+    }
 }
 
 

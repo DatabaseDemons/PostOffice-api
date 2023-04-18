@@ -70,6 +70,39 @@ class Job {
             throw new Error('Failed to create job. Ensure data is complete with all attributes.');
         }
     }
+
+    /**
+     * Updates an attribute of a specific job.
+     * @param {string} id ID of the job to update
+     * @param {*} key Attribute to update
+     * @param {*} new_value Value to update it to
+     * @returns Results of the sql query
+     */
+    static async updateJob(id, key, new_value) {
+        try {
+
+            let result;
+
+            //Need to format SQL differently if new value is a string
+            if (typeof new_value === 'string') {
+                result = await client.query(`
+                        UPDATE dev_db.postoffice.JOB_HISTORY
+                        SET ${key}='${new_value}'
+                        WHERE work_id='${id}';`);
+            } else {
+                result = await client.query(`
+                        UPDATE dev_db.postoffice.JOB_HISTORY
+                        SET ${key}=${new_value}
+                        WHERE work_id='${id}';`);
+            }
+
+            console.log(`Job id ${id} updated.`);
+            return result;
+        } catch (error) {
+            console.log(error);
+            throw new Error('Failed to update job history entry.');
+        }
+    }
 }
 
 module.exports = {
