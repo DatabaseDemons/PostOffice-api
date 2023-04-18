@@ -64,19 +64,18 @@ const server = http.createServer(async (req, res) => {
     console.log(`Route hit: ${path}`);
     console.log(method);
     // HANDLE CORS PREFLIGHT REQUEST
-    if (method === "OPTIONS")
-    {
+    if (method === "OPTIONS") {
         res.writeHead(204, {
             "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods":"GET, POST, DELETE, PUT, PATCH",
-            "Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept, authorization",
+            "Access-Control-Allow-Methods": "GET, POST, DELETE, PUT, PATCH",
+            "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, authorization",
             "Access-Control-Max-Age": 2592000
         });
 
         res.end();
         return;
     }
-//GET HANDLERS
+    //GET HANDLERS
     //Testing home to return 'Hello World'
     else if (path === "/" && method === "GET") {
         // set the status code, and content-type
@@ -192,7 +191,7 @@ const server = http.createServer(async (req, res) => {
             res.end(JSON.stringify({ message: error.message }));
         }
     }
-//POST HANDLERS
+    //POST HANDLERS
     // Returns customer info with a email input
     // /api/userinfo : POST
     else if (path === "/api/userinfo" && method === "POST") {
@@ -222,7 +221,7 @@ const server = http.createServer(async (req, res) => {
                 });
                 res.end(JSON.stringify(user_info));
             }
-        } catch(error) {
+        } catch (error) {
             res.writeHead(404, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: error.message }));
@@ -257,7 +256,7 @@ const server = http.createServer(async (req, res) => {
                 });
                 res.end(JSON.stringify(user_info));
             }
-        } catch(error) {
+        } catch (error) {
             res.writeHead(404, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: error.message }));
@@ -292,7 +291,7 @@ const server = http.createServer(async (req, res) => {
                 });
                 res.end(JSON.stringify(user_info));
             }
-        } catch(error) {
+        } catch (error) {
             res.writeHead(404, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: error.message }));
@@ -327,7 +326,7 @@ const server = http.createServer(async (req, res) => {
                 });
                 res.end(JSON.stringify(shipment));
             }
-        } catch(error) {
+        } catch (error) {
             res.writeHead(404, { "Content-Type": "application/json" });
             // send error
             res.end(JSON.stringify({ message: error.message }));
@@ -401,8 +400,7 @@ const server = http.createServer(async (req, res) => {
 
             const verified_user = { ...user, ...role }
             //console.log(verified_user);
-            if (!verified_user.type)
-            {
+            if (!verified_user.type) {
                 throw new Error('Wrong Email/Password Combination.');
             }
 
@@ -414,7 +412,7 @@ const server = http.createServer(async (req, res) => {
 
             //console.log(init_jwt(verified_user));
 
-            res.end(JSON.stringify( {token : init_jwt(verified_user), role : verified_user.type, email : verified_user.email } ));
+            res.end(JSON.stringify({ token: init_jwt(verified_user), role: verified_user.type, email: verified_user.email }));
 
         } catch (error) {
             // set error status code and content-type
@@ -497,8 +495,7 @@ const server = http.createServer(async (req, res) => {
 
     //Marks a shipment as deleted.
     // api/delete-shipment : PUT
-    else if (path === "/api/delete-shipment" && method === "PUT")
-    {
+    else if (path === "/api/delete-shipment" && method === "PUT") {
         try {
             // set the status code and content-type
             res.writeHead(200, {
@@ -523,8 +520,7 @@ const server = http.createServer(async (req, res) => {
 
     //Updates the status of a shipment.
     // api/update-status : PUT
-    else if (path === "/api/update-status" && method === "PUT")
-    {
+    else if (path === "/api/update-status" && method === "PUT") {
         try {
             // set the status code and content-type
             res.writeHead(200, {
@@ -544,8 +540,7 @@ const server = http.createServer(async (req, res) => {
 
     //Update an attribute of an employee.
     // api/update-employee : PUT
-    else if (path === "/api/update-employee" && method === "PUT")
-    {
+    else if (path === "/api/update-employee" && method === "PUT") {
         try {
             // set the status code and content-type
             res.writeHead(200, {
@@ -569,8 +564,7 @@ const server = http.createServer(async (req, res) => {
 
     //Update an attribute of a customer
     // api/update-customer : PUT
-    else if (path === "/api/update-customer" && method === "PUT")
-    {
+    else if (path === "/api/update-customer" && method === "PUT") {
         try {
             // set the status code and content-type
             res.writeHead(200, {
@@ -583,6 +577,30 @@ const server = http.createServer(async (req, res) => {
                 throw new Error('Cannot update the email of a customer.');
             }
             const result = await new UserController().updateCustomer(data.email, data.key, data.new_value);
+            res.end(JSON.stringify(result));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
+        }
+    }
+
+    //Update an attribute of a job
+    // api/update-job : PUT
+    else if (path === "/api/update-job" && method === "PUT") {
+        try {
+            // set the status code and content-type
+            res.writeHead(200, {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            const data = JSON.parse(await getReqData(req));
+
+            if (data.key === 'work_id') {
+                throw new Error('Cannot update the id of a job.');
+            }
+            const result = await new JobController().updateJob(data.id, data.key, data.new_value);
             res.end(JSON.stringify(result));
         } catch (error) {
             // set error status code and content-type
@@ -704,7 +722,7 @@ const server = http.createServer(async (req, res) => {
             });
             const data = await getReqData(req);
             const result = await new ReportController().getShipmentReport(data);
-            console.log("Result :"+result);
+            console.log("Result :" + result);
             res.end(JSON.stringify(result));
         } catch (error) {
             // set error status code and content-type
@@ -724,7 +742,7 @@ const server = http.createServer(async (req, res) => {
             });
             const data = await getReqData(req);
             const result = await new ReportController().getEmployeeReport(data);
-            console.log("Result :"+result);
+            console.log("Result :" + result);
             res.end(JSON.stringify(result));
         } catch (error) {
             // set error status code and content-type
