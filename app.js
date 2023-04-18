@@ -210,6 +210,26 @@ const server = http.createServer(async (req, res) => {
         }
     }
 
+    //Get all employees route
+    else if (path === "/api/employees" && method === "GET") {
+        try {
+            // set the status code and content-type
+            res.writeHead(200, {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            let employees = await new UserController().getAllEmployees();
+
+            //send the employees payload
+            res.end(JSON.stringify(employees));
+        } catch (error) {
+            // set error status code and content-type
+            res.writeHead(500, { "Content-Type": "application/json" });
+            // send error
+            res.end(JSON.stringify({ message: error.message }));
+        }
+    }
+
     //DEPRECATED
     // api/shipments/id/ '' : GET
     // Get shipment by tracking ID route
