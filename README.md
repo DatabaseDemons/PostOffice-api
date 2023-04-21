@@ -54,7 +54,7 @@ request ex: { "email": "foam@gmail.com" }
 returns employee data by email input
 request ex: { "email": "lampeater44@hotmail.com" }
 
-/api/userbox
+/api/userbox [TODO]
 
 /api/shipment
 returns shipment info with id input
@@ -71,37 +71,37 @@ request ex:
 	"home_address": "123 Foamy St"
 }
 
-/api/register-employee
+/api/register-employee [TODO]
 
 /api/login
 logs in a user
 request ex: { "email": "lampeater44@hotmail.com", "password": "password" }
 
-/api/create-shipment
+/api/create-shipment [TODO]
 
-/api/add-tracks
+/api/add-tracks [TODO]
 
-/api/user-shipments
+/api/user-shipments [TODO]
 
-/api/job
+/api/job [TODO]
 
 /api/get-job-with-id
 returns job information by id input
 request ex: { "id": 1 }
 
-/api/self-report
+/api/self-report [TODO]
 
-/api/loc-history-id
+/api/loc-history-id [TODO]
 
-/api/shipment-report
+/api/shipment-report [TODO]
 
-/api/employee-report
+/api/employee-report [TODO]
 
 
 **PUT ROUTES**
-/api/delete-shipment
+/api/delete-shipment [TODO]
 
-/api/update-status
+/api/update-status [TODO]
 
 /api/update-shipment
 updates shipment by tracking id and column
@@ -112,10 +112,10 @@ request ex:
 	"new_value": "Delivered"
 }
 
-/api/update-employee
+/api/update-employee [TODO]
 
-/api/update-customer
+/api/update-customer [TODO]
 
-/api/update-job
+/api/update-job [TODO]
 
 
