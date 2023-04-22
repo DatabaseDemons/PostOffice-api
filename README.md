@@ -2,7 +2,7 @@
 
 This project follows the MVC (Model/View/Controller)\
 design pattern to handle HTTP requests. The App.js\
-contains the routes that are available. 
+contains the routes that are available.
 
 ## Available Scripts
 
@@ -15,7 +15,8 @@ In the project directory, you can run:
 
 ## Available Routes
 
-Routes by HTTP method that are handled.
+Routes by HTTP method that are handled. All routes that receive data
+receive it in JSON.
 
 **GET ROUTES**
 
@@ -56,9 +57,11 @@ request ex: { "email": "lampeater44@hotmail.com" }
 
 /api/userbox [TODO]
 
-/api/shipment
-returns shipment info with id input
-request ex: { "tracking_id": 111 }
+/api/shipment - returns shipment info with id input - request ex:
+
+{
+    "tracking_id": 111
+}
 
 /api/register-customer
 creates customer object
@@ -71,15 +74,26 @@ request ex:
 	"home_address": "123 Foamy St"
 }
 
-/api/register-employee [TODO]
+
+/api/register-employee - Registers an employee - Provide request with
+`email`, `password`, `first_name`, `last_name`, `branch_address`,
+`phone_number`, `start_date` attributes in JSON.
+
 
 /api/login
 logs in a user
 request ex: { "email": "lampeater44@hotmail.com", "password": "password" }
 
-/api/create-shipment [TODO]
 
-/api/add-tracks [TODO]
+/api/create-shipment - Creates a shipment - Provide request with
+`tracking_id`, `creation_date`, `current_location`, `shipment_status`,
+`num_packages`, `region`, `customer_email`, `employee_email`.
+
+
+/api/add-tracks - Creates a tracks table entry. Should not be
+necessary to directly use as create-shipment handles tracking
+creation, but if necessary, provide `tracking_id`, `customer_email`,
+`employee_email`.
 
 /api/user-shipments [TODO]
 
@@ -99,9 +113,12 @@ request ex: { "id": 1 }
 
 
 **PUT ROUTES**
-/api/delete-shipment [TODO]
 
-/api/update-status [TODO]
+/api/delete-shipment - deletes a shipment - Provide request with
+`tracking_id` and `mark_deletion` (0 or 1, 1 for deleted).
+
+/api/update-status - updates the status of a shipment - Provide
+request with `tracking_id`, `key`, and `new_value`.
 
 /api/update-shipment
 updates shipment by tracking id and column
@@ -112,10 +129,10 @@ request ex:
 	"new_value": "Delivered"
 }
 
-/api/update-employee [TODO]
+/api/update-employee - Updates a detail about an employee - Provide
+`email`, `key`, and `new_value`.
 
-/api/update-customer [TODO]
+/api/update-customer - Updates a detail about a customer - Provide
+`email`, `key`, and `new_value`.
 
 /api/update-job [TODO]
-
-
