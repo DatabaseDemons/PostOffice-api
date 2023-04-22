@@ -2,7 +2,8 @@
 
 This project follows the MVC (Model/View/Controller)\
 design pattern to handle HTTP requests. The App.js\
-contains the routes that are available.
+contains the routes that are available. The SQL code\
+can be found in Models directory inside the functions.
 
 ## Available Scripts
 
